@@ -1,5 +1,6 @@
 ---
-
+import '../styles/global.css';
+import Oval from '../components/Oval.astro';
 ---
 
 <html lang="en">
@@ -11,6 +12,13 @@
 		<title>Astro</title>
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<h1>Welcome to my website! Here are some ovals:</h1>
+		<div id="ovals">
+			{[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => <Oval id={n}></Oval>)}
+		</div>
 	</body>
+
+	<script>
+		import '../scripts/clip-paths.js';
+	</script>
 </html>
