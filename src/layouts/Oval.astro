@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import randomOvalPath from "../scripts/clip-paths";
 import random from "../scripts/random";
 
-const { id, classes=[], link, color, image, contain, altText } = Astro.props;
+const { squareness=30, id, classes=[], link, color, image, contain, altText } = Astro.props;
 const {r, g, b} = (() => {
   const initR = 168;
   const initG = 178;
@@ -25,16 +25,14 @@ const classesUsed = classList.join(" ");
 const colorUsed = color || `rgb(${r}, ${g}, ${b})`;
 const altTextUsed = altText || "";
 const objectFit = contain ? "contain" : "cover";
+const pathStr = randomOvalPath(squareness);
 const pathId = `path-${id}`;
 const pathUrl = 'url(#' + pathId + ')';
 ---
 
 <svg viewBox="0 0 100 100" width="0" height="0">
   <clipPath id={pathId} clipPathUnits="objectBoundingBox">
-    <path class="oval-path" transform="scale(.01)" d={randomOvalPath()}/>
-  </clipPath>
-  <clipPath id=`${pathId}-hover` clipPathUnits="objectBoundingBox">
-    <path class="oval-path" transform="scale(.01)" d={randomOvalPath()}/>
+    <path class="oval-path" transform="scale(.01)" d={pathStr}/>
   </clipPath>
 </svg>
 {link ? (
