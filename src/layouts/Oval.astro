@@ -38,12 +38,14 @@ const pathUrl = 'url(#' + pathId + ')';
   </clipPath>
 </svg>
 {link ? (
-  <a href={link}>
-    <div class={classesUsed} id={id}>
-      {image !== undefined && <Image src={image} alt={altTextUsed}/>}
-      <slot />
-    </div>
-  </a>
+  <div class={classesUsed} id={id}>
+    <a href={link}>
+      <div class="oval-link-container">
+        {image !== undefined && <Image src={image} alt={altTextUsed}/>}
+        <slot />
+      </div>
+    </a>
+  </div>
 ) : (
   <div class={classesUsed} id={id}>
     {image !== undefined && <Image src={image} alt={altTextUsed}/>}
@@ -56,5 +58,10 @@ const pathUrl = 'url(#' + pathId + ')';
     clip-path: var(--pathUrl);
     background-color: var(--colorUsed);
     object-fit: var(--objectFit);
+  }
+
+  .oval-link-container {
+    width: 100%;
+    height: 100%;
   }
 </style>
