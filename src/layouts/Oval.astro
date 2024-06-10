@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import randomOvalPath from "../scripts/clip-paths";
 import random from "../scripts/random";
 
-const { id, link, color, image, altText } = Astro.props;
+const { id, classes=[], link, color, image, contain, altText } = Astro.props;
 const {r, g, b} = (() => {
   const initR = 168;
   const initG = 178;
@@ -18,36 +18,43 @@ const {r, g, b} = (() => {
     b: (initR + br * saturationFactor) * lightnessFactor,
   }
 })();
+const classList = ["oval"]
+if (link) classList.push("link");
+if (classes) classList.push(...classes);
+const classesUsed = classList.join(" ");
 const colorUsed = color || `rgb(${r}, ${g}, ${b})`;
 const altTextUsed = altText || "";
+const objectFit = contain ? "contain" : "cover";
 const pathId = `path-${id}`;
 const pathUrl = 'url(#' + pathId + ')';
 ---
 
-<span>
-  <svg viewBox="0 0 100 100" width="0" height="0">
-    <clipPath id={pathId} clipPathUnits="objectBoundingBox">
-      <path class="oval-path" transform="scale(.01)" d={randomOvalPath()}/>
-    </clipPath>
-  </svg>
-  {link ? (
-    <a href={link}>
-      <div class="oval link" id={id}>
-        {image !== undefined && <Image src={image} alt={altTextUsed}/>}
-        <slot />
-      </div>
-    </a>
-  ) : (
-    <div class="oval" id={id}>
+<svg viewBox="0 0 100 100" width="0" height="0">
+  <clipPath id={pathId} clipPathUnits="objectBoundingBox">
+    <path class="oval-path" transform="scale(.01)" d={randomOvalPath()}/>
+  </clipPath>
+  <clipPath id=`${pathId}-hover` clipPathUnits="objectBoundingBox">
+    <path class="oval-path" transform="scale(.01)" d={randomOvalPath()}/>
+  </clipPath>
+</svg>
+{link ? (
+  <a href={link}>
+    <div class={classesUsed} id={id}>
       {image !== undefined && <Image src={image} alt={altTextUsed}/>}
       <slot />
     </div>
-  )}
-</span>
+  </a>
+) : (
+  <div class={classesUsed} id={id}>
+    {image !== undefined && <Image src={image} alt={altTextUsed}/>}
+    <slot />
+  </div>
+)}
 
-<style define:vars={{pathUrl, colorUsed}}>
+<style define:vars={{pathUrl, colorUsed, objectFit}}>
   .oval {
     clip-path: var(--pathUrl);
     background-color: var(--colorUsed);
+    object-fit: var(--objectFit);
   }
 </style>
