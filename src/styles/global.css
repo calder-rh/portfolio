@@ -18,15 +18,10 @@ html {
   font-family: "Konsole";
   font-style: normal;
   font-variation-settings: "wght" 450, "wdth" 110;
-  /* font-weight: 100; */
-}
-
-.oval {
-  display: inline-block;
-  width: 300px;
-  height: 200px;
-  margin: 20px;
-  background-color: black;
+  background-color: rgb(203, 208, 215);
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgb(51, 32, 25);
 }
 
 body {
@@ -42,17 +37,29 @@ h1 {
   margin-bottom: 30px;
 }
 
-#ovals {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: auto;
+.oval img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 
-.oval {
-  display: inline-block;
-  width: 300px;
-  height: 200px;
-  margin: 20px;
-  background-color: black;
+.oval.link {
+  transition: 0.2s;
 }
+
+.oval.link:hover {
+  transform: scale(1.1);
+  transition: 0.2s;
+}
+
+.oval-text {
+  display: flex;
+  width: auto;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 15% 15%;
+}
+

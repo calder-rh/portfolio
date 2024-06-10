@@ -1,0 +1,11 @@
+---
+import Oval from "../layouts/Oval.astro";
+
+const { id, link, color, image, altText } = Astro.props;
+---
+
+<Oval id={id} link={link} color={color} image={image} altText={altText}>
+  <div class="oval-text">
+    <slot />
+  </div>
+</Oval>
