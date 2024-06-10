@@ -19,31 +19,11 @@ function randomAnchor() {
   }
 }
 
-function generateClipPaths() {
-  const ovals = document.querySelectorAll('.oval-path');
-  ovals.forEach((oval) => {
-    const { low: tl, middle: t, high: tr } = randomAnchor();
-    const { low: rt, middle: r, high: rb } = randomAnchor();
-    const { low: bl, middle: b, high: br } = randomAnchor();
-    const { low: lt, middle: l, high: lb } = randomAnchor();
-
-    const pathStr = `M ${t} 0 C ${tr} 0, 100 ${rt}, 100 ${r} C 100 ${rb}, ${br} 100, ${b} 100 C ${bl} 100, 0 ${lb}, 0 ${l} C 0 ${lt}, ${tl} 0, ${t} 0`;
-
-    oval.setAttribute('d', pathStr);
-  })
+export default function randomOvalPath() {
+  const { low: tl, middle: t, high: tr } = randomAnchor();
+  const { low: rt, middle: r, high: rb } = randomAnchor();
+  const { low: bl, middle: b, high: br } = randomAnchor();
+  const { low: lt, middle: l, high: lb } = randomAnchor();
+  const pathStr = `M ${t} 0 C ${tr} 0, 100 ${rt}, 100 ${r} C 100 ${rb}, ${br} 100, ${b} 100 C ${bl} 100, 0 ${lb}, 0 ${l} C 0 ${lt}, ${tl} 0, ${t} 0`;
+  return pathStr;
 }
-
-// function addClipPaths() {
-//   const ovals = document.querySelectorAll('.oval');
-//   ovals.forEach((oval) => {
-//     const clipPathId = oval.id.replace('oval', 'path');
-//     oval.style.clipPath = `url(#${clipPathId})`;
-//     // const clipPath = generateRandomClipPath();
-//     // console.log(clipPath);
-//     // oval.style.clipPath = clipPath;
-//     // oval.style.WebkitClipPath = clipPath;
-//   });
-// }
-
-document.addEventListener('DOMContentLoaded', generateClipPaths);
-// window.addEventListener('resize', addClipPaths);
