@@ -1,7 +1,7 @@
 ---
 import Oval from "../layouts/Oval.astro";
-const { id, classes=[], link, color, image, contain, altText } = Astro.props;
+const { squareness, id, classes=[], link, color, image, contain, altText } = Astro.props;
 classes.push("squish")
 ---
 
-<Oval id={id} classes={classes} link={link} color={color} image={image} altText={altText}></Oval>
+<Oval squareness={squareness} id={id} classes={classes} link={link} color={color} image={image} altText={altText}></Oval>

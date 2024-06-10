@@ -1,34 +1,31 @@
 ---
 import '../styles/global.css';
 import '../styles/squish-ovals.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import TextOval from './TextOval.astro';
 import SquishOval from '../components/SquishOval.astro';
+const ids = [];
+for (let i = 1; i < 20; i++) {
+	ids.push(i);
+}
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Calder Ruhl Hansen</title>
-	</head>
-	<body>
-		<TextOval id="intro" color="rgb(235, 238, 242)">
-			<p>
-				Hi! I am a designer, programmer, and artist with a background in type design and 3D animation. I enjoy developing systems to solve complex visual problems, and am happiest when this process gets me working with interesting math, algorithms, and&nbsp;shapes.
-			</p>
-		</TextOval>
+<BaseLayout>
+	<TextOval squareness={38} id="intro" color="rgb(235, 238, 242)">
+		<p>
+			Hi! I am a designer, programmer, and artist with a background in type design and 3D animation. I enjoy developing systems to solve complex visual problems, and am happiest when this process gets me working with interesting math, algorithms, and&nbsp;shapes.
+		</p>
+	</TextOval>
 
-		<div id="squish-ovals">
-			{[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => <SquishOval id={n} link="/"></Oval>)}
-		</div>
-	</body>
+	<div id="squish-ovals">
+		{ids.map((n) => <SquishOval squareness={32} id={n} link="/"></Oval>)}
+	</div>
 
 	<script>
 		import '../scripts/clip-paths.js';
+		import '../scripts/squish-ovals.js';
 	</script>
-</html>
+</BaseLayout>
 
 <style>
 	:global(#intro) {
@@ -51,29 +48,3 @@ import SquishOval from '../components/SquishOval.astro';
 	}
 
 </style>
-
-<script>
-	function squishOvals() {
-		window.requestAnimationFrame(() => {
-			document.querySelectorAll('.oval.squish').forEach((element) => {
-				const position = element.getBoundingClientRect().top / document.documentElement.clientHeight;
-				const mobile = document.documentElement.clientWidth < 500;
-				const minHeight = 50;
-				const maxHeight = mobile ? 300 : 500;
-				if (position < 0) {
-					element.style.height = `${maxHeight}px`;
-				} else if (position > 1) {
-					element.style.height = `${minHeight}px`;
-				} else {
-					const a = (1 - position);
-					const newHeight = maxHeight * a + minHeight * (1 - a);
-					element.style.height = `${newHeight}px`;
-				}
-			})
-		});
-	}
-
-	document.addEventListener("DOMContentLoaded", squishOvals);
-	document.addEventListener("scroll", squishOvals);
-	window.addEventListener("resize", squishOvals);
-</script>
