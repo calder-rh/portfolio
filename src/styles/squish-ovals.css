@@ -1,5 +1,10 @@
 #squish-ovals .oval {
-  width: 500px;
+  flex: 0 1 500px;
+  /* min-width: 500px; */
+  /* flex: 1 0 500px; */
+  /* max-width: 500px;
+  min-width: 100vw; */
+  /* max-width: 500px; */
   height: 300px;
   margin: 0;
   padding: 0;
