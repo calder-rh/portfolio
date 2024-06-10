@@ -24,6 +24,12 @@ html {
   color: rgb(51, 32, 25);
 }
 
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 12px;
+  }
+}
+
 body {
   width: auto;
   max-width: 1200px;
