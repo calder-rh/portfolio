@@ -1,7 +1,8 @@
 ---
 import '../styles/global.css';
-import Oval from '../layouts/Oval.astro';
+import '../styles/squish-ovals.css';
 import TextOval from './TextOval.astro';
+import SquishOval from '../components/SquishOval.astro';
 ---
 
 <html lang="en">
@@ -18,6 +19,10 @@ import TextOval from './TextOval.astro';
 				Hi! I am a designer, programmer, and artist with a background in type design and 3D animation. I enjoy developing systems to solve complex visual problems, and am happiest when this process gets me working with interesting math, algorithms, and&nbsp;shapes.
 			</p>
 		</TextOval>
+
+		<div id="squish-ovals">
+			{[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => <SquishOval id={n} link="/"></Oval>)}
+		</div>
 	</body>
 
 	<script>
@@ -34,4 +39,40 @@ import TextOval from './TextOval.astro';
 	:global(#intro) p {
 		font-size: 1.3rem;
 	}
+
+	#squish-ovals {
+		display: flex;
+		width: 100%;
+		height: auto;
+		flex-wrap: wrap;
+		justify-content: center;
+		margin-bottom: 100vh;
+		/* background-color: rgba(0, 0, 0, 0.1); */
+	}
+
 </style>
+
+<script>
+	function squishOvals() {
+		window.requestAnimationFrame(() => {
+			document.querySelectorAll('.oval.squish').forEach((element) => {
+				const position = element.getBoundingClientRect().top / document.documentElement.clientHeight;
+				const minHeight = 50;
+				const maxHeight = 500;
+				if (position < 0) {
+					element.style.height = `${maxHeight}px`;
+				} else if (position > 1) {
+					element.style.height = `${minHeight}px`;
+				} else {
+					const a = (1 - position);
+					const newHeight = maxHeight * a + minHeight * (1 - a);
+					element.style.height = `${newHeight}px`;
+				}
+			})
+		});
+	}
+
+	document.addEventListener("DOMContentLoaded", squishOvals);
+	document.addEventListener("scroll", squishOvals);
+	window.addEventListener("resize", squishOvals);
+</script>

@@ -1,10 +1,11 @@
 ---
 import Oval from "../layouts/Oval.astro";
 
-const { id, link, color, image, altText } = Astro.props;
+const { id, classes=[], link, color, image, altText } = Astro.props;
+classes.push("text");
 ---
 
-<Oval id={id} link={link} color={color} image={image} altText={altText}>
+<Oval id={id} classes={classes} link={link} color={color} image={image} altText={altText}>
   <div class="oval-text">
     <slot />
   </div>
