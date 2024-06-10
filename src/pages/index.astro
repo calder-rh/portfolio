@@ -57,8 +57,9 @@ import SquishOval from '../components/SquishOval.astro';
 		window.requestAnimationFrame(() => {
 			document.querySelectorAll('.oval.squish').forEach((element) => {
 				const position = element.getBoundingClientRect().top / document.documentElement.clientHeight;
+				const mobile = document.documentElement.clientWidth < 500;
 				const minHeight = 50;
-				const maxHeight = 500;
+				const maxHeight = mobile ? 300 : 500;
 				if (position < 0) {
 					element.style.height = `${maxHeight}px`;
 				} else if (position > 1) {
