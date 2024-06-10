@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
-import Oval from '../components/Oval.astro';
+import Oval from '../layouts/Oval.astro';
+import TextOval from './TextOval.astro';
 ---
 
 <html lang="en">
@@ -9,16 +10,28 @@ import Oval from '../components/Oval.astro';
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Koldr Rool Hansun</title>
+		<title>Calder Ruhl Hansen</title>
 	</head>
 	<body>
-		<h1>Welcome to my website! Here are some ovals:</h1>
-		<div id="ovals">
-			{[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => <Oval id={n}></Oval>)}
-		</div>
+		<TextOval id="intro" color="rgb(235, 238, 242)">
+			<p>
+				Hello! I am a designer, programmer, and artist with a background in type design and 3D animation. I enjoy developing systems to solve complex visual problems, and am happiest when this process gets me working with interesting math, algorithms, and&nbsp;shapes.
+			</p>
+		</TextOval>
 	</body>
 
 	<script>
 		import '../scripts/clip-paths.js';
 	</script>
 </html>
+
+<style>
+	:global(#intro) {
+		max-width: 800px;
+		margin: auto;
+	}
+
+	:global(#intro) p {
+		font-size: 1.3rem;
+	}
+</style>

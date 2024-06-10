@@ -1,0 +1,53 @@
+---
+import { Image } from 'astro:assets';
+import randomOvalPath from "../scripts/clip-paths";
+import random from "../scripts/random";
+
+const { id, link, color, image, altText } = Astro.props;
+const {r, g, b} = (() => {
+  const initR = 168;
+  const initG = 178;
+  const initB = 190;
+  const gr = initG - initR;
+  const br = initB - initR
+  const lightnessFactor = random(0.9, 1.05);
+  const saturationFactor = random(0.7, 1.2);
+  return {
+    r: initR * lightnessFactor,
+    g: (initR + gr * saturationFactor) * lightnessFactor,
+    b: (initR + br * saturationFactor) * lightnessFactor,
+  }
+})();
+const colorUsed = color || `rgb(${r}, ${g}, ${b})`;
+const altTextUsed = altText || "";
+const pathId = `path-${id}`;
+const pathUrl = 'url(#' + pathId + ')';
+---
+
+<span>
+  <svg viewBox="0 0 100 100" width="0" height="0">
+    <clipPath id={pathId} clipPathUnits="objectBoundingBox">
+      <path class="oval-path" transform="scale(.01)" d={randomOvalPath()}/>
+    </clipPath>
+  </svg>
+  {link ? (
+    <a href={link}>
+      <div class="oval link" id={id}>
+        {image !== undefined && <Image src={image} alt={altTextUsed}/>}
+        <slot />
+      </div>
+    </a>
+  ) : (
+    <div class="oval" id={id}>
+      {image !== undefined && <Image src={image} alt={altTextUsed}/>}
+      <slot />
+    </div>
+  )}
+</span>
+
+<style define:vars={{pathUrl, colorUsed}}>
+  .oval {
+    clip-path: var(--pathUrl);
+    background-color: var(--colorUsed);
+  }
+</style>

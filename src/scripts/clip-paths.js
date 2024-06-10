@@ -1,6 +1,4 @@
-function random(min, max) {
-  return Math.random() * (max - min) + min;
-}
+import random from "./random";
 
 function center() {
   return random(47, 53);
