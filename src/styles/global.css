@@ -21,14 +21,6 @@ html {
   /* font-weight: 100; */
 }
 
-.oval {
-  display: inline-block;
-  width: 300px;
-  height: 200px;
-  margin: 20px;
-  background-color: black;
-}
-
 body {
   width: auto;
   max-width: 1200px;
@@ -49,3 +41,10 @@ h1 {
   width: auto;
 }
 
+.oval {
+  display: inline-block;
+  width: 300px;
+  height: 200px;
+  margin: 20px;
+  background-color: black;
+}
