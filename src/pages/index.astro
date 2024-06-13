@@ -8,6 +8,11 @@ const ids = [];
 for (let i = 1; i < 20; i++) {
 	ids.push(i);
 }
+const placeholderText = ['Eventually,', 'these', 'shapes', 'will', 'have', 'links', 'to', 'things', 'I’ve', 'made,', 'but', 'until', 'my', 'website', 'is', 'finished', 'you', 'can', 'see', 'stuff', 'on', 'my', 'Instagram.']
+const placeholderData = []
+for (let i = 0; i < placeholderText.length; i++) {
+	placeholderData.push([i, placeholderText[i]])
+}
 ---
 
 <BaseLayout>
@@ -18,7 +23,8 @@ for (let i = 1; i < 20; i++) {
 	</TextOval>
 
 	<div id="squish-ovals">
-		{ids.map((n) => <SquishOval squareness={32} id={n} link="/"></Oval>)}
+		<!-- {placeholderData.map(([i, text]) => <SquishOval squareness={32} id={i} link="/"></Oval>)} -->
+		{placeholderData.map(([i, text]) => <TextOval squareness={32} id={i}>{text}</TextOval>)}
 	</div>
 
 	<script>
