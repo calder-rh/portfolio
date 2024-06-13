@@ -1,11 +1,22 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro"
+import d16_image from '../../assets/links/d16.png'
+import Image from "astro/components/Image.astro"
 ---
 
-<BaseLayout pageTitle="D16 Syllabics">
+<BaseLayout pageTitle="D16 Syllabics TypeLab workshop">
   <div class="content">
-    <h1>D16 Syllabics</h1>
+    <h1>D16 Syllabics TypeLab workshop</h1>
+    <Image id="d16-title" src={d16_image} alt='D16 Syllabics TypeLab Wwrkshop'></Image>
     <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/902051722?h=a51ab02f97" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
-    <p>The above video is a good introduction to the basics of the system. However, I have changed a few things since making the video — in particular the assignment of vowels to directions is different. Eventually I’ll add more complete information to this page.</p>
+    <p>This video is a good introduction to the basics of the system. However, I have changed a few things since making the video — in particular the assignment of vowels to directions is different. Eventually I’ll add more complete information to this page.</p>
   </div>
 </BaseLayout>
+
+<style>
+  #d16-title {
+    width: 100%;
+    height: auto;
+    margin-bottom: 2rem;
+  }
+</style>
