@@ -48,14 +48,14 @@ h1 {
   height: 100%;
 }
 
-/* .oval.link {
+.oval.link {
   transition: 0.2s;
 }
 
 .oval.link:hover {
-  ransform: scale(0.9);
+  transform: scale(1.1);
   transition: 0.2s;
-} */
+}
 
 .oval-text {
   display: flex;

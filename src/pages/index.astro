@@ -3,12 +3,13 @@ import '../styles/global.css';
 import '../styles/squish-ovals.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TextOval from './TextOval.astro';
-import SquishOval from '../components/SquishOval.astro';
+import Squish from '../layouts/Squish.astro';
+import Oval from '../layouts/Oval.astro';
 const ids = [];
 for (let i = 1; i < 20; i++) {
 	ids.push(i);
 }
-const placeholderText = ['Eventually,', 'these', 'shapes', 'will', 'have', 'links', 'to', 'things', 'I’ve', 'made,', 'but', 'until', 'my', 'website', 'is', 'finished', 'you', 'can', 'see', 'stuff', 'on', 'my', 'Instagram.']
+const placeholderText = ['Eventually,', 'these', 'shapes', 'will', 'have', 'links', 'to', 'things', 'I’ve', 'made,', 'but', 'until', 'my', 'website', 'is', 'finished', 'you', 'can', 'see', 'stuff', 'on', 'my']
 const placeholderData = []
 for (let i = 0; i < placeholderText.length; i++) {
 	placeholderData.push([i, placeholderText[i]])
@@ -24,7 +25,8 @@ for (let i = 0; i < placeholderText.length; i++) {
 
 	<div id="squish-ovals">
 		<!-- {placeholderData.map(([i, text]) => <SquishOval squareness={32} id={i} link="/"></Oval>)} -->
-		{placeholderData.map(([i, text]) => <TextOval squareness={32} id={i}>{text}</TextOval>)}
+		{placeholderData.map(([i, text]) => <Squish><TextOval squareness={32} id={i}>{text}</TextOval></Squish>)}
+		<Squish><TextOval squareness={32} id={"ig"} link="https://instagram.com/calder.rh">Instagram.</TextOval></Squish>
 	</div>
 
 	<script>

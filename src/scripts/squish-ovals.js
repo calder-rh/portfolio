@@ -2,7 +2,7 @@ import random from "./random";
 
 function squishOvals() {
   window.requestAnimationFrame(() => {
-    document.querySelectorAll('.oval.squish').forEach((element) => {
+    document.querySelectorAll('.squish').forEach((element) => {
       const position = element.getBoundingClientRect().top / document.documentElement.clientHeight;
       const mobile = document.documentElement.clientWidth < 500;
       const minHeight = 50;

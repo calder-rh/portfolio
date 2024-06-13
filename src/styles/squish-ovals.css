@@ -1,12 +1,25 @@
-#squish-ovals .oval {
+.squish {
   flex: 0 1 500px;
   height: 300px;
   margin: 0;
   padding: 0;
 }
 
+.squish .oval {
+  height: 100%;
+}
+
+.squish .oval-text {
+  margin: 0px;
+  padding: 0px;
+}
+
 @media screen and (max-width: 800px) {
-  #squish-ovals .oval {
+  .squish {
     flex: 0 1 500px;
-  }  
+  }
+}
+
+a {
+  color: inherit;
 }
