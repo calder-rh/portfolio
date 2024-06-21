@@ -4,6 +4,6 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: 'https://calder-rh.github.io/portfolio',
   redirects: {
-    '/work/d16': '/links/d16-workshop'
+    '/work/d16': '../links/d16-workshop'
   }
 });
