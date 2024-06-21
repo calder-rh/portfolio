@@ -1,8 +1,8 @@
-import random from "./random";
+const squishes = document.querySelectorAll('.squish');
 
 function squishOvals() {
   window.requestAnimationFrame(() => {
-    document.querySelectorAll('.squish').forEach((element) => {
+    squishes.forEach((element) => {
       const position = element.getBoundingClientRect().top / document.documentElement.clientHeight;
       const mobile = document.documentElement.clientWidth < 500;
       const minHeight = 50;
@@ -21,5 +21,5 @@ function squishOvals() {
 }
 
 document.addEventListener("DOMContentLoaded", squishOvals);
-document.addEventListener("scroll", squishOvals);
+document.addEventListener("mousewheel", squishOvals);
 window.addEventListener("resize", squishOvals);
