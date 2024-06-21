@@ -30,26 +30,28 @@ const pathId = `path-${id}`;
 const pathUrl = 'url(#' + pathId + ')';
 ---
 
-<svg viewBox="0 0 100 100" width="0" height="0">
-  <clipPath id={pathId} clipPathUnits="objectBoundingBox">
-    <path class="oval-path" transform="scale(.01)" d={pathStr}/>
-  </clipPath>
-</svg>
-{link ? (
-  <div class={classesUsed} id={id}>
-    <a href={link}>
-      <div class="oval-link-container">
-        {image !== undefined && <Image src={image} alt={altTextUsed}/>}
-        <slot />
-      </div>
-    </a>
-  </div>
-) : (
-  <div class={classesUsed} id={id}>
-    {image !== undefined && <Image src={image} alt={altTextUsed}/>}
-    <slot />
-  </div>
-)}
+<span class="oval-container">
+  <svg viewBox="0 0 100 100" width="0" height="0">
+    <clipPath id={pathId} clipPathUnits="objectBoundingBox">
+      <path class="oval-path" transform="scale(.01)" d={pathStr}/>
+    </clipPath>
+  </svg>
+  {link ? (
+    <div class={classesUsed} id={id}>
+      <a href={link}>
+        <div class="oval-link-container">
+          {image !== undefined && <Image src={image} alt={altTextUsed}/>}
+          <slot />
+        </div>
+      </a>
+    </div>
+  ) : (
+    <div class={classesUsed} id={id}>
+      {image !== undefined && <Image src={image} alt={altTextUsed}/>}
+      <slot />
+    </div>
+  )}
+</div>
 
 <style define:vars={{pathUrl, colorUsed, objectFit}}>
   .oval {

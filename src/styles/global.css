@@ -49,6 +49,10 @@ h1 {
   margin-bottom: 30px;
 }
 
+.oval-container svg {
+  position: fixed;
+}
+
 .oval img {
   width: 100%;
   height: 100%;
@@ -75,3 +79,7 @@ h1 {
   padding: 15% 15%;
 }
 
+a {
+  color: inherit;
+  text-underline-offset: 0.12em;
+}

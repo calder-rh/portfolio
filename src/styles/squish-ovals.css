@@ -1,13 +1,56 @@
-.squish {
-  flex: 0 1 500px;
-  height: 500px;
-  margin: 0;
-  padding: 0;
-  overflow: visible;
+#oval-waiting-room {
+  display: none;
 }
 
-.squish svg {
-  position: fixed;
+/* #oval-columns {
+  display: flex;
+  justify-content: center;
+}
+
+.oval-column {
+  flex: 1 0 300px;
+  width: 300px;
+  min-height: 300px;
+  height: auto;
+} */
+
+#oval-column-container {
+  display: flex;
+  justify-content: center;
+}
+
+#oval-columns {
+  /* position: static; */
+  /* height: auto; */
+  padding-bottom: 100vh;
+}
+
+.oval-column {
+  display: inline-block;
+  vertical-align: top;
+  /* max-width: 400px; */
+  /* width: auto; */
+  width: 400px;
+  /* top: 0; */
+  /* width: 300px; */
+  /* min-height: 300px; */
+  /* height: auto; */
+}
+
+@media screen and (max-width: 500px) {
+  .oval-column {
+    width: calc(100vw - 60px);
+  }
+}
+
+
+
+.squish {
+  margin-left: auto;
+  margin-right: auto;
+  /* margin: 0; */
+  /* padding: 0; */
+  overflow: visible;
 }
 
 .squish .oval {
@@ -20,13 +63,3 @@
   padding: 0px;
 }
 
-@media screen and (max-width: 800px) {
-  .squish {
-    flex: 0 1 500px;
-  }
-}
-
-a {
-  color: inherit;
-  text-underline-offset: 0.12em;
-}
