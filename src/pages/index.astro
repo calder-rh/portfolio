@@ -24,14 +24,17 @@ for (let i = 0; i < placeholderText.length; i++) {
 		</p>
 	</TextOval>
 
-	<div id="squish-ovals">
-		<!-- {placeholderData.map(([i, text]) => <SquishOval squareness={32} id={i} link="/"></Oval>)} -->
+	<div id="oval-column-container">
+		<div id="oval-columns"></div>
+	</div>
+	
+
+	<div id="oval-waiting-room">
 		{placeholderData.map(([i, text]) => <Squish><TextOval squareness={32} id={i}>{text}</TextOval></Squish>)}
 		<Squish><TextOval squareness={32} id={"ig"} link="https://instagram.com/calder.rh">Instagram.</TextOval></Squish>
 	</div>
 
 	<script>
-		import '../scripts/clip-paths.js';
 		import '../scripts/squish-ovals.js';
 	</script>
 </BaseLayout>
@@ -47,13 +50,8 @@ for (let i = 0; i < placeholderText.length; i++) {
 	}
 
 	#squish-ovals {
-		display: flex;
-		/* width: 100%; */
-		/* height: auto; */
-		flex-wrap: wrap;
-		justify-content: center;
-		margin-bottom: 100vh;
-		/* background-color: rgba(0, 0, 0, 0.1); */
+		width: 100%;
+		height: auto;
 	} 
 
 </style>
