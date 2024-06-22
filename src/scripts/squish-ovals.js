@@ -12,7 +12,7 @@ function setupSquishes() {
     const minHeight = random(80, 120);
     const maxHeight = random(250, 400);
     const {minWidth, maxWidth} = (() => {
-      if (random(0, 1) > 0.7) {
+      if (random(0, 1) > 0.75) {
         return {
           minWidth: random(30, 60),
           maxWidth: 100
