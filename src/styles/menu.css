@@ -19,6 +19,10 @@
   align-items: center;
 }
 
+#header a {
+  text-decoration: none;
+}
+
 #lockup {
   height: 100%;
   display: flex;
