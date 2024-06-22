@@ -1,0 +1,31 @@
+@font-face {
+  font-family: "Menu";
+  src: url('/fonts/Menu.ttf') format('truetype');
+}
+
+
+.menu-letter {
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+#menu-icon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  overflow: visible;
+  rotate: 90deg;
+  font-family: Menu;
+  font-size: 40px;
+  line-height: 1;
+  font-variation-settings: "HIGH" 1;
+}
+
+#header {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 1;
+  /* z-index: -1; */
+}

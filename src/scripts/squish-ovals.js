@@ -9,10 +9,13 @@ function setupSquishes() {
   for (let i = 0; i < squishList.length; i++) {
     let squish = $(squishList[i]);
     squish.data('order', i);
-    const maxHeight = random(300, 500);
+    const maxHeight = random(400, 600);
     squish.data('max-height', maxHeight);
     squish.data('power', 1);
+
     squish.css('height', `${maxHeight}px`);
+    // squish.css('width', `${random(90, 100)}%`);
+    // squish.css('left', `${random(-5, 5)}px`);
   }
 }
 
@@ -31,7 +34,7 @@ function parabolicPadding(i, numColumns) {
 
 function setupColumns() {
   window.requestAnimationFrame(() => {
-    const bodyWidth = $('body').width();
+    const bodyWidth = $('#content').width();
     let numColumns = Math.floor(bodyWidth / columnWidth);
     if (numColumns == 0) numColumns = 1;
 
@@ -62,6 +65,10 @@ function setupColumns() {
         $(columnsArray[minIndex]).append(squish);
         heights[minIndex] += $(squish).data('max-height');
       })
+
+      // $('.oval-column').each((index, column) => {
+      //   $(column).css('width', `${bodyWidth / numColumns}px`);
+      // })
     }
   });
 }
