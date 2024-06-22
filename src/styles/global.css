@@ -31,6 +31,10 @@ html {
 }
 
 body {
+  padding: 0;
+}
+
+#content {
   width: auto;
   /* max-width: 1200px; */
   margin-left: auto;
@@ -38,11 +42,11 @@ body {
   padding: 50px 30px;
 }
 
-.content {
+/* .content {
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
-}
+} */
 
 h1 {
   text-align: center;
