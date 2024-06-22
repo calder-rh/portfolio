@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-const fontSize = 40;
+const fontSize = 30;
 const eachLetterTime = 300;
 const spacing = 50;
 const letters = $('.menu-letter');

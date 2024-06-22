@@ -3,6 +3,58 @@
   src: url('/fonts/Menu.ttf') format('truetype');
 }
 
+#header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  background-color: rgb(219, 222, 227);
+  height: 86px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#lockup {
+  height: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+#logo {
+  /* width: 60px;
+  height: auto; */
+  height: 60px;
+  width: auto;
+  margin-right: 12px;
+}
+
+#name {
+  /* display: inline-block; */
+  font-size: 1.4rem;
+  margin: 0;
+  position: relative;
+  top: 1px;
+}
+
+#menu-icon {
+  display: block;
+  /* position: absolute;
+  right: 5px; */
+  width: 30px;
+  height: 30px;
+  overflow: visible;
+  rotate: 90deg;
+  font-family: Menu;
+  font-size: 30px;
+  line-height: 1;
+  font-variation-settings: "HIGH" 1;
+}
 
 .menu-letter {
   margin: 0;
@@ -10,22 +62,14 @@
   cursor: pointer;
 }
 
-#menu-icon {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  overflow: visible;
-  rotate: 90deg;
-  font-family: Menu;
-  font-size: 40px;
-  line-height: 1;
-  font-variation-settings: "HIGH" 1;
-}
+@media screen and (max-width: 500px) {
+  #header {
+    height: 60px;
+    padding: 8px 12px;
+  }
 
-#header {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  z-index: 1;
-  /* z-index: -1; */
+  #logo {
+    height: 46px;
+    margin-right: 8px;
+  }
 }

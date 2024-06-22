@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import random from "./random";
 
-const columnWidth = 400;
+const columnWidth = 300;
 
 const squishList = $('.squish');
 
@@ -9,11 +9,33 @@ function setupSquishes() {
   for (let i = 0; i < squishList.length; i++) {
     let squish = $(squishList[i]);
     squish.data('order', i);
-    const maxHeight = random(400, 600);
+    const minHeight = random(80, 120);
+    const maxHeight = random(250, 400);
+    const {minWidth, maxWidth} = (() => {
+      if (random(0, 1) > 0.7) {
+        return {
+          minWidth: random(30, 60),
+          maxWidth: 100
+        }
+      } else {
+        return {
+          minWidth: 100,
+          maxWidth: 100
+        }
+      }
+    })()
+    const singleColumnMinWidth = random(30, 100);
+    const squishStart = random(0.6, 0.8);
+    squish.data('min-height', minHeight);
     squish.data('max-height', maxHeight);
+    squish.data('min-width', minWidth);
+    squish.data('sc-min-width', singleColumnMinWidth);
+    squish.data('max-width', maxWidth);
+    squish.data('squish-start', squishStart);
     squish.data('power', 1);
 
-    squish.css('height', `${maxHeight}px`);
+    squish.css('width', `${minWidth}px`);
+    squish.css('height', `${minHeight}px`);
     // squish.css('width', `${random(90, 100)}%`);
     // squish.css('left', `${random(-5, 5)}px`);
   }
@@ -24,7 +46,6 @@ function putOvalsInWaitingRoom() {
   squishList.appendTo('#oval-waiting-room');
 }
 
-let prevNumColumns = 0;
 
 function parabolicPadding(i, numColumns) {
   const maxPadding = 50;
@@ -32,10 +53,13 @@ function parabolicPadding(i, numColumns) {
   return (1 + 4 * a * (a - 1)) * maxPadding;
 }
 
+let prevNumColumns = 0;
+let numColumns;
+
 function setupColumns() {
   window.requestAnimationFrame(() => {
     const bodyWidth = $('#content').width();
-    let numColumns = Math.floor(bodyWidth / columnWidth);
+    numColumns = Math.min(Math.floor(bodyWidth / columnWidth), squishList.length);
     if (numColumns == 0) numColumns = 1;
 
     if (numColumns !== prevNumColumns) {
@@ -47,7 +71,7 @@ function setupColumns() {
 
       const columnsArray = [];
       const paddingAdjustment = (numColumns % 2 == 0) ? parabolicPadding(numColumns / 2, numColumns) : 0;
-
+      
       const heights = [];
       for (let i = 0; i < numColumns; i++) {
         let d = $('<div>', {id: `col${i}`, class: 'oval-column'});
@@ -57,13 +81,18 @@ function setupColumns() {
         d.appendTo(columnsContainer);
         columnsArray.push(d);
       }
-
+      
+      const firstItems = new Array(numColumns).fill(false);
       squishList.each((index, squish) => {
         const minIndex = heights.reduce((minIdx, currentValue, currentIndex, arr) => {
           return currentValue < arr[minIdx] ? currentIndex : minIdx;
         }, 0);
         $(columnsArray[minIndex]).append(squish);
         heights[minIndex] += $(squish).data('max-height');
+        if (!firstItems[minIndex]) {
+          firstItems[minIndex] = true;
+          $(squish).data('min-width', 100);
+        }
       })
 
       // $('.oval-column').each((index, column) => {
@@ -76,20 +105,41 @@ function setupColumns() {
 
 function squishOvals() {
   window.requestAnimationFrame(() => {
+    const mobile = document.documentElement.clientWidth < 500;
+
     squishList.each((idx, element) => {
-      const position = element.getBoundingClientRect().top / document.documentElement.clientHeight;
-      const mobile = document.documentElement.clientWidth < 500;
-      const minHeight = 50;
+      const minHeight = $(element).data('min-height');
       const maxHeight = $(element).data('max-height') * (mobile? 0.7 : 1);
-      if (position < 0) {
-        element.style.height = `${maxHeight}px`;
-      } else if (position > 1) {
+      const minWidth = $(element).data(numColumns === 1 ? 'sc-min-width' : 'min-width');
+      const maxWidth = $(element).data('max-width');
+      const squishStart = $(element).data('squish-start');
+      const squishEnd = squishStart - (maxHeight - minHeight) / document.documentElement.clientHeight;
+
+      const position = element.getBoundingClientRect().top / document.documentElement.clientHeight;
+      const a = (position - squishStart) / (squishEnd - squishStart);
+
+      if (a < 0) {
         element.style.height = `${minHeight}px`;
+        element.style.width = `${minWidth}%`;
+      } else if (a > 1) {
+        element.style.height = `${maxHeight}px`;
+        element.style.width = `${maxWidth}%`;
       } else {
-        const a = (1 - position) ** $(element).data('power');
         const newHeight = maxHeight * a + minHeight * (1 - a);
+        const newWidth = maxWidth * a + minWidth * (1 - a);
         element.style.height = `${newHeight}px`;
+        element.style.width = `${newWidth}%`;
       }
+
+      // if (position < 0) {
+      //   element.style.height = `${maxHeight}px`;
+      // } else if (position > 1) {
+      //   element.style.height = `${minHeight}px`;
+      // } else {
+      //   const a = (1 - position) ** $(element).data('power');
+      //   const newHeight = maxHeight * a + minHeight * (1 - a);
+      //   element.style.height = `${newHeight}px`;
+      // }
     })
   });
 }
