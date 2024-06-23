@@ -2,8 +2,8 @@
   display: none;
 }
 
-body {
-  padding-top: 100px;
+#content {
+  margin-top: 100px;
 }
 
 #oval-columns {
