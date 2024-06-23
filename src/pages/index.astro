@@ -27,8 +27,9 @@ for (let i = 0; i < placeholderText.length; i++) {
 	<div id="oval-columns"></div>
 
 	<div id="oval-waiting-room">
-		{placeholderData.map(([i, text]) => <Squish><TextOval squareness={32} id={i}>{text}</TextOval></Squish>)}
-		<Squish><TextOval squareness={32} id={"ig"} link="https://instagram.com/calder.rh">Instagram.</TextOval></Squish>
+		{Array.from({length: 100}, (e, i) => i).map((i) => <Squish><TextOval squareness={32} id={i}></TextOval></Squish>)}
+		<!-- {placeholderData.map(([i, text]) => <Squish><TextOval squareness={32} id={i}>{text}</TextOval></Squish>)}
+		<Squish><TextOval squareness={32} id={"ig"} link="https://instagram.com/calder.rh">Instagram.</TextOval></Squish> -->
 	</div>
 
 	<script>
