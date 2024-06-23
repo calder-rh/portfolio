@@ -27,17 +27,24 @@ function toggleMenu() {
   let menuHeight = $('nav').height() - 6;
   let headerHeight = $('#header').height();
 
+  let maxFontHeight = menuHeight / fontSize;
+  let startHeight = closing ? maxFontHeight : 1;
+  let endHeight = closing ? 1 : maxFontHeight;
+
   let start = Date.now();
   let timer = setInterval(() => {
     let timePassed = Date.now() - start;
 
     if (timePassed >= totalTime + 20) {
       clearInterval(timer);
+
+      letters.each((i, letter) => {
+        $(letter).css('font-variation-settings', `"HIGH" ${endHeight}`);
+      })
+      
       return;
     }
 
-    // let windowHeight = document.documentElement.clientHeight;
-    let maxFontHeight = menuHeight / fontSize;
     let drawerMove = 0;
     for (let i = 0; i < letters.length; i++) {
       let letter = $(letters[i]);
@@ -46,8 +53,6 @@ function toggleMenu() {
       let endTime = startTime + eachLetterTime;
       let fontHeight;
 
-      let startHeight = closing ? maxFontHeight : 1;
-      let endHeight = closing ? 1 : maxFontHeight;
 
       if (timePassed < startTime) {
         fontHeight = startHeight;
