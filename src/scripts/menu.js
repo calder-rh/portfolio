@@ -5,27 +5,40 @@ const eachLetterTime = 300;
 const spacing = 50;
 const letters = $('.menu-letter');
 const numLetters = 4;
+const totalTime = (numLetters - 1) * spacing + eachLetterTime;
 
 function smooth(x) {
-  return ((1 + Math.cos(Math.PI * (1 - x))) / 2) ** 2;
+  return (1 + Math.cos(Math.PI * (1 - x))) / 2;
+}
+
+function asymmetric_smooth(x) {
+  return smooth(x) ** 2;
 }
 
 const menuIcon = $('#menu-icon');
-menuIcon.click(() => {
+const closeMenu = $('#close-menu');
+
+function toggleMenu() {
+  const mobile = document.documentElement.clientWidth < 500;
+
   let closing = menuIcon.hasClass('open');
   menuIcon.toggleClass('open');
+
+  let menuHeight = $('nav').height() - 6;
+  let headerHeight = $('#header').height();
 
   let start = Date.now();
   let timer = setInterval(() => {
     let timePassed = Date.now() - start;
 
-    if (timePassed >= (numLetters - 1) * spacing + eachLetterTime + 20) {
+    if (timePassed >= totalTime + 20) {
       clearInterval(timer);
       return;
     }
 
-    let windowHeight = document.documentElement.clientHeight;
-    let maxFontHeight = Math.min(windowHeight / fontSize, 20);
+    // let windowHeight = document.documentElement.clientHeight;
+    let maxFontHeight = menuHeight / fontSize;
+    let drawerMove = 0;
     for (let i = 0; i < letters.length; i++) {
       let letter = $(letters[i]);
 
@@ -41,9 +54,22 @@ menuIcon.click(() => {
       } else if (timePassed > endTime) {
         fontHeight = endHeight;
       } else {
-        fontHeight = startHeight + (endHeight - startHeight) * smooth((timePassed - startTime) / eachLetterTime);
+        fontHeight = startHeight + (endHeight - startHeight) * asymmetric_smooth((timePassed - startTime) / eachLetterTime);
       }
+      drawerMove += fontHeight * fontSize / numLetters;
       letter.css('font-variation-settings', `"HIGH" ${fontHeight}`);
     }
+
+    let a = closing ? (1 - timePassed / totalTime) : (timePassed / totalTime);
+    let menuMove = smooth(a) * (headerHeight + 12);
+    drawerMove += menuMove - fontSize - smooth(a) * (mobile ? -4 : 10);
+    menuIcon.css('top', `${menuMove}px`);
+    $('#nav-drawer').css('bottom', `${-drawerMove}px`);
+    let closeMenuMove = headerHeight * 1.5 * (smooth(1 - a));
+    $('#close-menu').css('bottom', `${closeMenuMove}px`);
   }, 20)
-})
+}
+
+
+menuIcon.click(toggleMenu);
+closeMenu.click(toggleMenu);
