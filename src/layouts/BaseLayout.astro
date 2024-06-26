@@ -1,7 +1,15 @@
 ---
 import '../styles/global.css';
 import Header from '../components/Header.astro';
-const { pageTitle } = Astro.props;
+const { pageTitle, name=true } = Astro.props;
+console.log(name);
+const adjustedPageTitle = (() => {
+	if (name === true) {
+		return pageTitle + ' – Calder Ruhl Hansen';
+	} else {
+		return pageTitle;
+	}
+})()
 ---
 
 <html lang="en">
@@ -10,7 +18,7 @@ const { pageTitle } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{pageTitle}</title>
+		<title>{adjustedPageTitle}</title>
 	</head>
 	<body>
 		<Header />

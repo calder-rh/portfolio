@@ -1,0 +1,19 @@
+---
+const { thing } = Astro.props;
+
+export const collectedImages = [];
+
+collectedImages.push(thing);
+
+// collectedImages.add(thing);
+
+// function addImage(url: string) {
+//   collectedImages.add(url);
+// }
+
+// export const getCollectedImages = () => Array.from(collectedImages);
+
+// addImage(thing);
+---
+
+<p>{thing}</p>
