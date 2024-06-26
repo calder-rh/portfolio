@@ -24,12 +24,6 @@ html {
   color: rgb(51, 32, 25);
 }
 
-@media screen and (max-width: 500px) {
-  html {
-    font-size: 14px;
-  }
-}
-
 body {
   padding: 0;
 }
@@ -63,12 +57,14 @@ h1 {
 }
 
 .oval.link {
+  position: relative;
   transition: 0.2s;
 }
 
 .oval.link:hover {
   transform: scale(1.1);
   transition: 0.2s;
+  z-index: 1;
 }
 
 .oval-text {
@@ -86,4 +82,17 @@ h1 {
 a {
   color: inherit;
   text-underline-offset: 0.12em;
+  text-decoration-color: #ED4B00;
+  text-decoration-thickness: 1.5px;
+}
+
+@media screen and (max-width: 500px) {
+  html {
+    font-size: 14px;
+  }
+
+  #content {
+    width: auto;
+    padding: 100px 10px;
+  }
 }

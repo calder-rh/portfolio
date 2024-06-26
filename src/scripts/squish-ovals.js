@@ -10,7 +10,7 @@ function setupSquishes() {
     let squish = $(squishList[i]);
     squish.data('order', i);
     const minHeight = random(80, 120);
-    const maxHeight = random(250, 400);
+    const maxHeight = random(200, 350);
     const {minWidth, maxWidth} = (() => {
       if (random(0, 1) > 0.75) {
         return {
@@ -25,7 +25,7 @@ function setupSquishes() {
       }
     })()
     const singleColumnMinWidth = random(30, 100);
-    const squishStart = random(0.6, 0.8);
+    const squishStart = random(0.5, 0.8);
     squish.data('min-height', minHeight);
     squish.data('max-height', maxHeight);
     squish.data('min-width', minWidth);
@@ -106,12 +106,13 @@ function setupColumns() {
 function squishOvals() {
   window.requestAnimationFrame(() => {
     const mobile = document.documentElement.clientWidth < 500;
+    const short = document.documentElement.clientHeight < 800;
 
     squishList.each((idx, element) => {
-      const minHeight = $(element).data('min-height');
       const maxHeight = $(element).data('max-height') * (mobile? 0.7 : 1);
-      const minWidth = $(element).data(numColumns === 1 ? 'sc-min-width' : 'min-width');
+      const minHeight = short ? maxHeight : $(element).data('min-height');
       const maxWidth = $(element).data('max-width');
+      const minWidth = short ? maxWidth : $(element).data(numColumns === 1 ? 'sc-min-width' : 'min-width');
       const squishStart = $(element).data('squish-start');
       const squishEnd = squishStart - (maxHeight - minHeight) / document.documentElement.clientHeight;
 
@@ -151,6 +152,8 @@ function ready() {
   setupSquishes();
   setupColumns();
   squishOvals();
+  const params = new URLSearchParams(window.location.search);
+  console.log(params.get("hi"));
 }
 
 function resize() {
@@ -161,3 +164,4 @@ function resize() {
 $(document).ready(ready);
 $(window).on('scroll', squishOvals);
 $(window).on('resize', resize);
+

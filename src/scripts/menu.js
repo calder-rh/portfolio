@@ -66,8 +66,8 @@ function toggleMenu() {
     }
 
     let a = closing ? (1 - timePassed / totalTime) : (timePassed / totalTime);
-    let menuMove = smooth(a) * (headerHeight + 16);
-    drawerMove += menuMove - fontSize - smooth(a) * (mobile ? -10 : 6);
+    let menuMove = smooth(a) * (headerHeight + (mobile ? 24 : 16));
+    drawerMove += menuMove - fontSize - smooth(a) * (mobile ? -8 : 2);
     menuIcon.css('top', `${menuMove}px`);
     $('#nav-drawer').css('bottom', `${-drawerMove}px`);
     let closeMenuMove = headerHeight * 1.5 * (smooth(1 - a));

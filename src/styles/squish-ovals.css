@@ -3,7 +3,7 @@
 }
 
 #content {
-  margin-top: 100px;
+  margin-top: 10vh;
 }
 
 #oval-columns {
@@ -22,10 +22,11 @@
 
 @media screen and (max-width: 800px) {
   #oval-columns {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 100vh;
     padding: 0px 0px;
+  }
+
+  #content {
+    margin-top: 0;
   }
 }
 
@@ -49,4 +50,3 @@
   margin: 0px;
   padding: 0px;
 }
-

@@ -8,7 +8,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1;
+  z-index: 2;
   padding: 10px 20px;
   box-sizing: border-box;
   height: 86px;
@@ -69,16 +69,16 @@
 
 #close-menu-container {
   position: absolute;
-  right: 18px;
-  width: 34px;
-  height: 34px;
+  right: 20px;
+  width: 30px;
+  height: 30px;
 }
 
 #close-menu {
   position: relative;
   bottom: 100px;
   font-family: Menu;
-  font-size: 34px;
+  font-size: 30px;
   line-height: 1;
   cursor: pointer;
 }
@@ -115,9 +115,14 @@ nav ul {
 nav li {
   font-size: 1.1rem;
   display: block;
-  margin: 20px 18px;
+  margin: 30px 18px;
   text-align: left;
   font-variation-settings: "wght" 450, "wdth" 120;
+}
+
+
+nav li:last-child {
+  margin-bottom: 20px;
 }
 
 @media screen and (min-width: 1000px) {
