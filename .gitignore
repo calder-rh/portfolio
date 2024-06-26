@@ -26,3 +26,4 @@ pnpm-debug.log*
 # files used for testing
 public/test/
 src/assets/test/
+.astro

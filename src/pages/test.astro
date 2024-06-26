@@ -1,0 +1,19 @@
+---
+import BaseLayout from "@src/layouts/BaseLayout.astro";
+
+import { getCollection, getEntry } from 'astro:content';
+const allWork = await getCollection('work');
+
+import { collectedImages } from "@src/components/Collector.astro";
+// things.length = 0;
+
+
+---
+
+<BaseLayout pageTitle="test">
+  {collectedImages.length}
+  {allWork.map(async function(entry) {
+    const { Content, headings } = await entry.render();
+    return <Content />;
+  })}
+</BaseLayout>

@@ -1,9 +1,9 @@
 ---
-import '../styles/global.css';
-import '../styles/squish-ovals.css';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import TextOval from './TextOval.astro';
-import Squish from '../layouts/Squish.astro';
+import 'src/styles/global.css';
+import 'src/styles/squish-ovals.css';
+import BaseLayout from 'src/layouts/BaseLayout.astro';
+import TextOval from 'src/layouts/TextOval.astro';
+import Squish from 'src/layouts/Squish.astro';
 // import Oval from '../layouts/Oval.astro';
 // import { Image } from 'astro:assets';
 const ids = [];
@@ -17,7 +17,7 @@ for (let i = 0; i < placeholderText.length; i++) {
 }
 ---
 
-<BaseLayout pageTitle="Calder Ruhl Hansen">
+<BaseLayout pageTitle="Calder Ruhl Hansen" name=false>
 	<TextOval squareness={38} id="intro" color="rgb(235, 238, 242)">
 		<p>
 			Hi! I am a <a href="/">designer</a>, <a href="/">programmer</a>, and <a href="/">artist</a> with a background in <a href="/">type design</a> and <a href="/">3D animation</a>. I enjoy developing systems to solve complex visual problems, and I’m happiest when this process gets me working with interesting math, algorithms, and&nbsp;shapes.
