@@ -20,14 +20,14 @@ for (let i = 0; i < placeholderText.length; i++) {
 <BaseLayout pageTitle="Calder Ruhl Hansen">
 	<TextOval squareness={38} id="intro" color="rgb(235, 238, 242)">
 		<p>
-			Hi! I am a designer, programmer, and artist with a background in type design and 3D animation. I enjoy developing systems to solve complex visual problems, and I’m happiest when this process gets me working with interesting math, algorithms, and&nbsp;shapes.
+			Hi! I am a <a href="/">designer</a>, <a href="/">programmer</a>, and <a href="/">artist</a> with a background in <a href="/">type design</a> and <a href="/">3D animation</a>. I enjoy developing systems to solve complex visual problems, and I’m happiest when this process gets me working with interesting math, algorithms, and&nbsp;shapes.
 		</p>
 	</TextOval>
 
 	<div id="oval-columns"></div>
 
 	<div id="oval-waiting-room">
-		{Array.from({length: 100}, (e, i) => i).map((i) => <Squish><TextOval squareness={32} id={i}></TextOval></Squish>)}
+		{Array.from({length: 50}, (e, i) => i).map((i) => <Squish><TextOval squareness={32} id={i} link="/"></TextOval></Squish>)}
 		<!-- {placeholderData.map(([i, text]) => <Squish><TextOval squareness={32} id={i}>{text}</TextOval></Squish>)}
 		<Squish><TextOval squareness={32} id={"ig"} link="https://instagram.com/calder.rh">Instagram.</TextOval></Squish> -->
 	</div>
