@@ -2,19 +2,30 @@
 import 'src/styles/global.css';
 import 'src/styles/squish-ovals.css';
 import BaseLayout from 'src/layouts/BaseLayout.astro';
-import TextOval from 'src/layouts/TextOval.astro';
+import TextOval from '@src/layouts/TextOval.astro';
+import Oval from '@src/layouts/Oval.astro';
 import Squish from 'src/layouts/Squish.astro';
-// import Oval from '../layouts/Oval.astro';
-// import { Image } from 'astro:assets';
-const ids = [];
-for (let i = 1; i < 20; i++) {
-	ids.push(i);
+
+import type { ImageMetadata } from 'astro';
+import { Image } from "astro:assets";
+import { getCollection, getEntry } from 'astro:content';
+
+const imageImporters = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif}');
+
+const allWork = await getCollection('work');
+const images = [];
+const imageRegex = /<Collector(?=\s+[^>]*img=['"](?<img>[^'"]+)['"])(?=\s+[^>]*id=['"](?<id>[^'"]+)['"])/g;
+for (let content of allWork) {
+	for (let match of content.body.matchAll(imageRegex)) {
+		images.push({
+			id: images.length,
+			url: `/work${content.slug}#${match.groups.id}`,
+			img: imageImporters['/src/assets/work/' + match.groups.img](),
+		})
+	}
 }
-const placeholderText = ['Eventually,', 'these', 'shapes', 'will', 'have', 'links', 'to', 'things', 'I’ve', 'made,', 'but', 'until', 'my', 'website', 'is', 'finished', 'you', 'can', 'see', 'stuff', 'on', 'my']
-const placeholderData = []
-for (let i = 0; i < placeholderText.length; i++) {
-	placeholderData.push([i, placeholderText[i]])
-}
+console.log(images);
+
 ---
 
 <BaseLayout pageTitle="Calder Ruhl Hansen" name=false>
@@ -27,7 +38,9 @@ for (let i = 0; i < placeholderText.length; i++) {
 	<div id="oval-columns"></div>
 
 	<div id="oval-waiting-room">
-		{Array.from({length: 50}, (e, i) => i).map((i) => <Squish><TextOval squareness={32} id={i} link="/"></TextOval></Squish>)}
+		{images.map(({id, url, img}) => <Squish><Oval squareness={32} id={id} image={img} link={url} /></Squish>)}
+		<!-- {images.map(({url, img}) => <Squish><Oval squareness={32} id={1} image={img} link={url} /></Squish>)} -->
+		<!-- {Array.from({length: 50}, (e, i) => i).map((i) => <Squish><TextOval squareness={32} id={i} link="/"></TextOval></Squish>)} -->
 		<!-- {placeholderData.map(([i, text]) => <Squish><TextOval squareness={32} id={i}>{text}</TextOval></Squish>)}
 		<Squish><TextOval squareness={32} id={"ig"} link="https://instagram.com/calder.rh">Instagram.</TextOval></Squish> -->
 	</div>

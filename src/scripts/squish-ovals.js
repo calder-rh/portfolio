@@ -153,7 +153,6 @@ function ready() {
   setupColumns();
   squishOvals();
   const params = new URLSearchParams(window.location.search);
-  console.log(params.get("hi"));
 }
 
 function resize() {

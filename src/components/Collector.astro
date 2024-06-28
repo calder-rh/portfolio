@@ -1,19 +1,13 @@
 ---
-const { thing } = Astro.props;
+import type { ImageMetadata } from 'astro';
+import { Image } from "astro:assets";
 
-export const collectedImages = [];
-
-collectedImages.push(thing);
-
-// collectedImages.add(thing);
-
-// function addImage(url: string) {
-//   collectedImages.add(url);
-// }
-
-// export const getCollectedImages = () => Array.from(collectedImages);
-
-// addImage(thing);
+const { id, img, alt, show, format='png' } = Astro.props;
+const imagePath = '/src/assets/work/' + img;
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif}')
+if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif}"`);
 ---
 
-<p>{thing}</p>
+<span id={id}>
+  {show && <Image src={images[imagePath]()} alt={alt} format={format}></Image>}
+</span>
