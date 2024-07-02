@@ -155,3 +155,21 @@ p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
   right: 50%;
   transform: translate(-50%);
 }
+
+.img {
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
+.img img {
+  width: 100%;
+  height: auto;
+  display: inline-block;
+}
+
+.img-target {
+  width: 100%;
+  position: absolute;
+  bottom: calc(50vh - 50% + 30px);
+}

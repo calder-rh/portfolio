@@ -16,7 +16,7 @@ const allWork = await getCollection('work');
 const images = [];
 // const imageRegex = /<Collector(?=\s+[^>]*img=['"](?<img>[^'"]+)['"])(?=\s+[^>]*id=['"](?<id>[^'"]+)['"])/g;
 // const imageRegex = /<Collector\s(?:\s*(\w+)\s*=\s*['"{]([^'"{}]*)['"}])*\s*\/>/g;
-const collectorRegex = /<Collector\s+([^>]+)\/>/g;
+const collectorRegex = /<Img\s+([^>]+)\/>/g;
 const propertyRegex = /\b(?<key>\w+)\s*=\s*['"{](?<value>[^'"{}]*)['"}]/g;
 for (let content of allWork) {
 	for (let match of content.body.matchAll(collectorRegex)) {

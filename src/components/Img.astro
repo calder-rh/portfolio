@@ -1,0 +1,25 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from "astro:assets";
+
+const {
+  src,
+  bubble,
+  strip,
+  alt,
+  caption,
+  width,
+  show='true',
+  format='png'
+} = Astro.props;
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif}')
+
+const imagePath = '/src/assets/work/' + src;
+if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif}"`);
+---
+
+<div class="img">
+  <span id={id} class="img-target"></span>
+  {show && <Image id={`${id}-img`} src={images[imagePath]()} alt={alt} format={format}></Image>}
+</div>
