@@ -14,6 +14,9 @@ const { Content } = await entry.render();
 ---
 
 <BaseLayout pageTitle={entry.data.title}>
-  <h1>{entry.data.title}</h1>
+  <div class="page-intro">
+    <h1 class="page-title">{entry.data.title}</h1>
+    {entry.data.description && <p class="page-description">{entry.data.description}</p>}
+  </div>
   <Content />
 </BaseLayout>

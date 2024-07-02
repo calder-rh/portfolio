@@ -1,5 +1,5 @@
 @font-face {
-  font-family: "Konsole";
+  font-family: 'Konsole';
   src: url('/fonts/Konsole/Variable/Konsolev1.1-VF.ttf') format('truetype');
   font-weight: 100 800;
   font-stretch: 50% 200%;
@@ -7,44 +7,73 @@
 }
 
 @font-face {
-  font-family: "Konsole";
+  font-family: 'Konsole';
   src: url('/fonts/Konsole/Variable/Konsoleitalicv1.1-VF.ttf') format('truetype');
   font-weight: 100 800;
   font-stretch: 50% 200%;
   font-style: italic;
 }
 
-html {
-  font-family: "Konsole";
+@font-face {
+  font-family: 'Infini';
+  src: url('/fonts/Infini/01_Regular/infini-regular.woff');
   font-style: normal;
-  font-variation-settings: "wght" 450, "wdth" 110;
+}
+
+:root {
+  --orange: #ED4B00;
+  --brown: rgb(51, 32, 25);
+  --blue: #60889a
+}
+
+html {
+  font-family: 'Konsole';
+  font-style: normal;
+  font-variation-settings: 'wght' 450, 'wdth' 110;
+
   background-color: rgb(203, 208, 215);
   font-size: 16px;
-  line-height: 1.5;
-  color: rgb(51, 32, 25);
+  line-height: 1.7;
+  color: var(--brown);
 }
 
 body {
-  padding: 0;
+  padding: 0 20px;
+  margin: 180px auto 100px auto;
+  max-width: 720px;
 }
 
-#content {
-  width: auto;
-  /* max-width: 1200px; */
-  margin-left: auto;
-  margin-right: auto;
-  padding: 100px 30px;
+.page-intro {
+  margin-bottom: 2.5rem;
+  padding-bottom: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid var(--blue);
 }
 
-/* .content {
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-} */
+.page-title {
+  font-family: 'Konsole';
+  font-size: 2rem;
+  font-weight: normal;
+  font-variation-settings: 'wght' 380, 'wdth' 120;
+  line-height: 1.3;
+  margin-bottom: 0;
+}
 
-h1 {
-  text-align: center;
-  margin-bottom: 30px;
+.page-description {
+  font-family: 'Konsole';
+  font-size: 1.0rem;
+  font-variation-settings: 'wght' 500, 'wdth' 110;
+  margin-top: 0.8rem;
+  margin-bottom: 0;
+}
+
+.page-description:last-child {
+  margin-bottom: 1rem;
+}
+
+p {
+  font-family: 'Infini';
+  font-size: 1.2rem;
 }
 
 .oval-container svg {
@@ -80,20 +109,49 @@ h1 {
   padding: 15% 15%;
 }
 
+.oval-text p {
+  font-family: unset;
+  font-size: unset;
+}
+
 a {
   color: inherit;
+  position: relative;
+  bottom: 0px;
+  transition: 0.2s;
+}
+
+a:hover {
+  position: relative;
+  bottom: 0.1em;
+  transition: 0.2s;
+}
+
+p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
   text-underline-offset: 0.12em;
-  text-decoration-color: #ED4B00;
+  text-decoration-color: var(--orange);
   text-decoration-thickness: 1.5px;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 500px), screen and (max-height: 500px) {
   html {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   #content {
     width: auto;
     padding: 100px 10px;
   }
+
+  body {
+    margin-top: 100px;
+  }
+}
+
+.fullwidth {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  transform: translate(-50%);
 }

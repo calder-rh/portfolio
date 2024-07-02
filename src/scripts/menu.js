@@ -18,6 +18,19 @@ function asymmetric_smooth(x) {
 const menuIcon = $('#menu-icon');
 const closeMenu = $('#close-menu');
 
+// Function to set or update a URL parameter
+function setUrlParameter(key, value) {
+  // Get the current URL
+  const url = new URL(window.location.href);
+
+  // Set or update the parameter
+  url.searchParams.set(key, value);
+
+  // Update the URL in the browser without reloading the page
+  window.history.pushState({}, '', url);
+}
+
+
 function toggleMenu() {
   const mobile = document.documentElement.clientWidth < 500;
 
@@ -73,6 +86,13 @@ function toggleMenu() {
     let closeMenuMove = headerHeight * 1.5 * (smooth(1 - a));
     $('#close-menu').css('bottom', `${closeMenuMove}px`);
   }, 20)
+
+  if (closing) {
+    setUrlParameter('test', 'hi');
+  } else {
+    setUrlParameter('test', 'bye');
+  }
+  
 }
 
 

@@ -4,7 +4,12 @@ const workCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    things: z.array(z.string()),
+    description: z.string().optional(),
+    header: z.object({
+      image: z.string(),
+      fullwidth: z.boolean().optional(),
+      collect: z.boolean().optional()
+    }).optional()
   })
 });
 

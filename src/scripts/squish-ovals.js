@@ -58,8 +58,10 @@ let numColumns;
 
 function setupColumns() {
   window.requestAnimationFrame(() => {
-    const bodyWidth = $('#content').width();
-    numColumns = Math.min(Math.floor(bodyWidth / columnWidth), squishList.length);
+    const bodyWidth = $('body').width();
+    // numColumns = Math.min(Math.floor(bodyWidth / columnWidth), squishList.length);
+    numColumns = Math.floor(bodyWidth / columnWidth);
+
     if (numColumns == 0) numColumns = 1;
 
     if (numColumns !== prevNumColumns) {
