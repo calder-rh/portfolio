@@ -6,11 +6,9 @@ import TextOval from '@src/layouts/TextOval.astro';
 import Oval from '@src/layouts/Oval.astro';
 import Squish from 'src/layouts/Squish.astro';
 
-import type { ImageMetadata } from 'astro';
-import { Image } from "astro:assets";
 import { getCollection, getEntry } from 'astro:content';
 
-const imageImporters = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif}');
+const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
 
 const allWork = await getCollection('work');
 const images = [];
@@ -19,22 +17,24 @@ const images = [];
 const collectorRegex = /<Img\s+([^>]+)\/>/g;
 const propertyRegex = /\b(?<key>\w+)\s*=\s*['"{](?<value>[^'"{}]*)['"}]/g;
 for (let content of allWork) {
+	let idCounter = 1;
 	for (let match of content.body.matchAll(collectorRegex)) {
-		let properties = {
-			id: undefined,
-			img: undefined,
+		let properties: { [key: string]: string | undefined } = {
+			src: undefined,
 		};
 		for (let keyValueMatch of match[0].matchAll(propertyRegex)) {
-			properties[keyValueMatch.groups.key] = keyValueMatch.groups.value;
+			if (keyValueMatch.groups && keyValueMatch.groups.key) {
+				properties[keyValueMatch.groups.key] = keyValueMatch.groups.value;
+			}
 		}
 		images.push({
 			id: images.length,
-			url: `/work${content.slug}` + (properties.id ? `#${properties.id}` : ""),
-			img: imageImporters['/src/assets/work/' + properties.img](),
+			url: `/work${content.slug}#img${idCounter}`,
+			img: imageImporters['/src/assets/work/' + properties.src](),
 		})
+		idCounter++;
 	}
 }
-console.log(images);
 
 ---
 

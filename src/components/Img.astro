@@ -20,6 +20,6 @@ if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: 
 ---
 
 <div class="img">
-  <span id={id} class="img-target"></span>
-  {show && <Image id={`${id}-img`} src={images[imagePath]()} alt={alt} format={format}></Image>}
+  <span class="img-target"></span>
+  {show && <Image src={images[imagePath]()} alt={alt} format={format}></Image>}
 </div>

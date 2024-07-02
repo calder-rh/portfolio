@@ -11,7 +11,19 @@ Our base-10 numeral system represents numbers by taking powers of 10, multiplyin
 
 However, any prime factorization written this way still relies on base 10: in that example, I still needed to write “13,” meaning __1__ × 10¹ + __3__ × 10⁰, and even the other single-digit primes and exponents are ultimately written in base 10. I thought it could be nice, for purely aesthetic reasons, to create a numeral system that only uses primes, with no hint of base 10 (or any other base).
 
-<Img img='rpns/colors.png' alt="" id="hi"/>
+My first thought was that all the numbers making up the prime factorization could themselves broken down into factors: for example, if you have 13⁴, the 4 can be written as 2². However, the 13, being prime, cannot be factored. But if you represent 13 using its index — 6, as it’s the 6th prime number — then you get something that can be factored: 6 = 2¹ × 3¹. If you continue breaking numbers into prime indices and exponents and factoring those, you eventually get to an expression involving only ones combined in different ways. Using “A ◊ B” to mean “the A-th prime to the power of B,” we can write something like
+
+936 = (1 ◊ ((1 ◊ 1) ◊ 1)) × ((1 ◊ 1) ◊ (1 ◊ 1)) × (((1 ◊ 1) × ((1 ◊ 1) ◊ 1)) ◊ 1).
+
+This result met my original goal — representing numbers in a way that only uses primes — but visually, it’s not very clear, since you have to keep track of all those parentheses. I realized that this type of structure, with nested expressions of different types, could be represented more clearly by using a specially designed notation in two dimensions.
+
+Creating such a notation involves two decisions: how to visually represent A × B, and how to represent A ◊ B. I have tried a number of ideas for each of these operations, producing a variety of visual results. Some of these designs have more mathematical value (clearly representing the operations involved), while others have more artistic value (producing beautiful shapes). “Dots & Lines” is one of the more mathematically-oriented designs (drawing horizontal and vertical lines to indicate the different operations), while “Colored Rectangles” is one of the more artistically-oriented ones (placing shapes near each other, touching each other, or inside each other to represent the operations, and coloring them however I please).
+
+<Img src='rpns/colors.png' alt=""/>
+
+Our base-10 numeral system represents numbers by taking powers of 10, multiplying them by various factors, and adding the results together: 936 = __9__ × 10² + __3__ × 10¹ + __6__ × 10⁰. This is nice for everyday calculations, but any number theorist will tell you that this is a rather arbitrary way to represent numbers. A more natural way to represent an integer is its prime factorization, a set of prime numbers raised to various exponents and multiplied together: 936 = 2³ × 3² × 13¹. This gives more information on how the number behaves in various mathematical contexts.
+
+However, any prime factorization written this way still relies on base 10: in that example, I still needed to write “13,” meaning __1__ × 10¹ + __3__ × 10⁰, and even the other single-digit primes and exponents are ultimately written in base 10. I thought it could be nice, for purely aesthetic reasons, to create a numeral system that only uses primes, with no hint of base 10 (or any other base).
 
 My first thought was that all the numbers making up the prime factorization could themselves broken down into factors: for example, if you have 13⁴, the 4 can be written as 2². However, the 13, being prime, cannot be factored. But if you represent 13 using its index — 6, as it’s the 6th prime number — then you get something that can be factored: 6 = 2¹ × 3¹. If you continue breaking numbers into prime indices and exponents and factoring those, you eventually get to an expression involving only ones combined in different ways. Using “A ◊ B” to mean “the A-th prime to the power of B,” we can write something like
 
