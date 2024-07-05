@@ -5,6 +5,7 @@
 
 :root {
   --offwhite: rgb(219, 222, 227);
+  --menu-gray: rgb(71, 75, 84);
 }
 
 #header {
@@ -51,7 +52,9 @@
 }
 
 #name {
-  /* display: inline-block; */
+  font-family: 'Konsole';
+  font-style: normal;
+  font-variation-settings: 'wght' 450, 'wdth' 110;
   font-size: 1.4rem;
   margin: 0;
   position: relative;
@@ -60,31 +63,33 @@
 
 #menu-icon {
   display: block;
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   position: relative;
   overflow: visible;
   rotate: 90deg;
   font-family: Menu;
-  font-size: 30px;
+  font-size: 36px;
   line-height: 1;
   font-variation-settings: "HIGH" 1;
+  color: var(--menu-gray);
 }
 
 #close-menu-container {
   position: absolute;
   right: 20px;
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
 }
 
 #close-menu {
   position: relative;
   bottom: 100px;
   font-family: Menu;
-  font-size: 30px;
+  font-size: 36px;
   line-height: 1;
   cursor: pointer;
+  color: var(--menu-gray);
 }
 
 .menu-letter {
@@ -117,6 +122,7 @@ nav ul {
 }
 
 nav li {
+  font-family: 'Konsole';
   font-size: 1.1rem;
   display: block;
   margin: 30px 18px;
@@ -128,7 +134,7 @@ nav li:last-child {
   margin-bottom: 20px;
 }
 
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 700px) {
   #menu-icon {
     display: none;
   }

@@ -20,6 +20,19 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Infini';
+  src: url('/fonts/Infini/02_Italic/infini-italic.woff');
+  font-style: italic;
+}
+
+
+@font-face {
+  font-family: 'Infini';
+  src: url('/fonts/Infini/03_Bold/infini-bold.woff');
+  font-weight: bold;
+}
+
 :root {
   --orange: #ED4B00;
   --brown: rgb(51, 32, 25);
@@ -27,12 +40,11 @@
 }
 
 html {
-  font-family: 'Konsole';
+  font-family: 'Infini', 'Verdana', sans-serif;
   font-style: normal;
-  font-variation-settings: 'wght' 450, 'wdth' 110;
 
   background-color: rgb(203, 208, 215);
-  font-size: 16px;
+  /* font-size: 16px; */
   line-height: 1.7;
   color: var(--brown);
 }
@@ -42,6 +54,29 @@ body {
   margin: 180px auto 100px auto;
   max-width: 720px;
 }
+
+.konsole {
+  --pd-wght: 450;
+  --pd-wdth: 110;
+  font-family: 'Konsole';
+  font-style: normal;
+  font-variation-settings: 'wght' var(--pd-wght), 'wdth' var(--pd-wdth);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--brown);
+}
+
+/* html {
+  font-family: 'Konsole';
+  font-style: normal;
+  font-variation-settings: 'wght' 450, 'wdth' 110;
+
+  background-color: rgb(203, 208, 215);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--brown);
+} */
+
 
 .page-intro {
   margin-bottom: 2.5rem;
@@ -60,9 +95,9 @@ body {
 }
 
 .page-description {
-  font-family: 'Konsole';
+  --pd-wght: 500;
+  --pd-wdth: 110;
   font-size: 1.0rem;
-  font-variation-settings: 'wght' 500, 'wdth' 110;
   margin-top: 0.8rem;
   margin-bottom: 0;
 }
@@ -71,9 +106,12 @@ body {
   margin-bottom: 1rem;
 }
 
-p {
-  font-family: 'Infini';
+p, li {
   font-size: 1.2rem;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  font-family: 'Infini';
 }
 
 .oval-container svg {

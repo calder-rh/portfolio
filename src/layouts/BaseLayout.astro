@@ -1,12 +1,12 @@
 ---
 import '../styles/global.css';
 import Header from '../components/Header.astro';
-const { pageTitle, name=true } = Astro.props;
+const { title, name=true } = Astro.props;
 const adjustedPageTitle = (() => {
 	if (name === true) {
-		return pageTitle + ' – Calder Ruhl Hansen';
+		return title + ' – Calder Ruhl Hansen';
 	} else {
-		return pageTitle;
+		return title;
 	}
 })()
 ---
@@ -24,7 +24,3 @@ const adjustedPageTitle = (() => {
 		<slot />
 	</body>
 </html>
-
-<script>
-	import 'src/scripts/targets.js';
-</script>

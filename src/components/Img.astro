@@ -9,6 +9,7 @@ const {
   alt,
   caption,
   width,
+  id,
   show='true',
   format='png'
 } = Astro.props;
@@ -20,6 +21,6 @@ if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: 
 ---
 
 <div class="img">
-  <span class="img-target"></span>
+  <span class="img-target" id={id}></span>
   {show && <Image src={images[imagePath]()} alt={alt} format={format}></Image>}
 </div>

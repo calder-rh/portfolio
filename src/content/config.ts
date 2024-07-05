@@ -9,7 +9,7 @@ const workCollection = defineCollection({
       image: z.string(),
       fullwidth: z.boolean().optional(),
       collect: z.boolean().optional()
-    }).optional()
+    }).optional(),
   })
 });
 
