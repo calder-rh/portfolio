@@ -1,6 +1,6 @@
 ---
-import 'src/styles/global.css';
-import 'src/styles/home.css';
+import '@src/styles/global.css';
+import '@src/styles/home.css';
 import BaseLayout from 'src/layouts/BaseLayout.astro';
 import TextOval from '@src/layouts/TextOval.astro';
 import Oval from '@src/layouts/Oval.astro';
@@ -38,7 +38,7 @@ for (let content of allWork) {
 
 ---
 
-<BaseLayout pageTitle="Calder Ruhl Hansen" name=false>
+<BaseLayout title="Calder Ruhl Hansen" name={false}>
 	<TextOval squareness={38} id="intro">
 		<p>
 			Hi! I am a <a href="/">designer</a>, <a href="/">programmer</a>, and <a href="/">artist</a> with a background in <a href="/">type design</a> and <a href="/">3D animation</a>. I enjoy developing systems to solve complex visual problems, and I’m happiest when this process gets me working with interesting math, algorithms, and&nbsp;shapes.
