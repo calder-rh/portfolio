@@ -49,18 +49,22 @@ html {
   color: var(--brown);
 }
 
+p, li {
+  font-size: 1.2rem;
+}
+
 body {
   padding: 0 20px;
   margin: 180px auto 100px auto;
   max-width: 720px;
 }
 
-.konsole {
-  --pd-wght: 450;
-  --pd-wdth: 110;
+.konsole, .oval-text {
+  --k-wght: 450;
+  --k-wdth: 110;
   font-family: 'Konsole';
   font-style: normal;
-  font-variation-settings: 'wght' var(--pd-wght), 'wdth' var(--pd-wdth);
+  font-variation-settings: 'wght' var(--k-wght), 'wdth' var(--k-wdth);
   font-size: 16px;
   line-height: 1.7;
   color: var(--brown);
@@ -95,8 +99,8 @@ body {
 }
 
 .page-description {
-  --pd-wght: 500;
-  --pd-wdth: 110;
+  --k-wght: 500;
+  --k-wdth: 110;
   font-size: 1.0rem;
   margin-top: 0.8rem;
   margin-bottom: 0;
@@ -106,22 +110,29 @@ body {
   margin-bottom: 1rem;
 }
 
-p, li {
-  font-size: 1.2rem;
-}
-
-p, h1, h2, h3, h4, h5, h6 {
-  font-family: 'Infini';
+a {
+  color: inherit;
+  position: relative;
+  bottom: 0px;
+  transition: 0.2s;
 }
 
 .oval-container svg {
   position: fixed;
 }
 
+.oval {
+  background-color: var(--oval-color);
+}
+
 .oval img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.oval a {
+  text-decoration: none;
 }
 
 .oval.link {
@@ -145,18 +156,6 @@ p, h1, h2, h3, h4, h5, h6 {
   text-align: center;
   box-sizing: border-box;
   padding: 15% 15%;
-}
-
-.oval-text p {
-  font-family: unset;
-  font-size: unset;
-}
-
-a {
-  color: inherit;
-  position: relative;
-  bottom: 0px;
-  transition: 0.2s;
 }
 
 a:hover {

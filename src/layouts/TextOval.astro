@@ -1,12 +1,12 @@
 ---
 import Oval from "./Oval.astro";
 
-const { squareness, id, classes=[], link, color, image, altText } = Astro.props;
+const { squareness, id, classes=[], link, image, altText, data, style } = Astro.props;
 classes.push("text");
 ---
 
-<Oval squareness={squareness} id={id} classes={classes} link={link} color={color} image={image} altText={altText}>
-  <div class="oval-text">
+<Oval squareness={squareness} id={id} classes={classes} link={link} image={image} altText={altText} data={data}, style={style}>
+  <div class="oval-text konsole">
     <slot />
   </div>
 </Oval>

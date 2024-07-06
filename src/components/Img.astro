@@ -4,13 +4,11 @@ import { Image } from "astro:assets";
 
 const {
   src,
-  bubble,
-  strip,
   alt,
+  uses='f',
   caption,
   width,
   id,
-  show='true',
   format='png'
 } = Astro.props;
 
@@ -22,5 +20,5 @@ if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: 
 
 <div class="img">
   <span class="img-target" id={id}></span>
-  {show && <Image src={images[imagePath]()} alt={alt} format={format}></Image>}
+  {uses.includes('f') && <Image src={images[imagePath]()} alt={alt} format={format}></Image>}
 </div>

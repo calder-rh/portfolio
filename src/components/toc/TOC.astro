@@ -1,0 +1,51 @@
+---
+import '@src/styles/toc.css'
+import Writing from  './Writing.astro';
+import Heading from  './Heading.astro';
+import Image from  './Image.astro';
+
+const { toc } = Astro.props
+
+const tocParts = []
+
+let currentPart: any = {
+  type: 'writing',
+  items: []
+}
+for (let item of toc) {
+  const type = item.type
+  if (type == 'heading' || type == 'image') {
+    if (currentPart.items) {
+      tocParts.push(currentPart)
+      currentPart = {
+        type: 'writing',
+        items: []
+      }
+    }
+    tocParts.push({
+      type: type,
+      data: item
+    })
+  } else {
+    currentPart.items.push(item)
+  }
+}
+if (currentPart.items) tocParts.push(currentPart)
+---
+
+<div id="toc">
+  {tocParts.map(part => {
+    let type = part.type;
+    if (type === 'writing') {
+      return <Writing items={part.items} />
+    } else if (type === 'heading') {
+      return <Heading data={part.data} />
+    } else if (type === 'image') {
+      return <Image data={part.data} />
+    }
+  })}
+</div>
+
+<script>
+  import '@src/scripts/toc.js'
+</script>

@@ -6,40 +6,40 @@ import TextOval from '@src/layouts/TextOval.astro';
 import Oval from '@src/layouts/Oval.astro';
 import Squish from 'src/layouts/Squish.astro';
 
+import random from "../scripts/random";
+import { adjustColor, cssString } from '@src/scripts/color-utils';
+
+function color() {
+	return cssString(adjustColor({r: 168, g: 178, b: 190}, random(0.7, 1.2), random(0.9, 1.05)))
+}
+
 import { getCollection, getEntry } from 'astro:content';
 
 const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
 
 const allWork = await getCollection('work');
 const images = [];
-// const imageRegex = /<Collector(?=\s+[^>]*img=['"](?<img>[^'"]+)['"])(?=\s+[^>]*id=['"](?<id>[^'"]+)['"])/g;
-// const imageRegex = /<Collector\s(?:\s*(\w+)\s*=\s*['"{]([^'"{}]*)['"}])*\s*\/>/g;
-const collectorRegex = /<Img\s+([^>]+)\/>/g;
-const propertyRegex = /\b(?<key>\w+)\s*=\s*['"{](?<value>[^'"{}]*)['"}]/g;
+
 for (let content of allWork) {
-	let idCounter = 1;
-	for (let match of content.body.matchAll(collectorRegex)) {
-		let properties: { [key: string]: string | undefined } = {
-			src: undefined,
-		};
-		for (let keyValueMatch of match[0].matchAll(propertyRegex)) {
-			if (keyValueMatch.groups && keyValueMatch.groups.key) {
-				properties[keyValueMatch.groups.key] = keyValueMatch.groups.value;
+	const { remarkPluginFrontmatter } = await content.render();
+	for (let item of remarkPluginFrontmatter.toc) {
+		if (item.type === 'image') {
+			const bubblePath = item.image.bubble
+			if (bubblePath) {
+				images.push({
+					id: item.id,
+					url: `/work${content.slug}#${item.id}`,
+					img: imageImporters['/' + bubblePath](),
+				})
 			}
 		}
-		images.push({
-			id: images.length,
-			url: `/work${content.slug}#img${idCounter}`,
-			img: imageImporters['/src/assets/work/' + properties.src](),
-		})
-		idCounter++;
 	}
 }
 
 ---
 
 <BaseLayout pageTitle="Calder Ruhl Hansen" name=false>
-	<TextOval squareness={38} id="intro" classes={["konsole"]} color="rgb(235, 238, 242)">
+	<TextOval squareness={38} id="intro">
 		<p>
 			Hi! I am a <a href="/">designer</a>, <a href="/">programmer</a>, and <a href="/">artist</a> with a background in <a href="/">type design</a> and <a href="/">3D animation</a>. I enjoy developing systems to solve complex visual problems, and I’m happiest when this process gets me working with interesting math, algorithms, and&nbsp;shapes.
 		</p>
@@ -48,9 +48,9 @@ for (let content of allWork) {
 	<div id="oval-columns"></div>
 
 	<div id="oval-waiting-room">
-		{images.map(({id, url, img}) => <Squish><Oval squareness={32} id={id} image={img} link={url} format="png"/></Squish>)}
+		{images.map(({id, url, img}) => <Squish><Oval squareness={32} id={id} image={img} link={url} format="png" style={`--oval-color: ${color()}`}/></Squish>)}
 		<!-- {images.map(({url, img}) => <Squish><Oval squareness={32} id={1} image={img} link={url} /></Squish>)} -->
-		{Array.from({length: 50}, (e, i) => i).map((i) => <Squish><TextOval squareness={32} id={i} link="/"></TextOval></Squish>)}
+		{Array.from({length: 50}, (e, i) => i).map((i) => <Squish><TextOval squareness={32} id={i} link="/" style={`--oval-color: ${color()}`}></TextOval></Squish>)}
 		<!-- {placeholderData.map(([i, text]) => <Squish><TextOval squareness={32} id={i}>{text}</TextOval></Squish>)}
 		<Squish><TextOval squareness={32} id={"ig"} link="https://instagram.com/calder.rh">Instagram.</TextOval></Squish> -->
 	</div>

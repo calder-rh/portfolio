@@ -1,28 +1,12 @@
 ---
 import { Image } from 'astro:assets';
 import randomOvalPath from "../scripts/clip-paths";
-import random from "../scripts/random";
 
-const { squareness=30, id, classes=[], link, color, image, format="png", contain, altText } = Astro.props;
-const {r, g, b} = (() => {
-  const initR = 168;
-  const initG = 178;
-  const initB = 190;
-  const gr = initG - initR;
-  const br = initB - initR
-  const lightnessFactor = random(0.9, 1.05);
-  const saturationFactor = random(0.7, 1.2);
-  return {
-    r: initR * lightnessFactor,
-    g: (initR + gr * saturationFactor) * lightnessFactor,
-    b: (initR + br * saturationFactor) * lightnessFactor,
-  }
-})();
+const { squareness=30, id, classes=[], link, image, format="png", contain, altText, data, style="" } = Astro.props;
 const classList = ["oval"]
 if (link) classList.push("link");
 if (classes) classList.push(...classes);
 const classesUsed = classList.join(" ");
-const colorUsed = color || `rgb(${r}, ${g}, ${b})`;
 const altTextUsed = altText || "";
 const objectFit = contain ? "contain" : "cover";
 const pathStr = randomOvalPath(squareness);
@@ -37,7 +21,7 @@ const pathUrl = 'url(#' + pathId + ')';
     </clipPath>
   </svg>
   {link ? (
-    <div class={classesUsed} id={id}>
+    <div class={classesUsed} id={id} data-data={data} style={style}>
       <a href={link}>
         <div class="oval-link-container">
           {image !== undefined && <Image src={image} alt={altTextUsed} format={format}/>}
@@ -46,17 +30,16 @@ const pathUrl = 'url(#' + pathId + ')';
       </a>
     </div>
   ) : (
-    <div class={classesUsed} id={id}>
+    <div class={classesUsed} id={id} data-data={data} style={style}>
       {image !== undefined && <Image src={image} alt={altTextUsed} format={format}/>}
       <slot />
     </div>
   )}
 </div>
 
-<style define:vars={{pathUrl, colorUsed, objectFit}}>
+<style define:vars={{pathUrl, objectFit}}>
   .oval {
     clip-path: var(--pathUrl);
-    background-color: var(--colorUsed);
     object-fit: var(--objectFit);
   }
 

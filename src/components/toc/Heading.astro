@@ -1,0 +1,21 @@
+---
+import TextOval from '@src/layouts/TextOval.astro';
+import { tocColor, cssString } from '@src/scripts/color-utils.js'
+const { data } = Astro.props;
+const paddingValue = data.ancestors.filter(e => e !== null).length * 40
+const padding = `${paddingValue}px`
+const tocID = `toc-${data.id}`
+---
+
+<div class="section-padding" data-data={data}>
+  <TextOval squareness={38} id={tocID} classes={["toc-heading", "toc-item"]} link={`#${data.id}`} data={JSON.stringify(data)} style={`--toc-item-color: ${cssString(tocColor())}`}>
+    {data.contents}
+  </TextOval>
+</div>
+
+<style define:vars={{padding}}>
+  .section-padding {
+    display: block;
+    padding: 0 var(--padding);
+  }
+</style>

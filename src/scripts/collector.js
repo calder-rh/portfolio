@@ -45,13 +45,14 @@ export function collector() {
       let id = `${headingIndex}`
 
       if (isImg) {
+        const idAttr = node.attributes.find(attribute => attribute.name === 'id')
+        if (idAttr) {id = idAttr.value}
+
         node.attributes.push({
             type: 'mdxJsxAttribute',
             name: 'id',
             value: id,
         })
-        const idAttr = node.attributes.find(attribute => attribute.name === 'id')
-        if (idAttr) {id = idAttr.value}
       } else {
         setID(node, id)
       }
@@ -83,7 +84,7 @@ export function collector() {
           tocItem.ancestors = ancestors.slice()
           ancestors[node.depth - 2] = id
 
-          tocItem.plaintextContents = extractText(node)
+          tocItem.contents = extractText(node)
         } else {
           tocItem.ancestors = ancestors.slice()
         }
