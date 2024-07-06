@@ -56,6 +56,11 @@ p, li {
 body {
   padding: 0 20px;
   margin: 180px auto 100px auto;
+}
+
+#content {
+  margin: 0 auto;
+  width: auto;
   max-width: 720px;
 }
 
@@ -176,7 +181,6 @@ p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
   }
 
   #content {
-    width: auto;
     padding: 100px 10px;
   }
 
