@@ -1,8 +1,8 @@
 import $ from 'jquery'
-import {colorLerp, cssString} from '@src/scripts/color-utils'
 
 const elementToToc = {}
 const childrenOnscreen = {}
+const onScreen = []
 
 let callback = (entries, observer) => {
   let x = 0
@@ -12,11 +12,16 @@ let callback = (entries, observer) => {
     const tocItem = $(elementToToc[entry.target.id])
     const ancestors = $(tocItem).data('data').ancestors
     if (entry.isIntersecting) {
+      onScreen.push(tocItem[0])
       tocItem.addClass('onscreen')
       for (let id of ancestors) {
         if (id) childrenOnscreen[id]++;
       }
     } else {
+      const onScreenIndex = onScreen.indexOf(tocItem[0])
+      if (onScreenIndex > -1) {
+        onScreen.splice(onScreenIndex, 1)
+      } 
       tocItem.removeClass('onscreen')
       for (let id of ancestors) {
         if (id && childrenOnscreen[id] > 0) childrenOnscreen[id]--;
@@ -24,10 +29,15 @@ let callback = (entries, observer) => {
     }
   })
 
+  if (onScreen.length) {
+    const middleElement = onScreen[Math.floor(onScreen.length / 2)]
+    // middleElement.scrollIntoView({behavior: 'smooth', block: 'center'})
+    middleElement.scrollIntoViewIfNeeded()
+  }
+
   for (let id in childrenOnscreen) {
     const headingElement = $(`#toc-${id}`)
     if (childrenOnscreen[id]) {
-      console.log('hi')
       headingElement.addClass('child-onscreen')
     } else {
       headingElement.removeClass('child-onscreen')
@@ -45,3 +55,16 @@ for (let tocItem of $('.toc-item')) {
   if (data.type === 'heading') childrenOnscreen[elementID] = 0
   observer.observe(element)
 }
+
+$(document).ready(() => {
+  $('.toc-image img').each((_, image) => {
+    if ($(image).width() > 146) {
+      $(image).css('width', '146px')
+      $(image).css('height', 'auto')
+      // $(image).css('object-fit', 'contain')
+    }
+  })
+  $('.toc-image').each((_, element) => {
+    $(element).css('visibility', 'visible')
+  })
+})

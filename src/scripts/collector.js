@@ -53,7 +53,7 @@ export function collector() {
             name: 'id',
             value: id,
         })
-      } else {
+      } else if (node.type !== 'list') {
         setID(node, id)
       }
 
@@ -104,27 +104,31 @@ export function collector() {
           const parentPath = path.dirname(mainImgPath)
           const mainExtension = path.extname(mainImgPath)
           const filename = path.basename(mainImgPath, mainExtension)
-          const uses = (node.attributes.find(attribute => attribute.name == 'uses') || {value: 'f'}).value
+          const uses = (node.attributes.find(attribute => attribute.name == 'uses') || {value: null}).value
+          const alt = node.attributes.find(attribute => attribute.name == 'alt')
+          const format = node.attributes.find(attribute => attribute.name == 'format')
           
           const tocImage = {}
           let last = mainImgPath;
           for (let {name, abbrev, suffix} of useInfo) {
-            if (!uses.includes(abbrev)) continue
+            if (uses !== null && !uses.includes(abbrev)) continue
 
             let found = false
             for (let extension of [mainExtension, ...extensions]) {
               let pathToCheck = `${parentPath}/${filename}${suffix}${extension}`
               if (abbrev === 'f' || fs.existsSync(pathToCheck)) {
                 found = true
-                tocImage[name] = pathToCheck
-                last = pathToCheck
+                tocImage[name] = '/' + pathToCheck
+                last = '/' + pathToCheck
                 break
               }
             }
-            if (!found) tocImage[name] = last
+            if (!found && uses !== null) tocImage[name] = last
           }
 
           tocItem.image = tocImage
+          tocItem.alt = alt
+          tocItem.format = format ? format.value : mainExtension.slice(1)
         }
         
         headingIndex++

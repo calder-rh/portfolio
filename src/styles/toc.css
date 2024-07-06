@@ -6,35 +6,140 @@
   height: 80vh;
   overflow-x: auto;
   overflow-y: scroll;
+  overscroll-behavior: none;
+}
+
+.section-padding {
+  position: relative;
 }
 
 .toc-item .oval-text {
   /* font-family: "Infini"; */
-  /* --k-wdth: 100; */
+  --k-wdth: 120;
   /* --k-wght: 500; */
   /* text-transform: uppercase; */
-  line-height: 1.3;
+  font-size: 0.9rem;
+  line-height: 1.2;
   padding: 15px 30px;
   color: var(--brown);
 }
 
 .toc-item {
   background-color: var(--toc-item-color);
+  transition: 0.2s;
+/* transition: 0.2s; */
 }
 
 .toc-item.child-onscreen {
   /* background-color: rgb(225, 229, 234); */
-  /* background-color: rgb(198, 148, 78); */
-  background-color: #d37651;
+  background-color: #9db6c0;
+  /* background-color: #d37651; */
+  transition: 0.2s;
 }
 
 .toc-item.onscreen {
   background-color: #7096a7;
+  transition: 0.2s;
 }
 
 .toc-item.onscreen .oval-text, .toc-item.child-onscreen .oval-text {
   color: var(--brown);
 }
 
-/* rgb(235, 238, 242) */
+.writing {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
+.writing .oval, .toc-ul, .toc-ol {
+  height: 20px;
+}
+
+.toc-ul {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: auto;
+}
+
+.toc-ul .oval {
+  width: 10px;
+  height: 10px;
+}
+
+.ol-five {
+  height: 20px;
+  position: relative;
+}
+
+.ol-five a {
+  display: inline-block;
+  height: 20px;
+  width: 4px;
+  margin: 0 2px;
+  transition: 0.2s;
+  text-decoration: none;
+  padding: 0;
+}
+
+.ol-one {
+  width: 100%;
+  height: 100%;
+}
+
+.ol-five a:hover {
+  scale: 1.1;
+  transition: 0.2s;
+  z-index: 1;
+}
+
+a.ol-fifth {
+  display: block;
+  position: absolute;
+  height: 36px;
+  top: -8px;
+  left: 12px;
+  rotate: 70deg;
+}
+
+.toc-images {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+.toc-image {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 80px;
+  padding: 10px 7px;
+  position: relative;
+  visibility: hidden;
+}
+
+.toc-image img {
+  height: 80px;
+  width: auto;
+  transition: 0.2s;
+  border: 3px solid rgba(0, 0, 0, 0);
+  /* margin: auto 0; */
+}
+
+/* .toc-image.onscreen {
+  padding: 7px;
+} */
+
+.toc-image.onscreen img {
+  transition: 0.2s;
+  border: 3px solid var(--offwhite);
+}
+
+.toc-image-a:hover {
+  bottom: unset;
+  scale: 1.1;
+  z-index: 1;
+}

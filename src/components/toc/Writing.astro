@@ -1,3 +1,57 @@
 ---
 const { items } = Astro.props;
+
+import Oval from '@src/layouts/Oval.astro';
+import { tocColor, cssString } from '@src/scripts/color-utils.js'
+
+const paddingValue = items[0] ? (Math.max(items[0].ancestors.filter(e => e !== null).length - 1, 0) * 40) : 0
+const padding = `${paddingValue}px`
 ---
+
+<div class="section-padding">
+  <div class="writing">
+    {items.map(item => {
+      let type = item.type
+      if (type == 'paragraph') {
+        const width = item.length / 30 + 15
+        return <Oval classes={["toc-item"]} id={`toc-${item.id}`} squareness={30} link={`#${item.id}`} style={`--toc-item-color: ${cssString(tocColor())}; width: ${width}px;`} data={JSON.stringify(item)}></Oval>
+      } else if (type == 'list') {
+        const listItems = item.items
+        if (item.ordered) {
+          const fives: any = [[]]
+          for (let listItemID of listItems) {
+            let lastFive = fives[fives.length - 1]
+            if (lastFive.length < 5) {
+              lastFive.push(listItemID)
+            } else {
+              fives.push([listItemID])
+            }
+          }
+          return fives.map(five => {
+            return <div class="ol-five">
+              {five.map((listItemID, index) => {
+                return <a href={`#${listItemID}`} class={(index === 4) ? "ol-fifth" : ""}>
+                  <div class="ol-one toc-item" id={`toc-${listItemID}`} link={`#${listItemID}`} style={`--toc-item-color: ${cssString(tocColor())}`} data-data={JSON.stringify({id: listItemID, ancestors: item.ancestors})}></div>
+                </a>
+              })}
+            </div>
+          })
+        } else {
+          const width = Math.ceil(listItems.length / 2) * 10
+          return <div class="toc-ul" style={`width: ${width}px;`}>
+            {listItems.map(listItemID => {
+              return <Oval classes={["toc-item"]} id={`toc-${listItemID}`} squareness={30} link={`#${listItemID}`} style={`--toc-item-color: ${cssString(tocColor())}`} data={JSON.stringify({id: listItemID, ancestors: item.ancestors})}></Oval>
+            })}
+          </div>
+        }
+      }
+    })}
+  </div>
+</div>
+
+<style define:vars={{padding}}>
+  .section-padding {
+    display: block;
+    padding: 0 var(--padding);
+  }
+</style>

@@ -169,6 +169,10 @@ a:hover {
   transition: 0.2s;
 }
 
+.oval a:hover {
+  bottom: unset;
+}
+
 p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
   text-underline-offset: 0.12em;
   text-decoration-color: var(--orange);

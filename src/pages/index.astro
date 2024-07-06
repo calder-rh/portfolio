@@ -29,7 +29,7 @@ for (let content of allWork) {
 				images.push({
 					id: item.id,
 					url: `/work${content.slug}#${item.id}`,
-					img: imageImporters['/' + bubblePath](),
+					img: imageImporters[bubblePath](),
 				})
 			}
 		}

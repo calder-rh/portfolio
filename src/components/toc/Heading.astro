@@ -7,7 +7,7 @@ const padding = `${paddingValue}px`
 const tocID = `toc-${data.id}`
 ---
 
-<div class="section-padding" data-data={data}>
+<div class="section-padding">
   <TextOval squareness={38} id={tocID} classes={["toc-heading", "toc-item"]} link={`#${data.id}`} data={JSON.stringify(data)} style={`--toc-item-color: ${cssString(tocColor())}`}>
     {data.contents}
   </TextOval>

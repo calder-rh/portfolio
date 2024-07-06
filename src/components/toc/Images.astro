@@ -1,0 +1,31 @@
+---
+import Image from 'astro/components/Image.astro'
+const { items } = Astro.props;
+const paddingValue = Math.max(items[0].ancestors.filter(e => e !== null).length - 1, 0) * 40
+const padding = `${paddingValue}px`
+import { tocColor, cssString } from '@src/scripts/color-utils.js'
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif}')
+---
+
+<div class="section-padding">
+  <div class="toc-images">
+    {items.map(item => {
+      const tocID = `toc-${item.id}`
+      const imagePath = item.image.toc;
+      if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif}"`);
+      return <a href={`#${item.id}`} class="toc-image-a">
+        <div class="toc-item toc-image" id={tocID} style={`--toc-item-color: ${cssString(tocColor())}`} data-data={JSON.stringify({id: `img-${item.id}`, ancestors: item.ancestors})}>
+          <Image src={images[imagePath]()} alt={item.alt} format={item.format} width={200}></Image>
+        </div>
+      </a>
+    })}
+  </div>
+</div>
+
+<style define:vars={{padding}}>
+  .section-padding {
+    display: block;
+    padding: 0 var(--padding);
+  }
+</style>

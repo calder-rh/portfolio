@@ -5,7 +5,7 @@ import { Image } from "astro:assets";
 const {
   src,
   alt,
-  uses='f',
+  uses,
   caption,
   width,
   id,
@@ -20,5 +20,5 @@ if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: 
 
 <div class="img">
   <span class="img-target" id={id}></span>
-  {uses.includes('f') && <Image src={images[imagePath]()} alt={alt} format={format}></Image>}
+  {(uses === undefined || uses.includes('f')) && <Image id={`img-${id}`} src={images[imagePath]()} alt={alt} format={format}></Image>}
 </div>

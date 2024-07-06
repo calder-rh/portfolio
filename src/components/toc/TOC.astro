@@ -2,32 +2,44 @@
 import '@src/styles/toc.css'
 import Writing from  './Writing.astro';
 import Heading from  './Heading.astro';
-import Image from  './Image.astro';
+import Images from  './Images.astro';
 
 const { toc } = Astro.props
 
 const tocParts = []
 
-let currentPart: any = {
-  type: 'writing',
-  items: []
-}
+let currentPart: any = {}
 for (let item of toc) {
   const type = item.type
-  if (type == 'heading' || type == 'image') {
-    if (currentPart.items) {
+  if (type == 'heading') {
+    if (currentPart.items && currentPart.items.length > 0) {
       tocParts.push(currentPart)
-      currentPart = {
-        type: 'writing',
-        items: []
-      }
+      currentPart = {}
     }
     tocParts.push({
       type: type,
       data: item
     })
+  } else if (type == 'image') {
+    if (currentPart.type === 'image') {
+      currentPart.items.push(item)
+    } else {
+      if (currentPart.type) tocParts.push(currentPart)
+      currentPart = {
+        type: 'image',
+        items: [item]
+      }
+    }
   } else {
-    currentPart.items.push(item)
+    if (currentPart.type === 'writing') {
+      currentPart.items.push(item)
+    } else {
+      if (currentPart.type) tocParts.push(currentPart)
+      currentPart = {
+        type: 'writing',
+        items: [item]
+      }
+    }
   }
 }
 if (currentPart.items) tocParts.push(currentPart)
@@ -41,7 +53,7 @@ if (currentPart.items) tocParts.push(currentPart)
     } else if (type === 'heading') {
       return <Heading data={part.data} />
     } else if (type === 'image') {
-      return <Image data={part.data} />
+      return <Images items={part.items} />
     }
   })}
 </div>
