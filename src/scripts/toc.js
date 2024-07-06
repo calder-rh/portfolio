@@ -61,10 +61,32 @@ $(document).ready(() => {
     if ($(image).width() > 146) {
       $(image).css('width', '146px')
       $(image).css('height', 'auto')
-      // $(image).css('object-fit', 'contain')
     }
   })
   $('.toc-image').each((_, element) => {
     $(element).css('visibility', 'visible')
   })
+})
+
+const toc = $('#toc')
+const tocTopShape = $('#toc-top')
+const tocTopText = $('#top-text')
+$(window).on('scroll', () => {
+  requestAnimationFrame(() => {
+    const scrollAmount = $(document).scrollTop()
+    const tocScrollAmount = toc.scrollTop()
+    const tocTop = Math.max(86 - Math.max(scrollAmount, 0), 0)
+    const tocPaddingTop = Math.max(100 - Math.max(scrollAmount - 86, 0), 0)
+    toc.css('top', `${tocTop}px`)
+    toc.css('padding-top', `${tocPaddingTop}px`)
+    tocTopShape.css('top', `${-tocPaddingTop}px`)
+    tocTopText.css('opacity', (scrollAmount > 186 || tocScrollAmount > tocPaddingTop) ? '1' : '0')
+  })
+})
+
+toc.on('scroll', () => {
+  const scrollAmount = $(document).scrollTop()
+  const tocScrollAmount = toc.scrollTop()
+  const tocPaddingTop = Math.max(100 - Math.max(scrollAmount - 86, 0), 0)
+  tocTopText.css('opacity', (scrollAmount > 186 || tocScrollAmount > tocPaddingTop) ? '1' : '0')
 })

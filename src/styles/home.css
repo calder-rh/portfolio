@@ -58,3 +58,7 @@ body {
   /* background-color: rgb(235, 238, 242); */
   background-color: var(--offwhite);
 }
+
+#header {
+  position: fixed !important;
+}

@@ -19,6 +19,5 @@ if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: 
 ---
 
 <div class="img">
-  <span class="img-target" id={id}></span>
-  {(uses === undefined || uses.includes('f')) && <Image id={`img-${id}`} src={images[imagePath]()} alt={alt} format={format}></Image>}
+  {(uses === undefined || uses.includes('f')) && <Image id={id} src={images[imagePath]()} alt={alt} format={format}></Image>}
 </div>
