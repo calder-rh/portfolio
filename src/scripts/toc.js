@@ -3,6 +3,7 @@ import $ from 'jquery'
 const elementToToc = {}
 const childrenOnscreen = {}
 const onScreen = []
+let autoJump = true
 
 let callback = (entries, observer) => {
   let x = 0
@@ -29,7 +30,7 @@ let callback = (entries, observer) => {
     }
   })
 
-  if (onScreen.length) {
+  if (autoJump && onScreen.length) {
     const middleElement = onScreen[Math.floor(onScreen.length / 2)]
     // middleElement.scrollIntoView({behavior: 'smooth', block: 'center'})
     middleElement.scrollIntoViewIfNeeded()
@@ -93,5 +94,7 @@ toc.on('scroll', () => {
 })
 
 tocTopShape.on('click', () => {
-  tocTopShape.scrollTop = 0;
+  autoJump = false;
+  toc.scrollTop(0)
+  setTimeout(() => {autoJump = true}, 1000)
 })
