@@ -71,6 +71,7 @@ $(document).ready(() => {
 const toc = $('#toc')
 const tocTopShape = $('#toc-top')
 const tocTopText = $('#top-text')
+
 $(window).on('scroll', () => {
   requestAnimationFrame(() => {
     const scrollAmount = $(document).scrollTop()
@@ -89,4 +90,8 @@ toc.on('scroll', () => {
   const tocScrollAmount = toc.scrollTop()
   const tocPaddingTop = Math.max(100 - Math.max(scrollAmount - 86, 0), 0)
   tocTopText.css('opacity', (scrollAmount > 186 || tocScrollAmount > tocPaddingTop) ? '1' : '0')
+})
+
+tocTopShape.on('click', () => {
+  tocTopShape.scrollTop = 0;
 })
