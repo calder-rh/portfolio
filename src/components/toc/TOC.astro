@@ -4,6 +4,8 @@ import Writing from  './Writing.astro';
 import Heading from  './Heading.astro';
 import Images from  './Images.astro';
 
+import TextOval from '@src/layouts/TextOval.astro';
+
 const { toc } = Astro.props
 
 const tocParts = []
@@ -51,7 +53,7 @@ if (currentPart.items) tocParts.push(currentPart)
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="none">
         <path id="top-shape" d="M50,100c27.6,0,48-23.81,50-100H0C2,76.19,22.4,100,50,100z"/>
       </svg>
-      <div id="top-text" class="konsole">Top</div>
+      <div id="top-text" class="konsole"><span id="top-text-inner">Top</span></div>
     </div>
   </a>
   {tocParts.map(part => {
@@ -64,6 +66,12 @@ if (currentPart.items) tocParts.push(currentPart)
       return <Images items={part.items} />
     }
   })}
+
+  <div id="toc-close-wrapper">
+    <div id="toc-close" onclick="event.stopPropagation();">
+      <TextOval id="toc-close-oval"><p>Close Menu</p></TextOval>
+    </div>
+  </div>
 </div>
 
 <script>

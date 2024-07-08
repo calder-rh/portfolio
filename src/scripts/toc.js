@@ -5,6 +5,16 @@ const childrenOnscreen = {}
 const onScreen = []
 let autoJump = true
 
+const toc = $('#toc')
+const tocTopShape = $('#toc-top')
+const tocTopText = $('#top-text')
+const tocItem = $('.toc-item')
+
+function jump() {
+  const middleElement = onScreen[Math.floor(onScreen.length / 2)]
+  middleElement.scrollIntoViewIfNeeded()
+}
+
 let callback = (entries, observer) => {
   let x = 0
 
@@ -31,9 +41,7 @@ let callback = (entries, observer) => {
   })
 
   if (autoJump && onScreen.length) {
-    const middleElement = onScreen[Math.floor(onScreen.length / 2)]
-    // middleElement.scrollIntoView({behavior: 'smooth', block: 'center'})
-    middleElement.scrollIntoViewIfNeeded()
+    jump()
   }
 
   for (let id in childrenOnscreen) {
@@ -69,10 +77,6 @@ $(document).ready(() => {
   })
 })
 
-const toc = $('#toc')
-const tocTopShape = $('#toc-top')
-const tocTopText = $('#top-text')
-
 $(window).on('scroll', () => {
   requestAnimationFrame(() => {
     const scrollAmount = $(document).scrollTop()
@@ -95,6 +99,28 @@ toc.on('scroll', () => {
 
 tocTopShape.on('click', () => {
   autoJump = false;
+  setTimeout(() => {autoJump = true}, 1000)
+  setTimeout(() => window.scrollTo(0, 0), 0)
+  setTimeout(() => toc.scrollTop(0), 0)
+  window.scrollTop(0)
   toc.scrollTop(0)
+})
+
+toc.on('click', () => {
+  if (toc.hasClass('small')) {
+    toc.removeClass('small')
+    autoJump = true
+    jump()
+  }
+})
+
+$('#toc-close').on('click', () => {
+  toc.addClass('small')
+  autoJump = !toc.hasClass('small')
+})
+
+tocItem.on('click', () => {
+  autoJump = false;
   setTimeout(() => {autoJump = true}, 1000)
 })
+

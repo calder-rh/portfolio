@@ -16,7 +16,9 @@ const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{j
       if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif}"`);
       return <a href={`#${item.id}`} class="toc-image-a">
         <div class="toc-item toc-image" id={tocID} style={`--toc-item-color: ${cssString(tocColor())}`} data-data={JSON.stringify({id: item.id, ancestors: item.ancestors})}>
-          <Image src={images[imagePath]()} alt={item.alt} format={item.format} width={200}></Image>
+          <div class="toc-image-wrapper">
+            <Image src={images[imagePath]()} alt={item.alt} format={item.format} width={200}></Image>
+          </div>
         </div>
       </a>
     })}
