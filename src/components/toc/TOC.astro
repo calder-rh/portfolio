@@ -66,10 +66,10 @@ if (currentPart.items) tocParts.push(currentPart)
     </div>
   </div>
 
-  {tocParts.map(part => {
+  {tocParts.map((part, index) => {
     let type = part.type;
     if (type === 'writing') {
-      return <Writing items={part.items} />
+      return <Writing items={part.items} fillerID={`writing-filler-${index}`} />
     } else if (type === 'heading') {
       return <Heading data={part.data} />
     } else if (type === 'image') {

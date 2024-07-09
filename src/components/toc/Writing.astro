@@ -1,5 +1,5 @@
 ---
-const { items } = Astro.props;
+const { items, fillerID } = Astro.props;
 
 import Oval from '@src/layouts/Oval.astro';
 import { tocColor, cssString } from '@src/scripts/color-utils.js'
@@ -11,7 +11,7 @@ const padding = `${paddingValue}px`
 <div class="section-padding">
   <div class="writing">
     <div class="toc-filler">
-      <Oval squareness={32} style={`--toc-item-color: ${cssString(tocColor())};`}></Oval>
+      <Oval id={fillerID} squareness={32} style={`--toc-item-color: ${cssString(tocColor())};`}></Oval>
     </div>
 
     {items.map(item => {

@@ -31,6 +31,7 @@
 
 .toc-item {
   background-color: var(--toc-item-color);
+  --oval-color: var(--toc-item-color);
   transition: scale 0.2s;
 /* transition: 0.2s; */
 }
@@ -72,6 +73,7 @@
 .toc-filler .oval {
   height: 100%;
   background-color: var(--toc-item-color);
+  --oval-color: var(--toc-item-color);
 }
 
 #toc.small .toc-filler {
@@ -209,6 +211,8 @@ a.ol-fifth {
   line-height: 1;
   opacity: 0;
   transition: 0.2s;
+
+  color: rgb(79, 87, 102);
 }
 
 #toc-close-wrapper {
@@ -254,6 +258,7 @@ a.ol-fifth {
   --k-wght: 350;
   line-height: 1;
   transition: 0.2s;
+  color: rgb(79, 87, 102);
 }
 
 
@@ -267,6 +272,7 @@ a.ol-fifth {
 
 #toc.small .toc-item.onscreen, #toc.small .toc-item.child-onscreen {
   background-color: var(--toc-item-color);
+  --oval-color: var(--toc-item-color);
 }
 
 #toc.small::-webkit-scrollbar {
@@ -289,26 +295,15 @@ a.ol-fifth {
 }
 
 #toc.small {
-  /* left: -160px; */
   scale: 0.3 1;
-  /* translate: 0 -20px; */
-  /* transform-origin: top; */
   margin-left: 0;
-  /* margin-top: calc(100vh - 360px); */
   left: 10px;
-  /* margin-bottom: 20px; */
-  /* margin-bottom: calc(50vh - 170px); */
-  /* bottom: calc(100vh - 340px); */
 
   cursor: pointer;
 
-  /* background-color: var(--offwhite); */
 
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;  /* IE 10+ */
-
-  /* border-top: 340px solid var(--offwhite);
-  border-bottom: 340px solid var(--offwhite); */
 }
 
 #toc.small * {
