@@ -212,7 +212,7 @@ a.ol-fifth {
   opacity: 0;
   transition: 0.2s;
 
-  color: rgb(79, 87, 102);
+  color: rgb(80, 64, 58);
 }
 
 #toc-close-wrapper {
@@ -247,18 +247,18 @@ a.ol-fifth {
 
 #close-text {
   position: absolute;
-  top: 36%;
+  top: 43%;
   /* width: 100%; */
   left: 0;
   right: 0;
   text-align: center;
   text-transform: uppercase;
-  font-size: 1.3rem;
-  --k-wdth: 90;
-  --k-wght: 350;
+  font-size: 1.1rem;
+  --k-wdth: 130;
+  --k-wght: 380;
   line-height: 1;
   transition: 0.2s;
-  color: rgb(79, 87, 102);
+  color: rgb(80, 64, 58);
 }
 
 

@@ -123,7 +123,7 @@ export function collector() {
                 break
               }
             }
-            if (!found && uses !== null) tocImage[name] = last
+            if (!found) tocImage[name] = last
           }
 
           tocItem.image = tocImage

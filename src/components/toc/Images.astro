@@ -11,9 +11,10 @@ const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{j
 <div class="section-padding">
   <div class="toc-images">
     {items.map(item => {
+      console.log(item.image)
       const tocID = `toc-${item.id}`
-      const imagePath = item.image.toc;
-      if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif}"`);
+      const imagePath = item.image.toc
+      if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif}"`)
       return <a href={`#${item.id}`} class="toc-image-a">
         <div class="toc-item toc-image" id={tocID} style={`--toc-item-color: ${cssString(tocColor())}`} data-data={JSON.stringify({id: item.id, ancestors: item.ancestors})}>
           <div class="toc-image-wrapper">
