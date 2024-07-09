@@ -95,6 +95,9 @@ toc.on('scroll', () => {
   const tocScrollAmount = toc.scrollTop()
   const tocPaddingTop = Math.max(100 - Math.max(scrollAmount - 86, 0), 0)
   tocTopText.css('opacity', (scrollAmount > 186 || tocScrollAmount > tocPaddingTop) ? '1' : '0')
+  if (toc.hasClass('small')) {
+    tocTopShape.css('opacity', tocScrollAmount > tocPaddingTop ? '0' : '1')
+  }
 })
 
 tocTopShape.on('click', () => {
@@ -111,15 +114,24 @@ toc.on('click', () => {
     toc.removeClass('small')
     autoJump = true
     jump()
+    tocTopShape.css('opacity', '1')
   }
 })
 
 $('#toc-close').on('click', () => {
+  const tocScrollAmount = toc.scrollTop()
+  const scrollAmount = $(document).scrollTop()
+  const tocPaddingTop = Math.max(100 - Math.max(scrollAmount - 86, 0), 0)
+  tocTopShape.css('opacity', tocScrollAmount > tocPaddingTop ? '0' : '1')
   toc.addClass('small')
   autoJump = !toc.hasClass('small')
 })
 
 tocItem.on('click', () => {
+  console.log('hi')
+  if (document.documentElement.clientWidth <= 1300) {
+    toc.addClass('small')
+  }
   autoJump = false;
   setTimeout(() => {autoJump = true}, 1000)
 })

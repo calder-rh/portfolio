@@ -10,6 +10,10 @@ const padding = `${paddingValue}px`
 
 <div class="section-padding">
   <div class="writing">
+    <div class="toc-filler">
+      <Oval squareness={32} style={`--toc-item-color: ${cssString(tocColor())};`}></Oval>
+    </div>
+
     {items.map(item => {
       let type = item.type
       if (type == 'paragraph') {

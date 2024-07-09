@@ -127,6 +127,7 @@ a {
   position: relative;
   bottom: 0px;
   transition: 0.2s;
+  z-index: 0;
 }
 
 .oval-container svg {
