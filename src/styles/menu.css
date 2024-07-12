@@ -55,8 +55,10 @@
 }
 
 nav {
-  width: auto;
-  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
   z-index: -1;
 }
 
@@ -166,18 +168,29 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
   }
 
   #close-menu {
+    display: none;
     position: absolute;
-    display: inline-block;
     --close-menu-height: 60px;
     width: 60px;
     height: var(--close-menu-height);
+    top: calc(var(--header-height) / 2 - var(--close-menu-height) / 2);
+    right: 0;
     cursor: pointer;
+    z-index: 0;
   }
 
   #menu {
     position: absolute;
     top: 0;
     right: 0;
+    transform-origin: top right;
+    z-index: 1;
+  }
+
+  #menu-background {
+    display: block;
+    position: absolute;
+    z-index: -1;
     transform-origin: top right;
   }
 
@@ -251,22 +264,11 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
     fill: var(--inverse-text);
   }
 
-  #menu-background {
-    display: block;
-    position: absolute;
-    /* background-color: var(--offwhite); */
-    width: 160%;
-    height: 160%;
-    bottom: -30%;
-    right: -30%;
-    /* z-index: -2; */
-  }
 
   #menu-bg-oval {
     width: 100%;
     height: 100%;
-    background-color: var(--offwhite);
-    /* background-color: #fff; */
+    --oval-color: var(--offwhite);
   }
 
   
@@ -274,6 +276,8 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
   nav {
     --speed: 0.1s;
   }
+
+
 
 
   nav.closed #menu {
@@ -285,15 +289,15 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
   }
 
   nav.closed.ish #menu {
-    scale: 0.15;
+    scale: 0.3;
   }
 
-  nav.closed.ish:not(.reverse) #menu {
-    transition: scale var(--speed) ease-in;
+  nav.closed.ish:not(.reverse) .scaling-menu {
+    transition: var(--speed) ease-in;
   }
 
-  nav.thin.closed #menu, nav.closed.ish.reverse #menu {
-    transition: scale var(--speed) ease-out;
+  nav.thin.closed .scaling-menu, nav.closed.ish.reverse .scaling-menu {
+    transition: var(--speed) ease-out;
   }
 
   nav.closed .oval-text, nav.closed path {
@@ -312,6 +316,19 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
     transition: none;
   }
 
+  nav.closed #menu-background {
+    width: calc(360px * 1.6 * 0.1);
+    right: calc(-0.5 * (1.6 - 1) * 360px * 0.1);
+    height: calc(279px * 1.6 * 0.1);
+    top: calc(var(--header-height) / 2 - 14.85px - 0.5 * (1.6 - 1) * 297px * 0.1)
+  }
+
+  nav.closed.ish #menu-background {
+    width: calc(360px * 1.6 * 0.3);
+    right: calc(-0.5 * (1.6 - 1) * 360px * 0.3);
+    height: calc(279px * 1.6 * 0.3);
+    top: calc(var(--header-height) / 2 - 14.85px - 0.5 * (1.6 - 1) * 297px * 0.3)
+  }
 
 
 
@@ -320,24 +337,38 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
   }
 
   nav.open.ish #menu {
+    top: 90px;
     scale: 0.6;
   }
 
-  nav.open.ish:not(.reverse) #menu {
-    transition: scale var(--speed) ease-in;
+  nav.open.ish:not(.reverse) .scaling-menu {
+    transition: var(--speed) ease-in;
   }
 
-  nav.open #menu, nav.open.ish.reverse #menu {
-    transition: scale var(--speed) ease-out;
+  nav.open .scaling-menu, nav.open.ish.reverse .scaling-menu {
+    transition: var(--speed) ease-out;
   }
 
   nav.open #close-menu {
-    top: calc(var(--header-height) / 2 - var(--close-menu-height) / 2);
-    right: 0;
+    display: block;
   }
 
   nav.open.no-transitions #menu, nav.open.ish.no-transitions #menu {
     transition: none;
+  }
+
+  nav.open #menu-background {
+    width: calc(360px * 1.6);
+    right: calc(-0.5 * (1.6 - 1) * 360px);
+    height: calc(279px * 1.6);
+    top: calc(110px - 0.5 * (1.6 - 1) * 297px)
+  }
+
+  nav.open.ish #menu-background {
+    width: calc(360px * 1.6 * 0.6);
+    right: calc(-0.5 * (1.6 - 1) * 360px * 0.6);
+    height: calc(279px * 1.6 * 0.6);
+    top: calc(90px - 0.5 * (1.6 - 1) * 297px * 0.6)
   }
 }
 

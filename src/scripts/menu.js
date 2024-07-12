@@ -4,9 +4,9 @@ const menu = $('#menu')
 const close = $('#close-menu')
 const nav = $('nav')
 
-let shouldICareAboutMouseenter = true;
-let lastWidth = document.documentElement.clientWidth
+const speed = 0.1
 
+let shouldICareAboutMouseenter = true
 
 
 close.on('mouseenter', () => {
@@ -23,12 +23,9 @@ close.on('mouseleave', () => {
 })
 
 close.on('click', () => {
-  nav.addClass('no-transitions')
   nav.removeClass('open').addClass('closed ish reverse')
   shouldICareAboutMouseenter = false
-  setTimeout(() => {
-    nav.removeClass('no-transitions ish reverse')
-  }, 1)
+  setTimeout(() => nav.removeClass('no-transitions ish reverse'), 1)
 })
 
 
@@ -47,12 +44,9 @@ menu.on('mouseleave', () => {
 })
 
 menu.on('click', () => {
-  nav.addClass('no-transitions')
   nav.removeClass('closed').addClass('open ish reverse')
   shouldICareAboutMouseenter = false;
-  setTimeout(() => {
-    nav.removeClass('no-transitions ish reverse')
-  }, 1)
+  setTimeout(() => nav.removeClass('no-transitions ish reverse'), 1)
 })
 
 
@@ -60,11 +54,6 @@ menu.on('click', () => {
 function resize() {
   const width = document.documentElement.clientWidth
   nav.toggleClass('thin', width <= 780)
-  // if (lastWidth <= 780 != width <= 780) {
-
-  // }
-
-  // lastWidth = width;
 }
 
 $(document).ready(resize)
