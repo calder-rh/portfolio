@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import randomOvalPath from "../scripts/clip-paths";
+import random from '@src/scripts/random.js'
 
 const { squareness=30, id, classes=[], link, image, format="png", contain, altText, data, style="" } = Astro.props;
 const classList = ["oval"]
@@ -10,7 +11,7 @@ const classesUsed = classList.join(" ");
 const altTextUsed = altText || "";
 const objectFit = contain ? "contain" : "cover";
 const pathStr = randomOvalPath(squareness);
-const pathId = `path-${id}`;
+const pathId = `path-${Math.floor(random(0, 100000))}`;
 const pathUrl = 'url(#' + pathId + ')';
 ---
 
@@ -35,7 +36,7 @@ const pathUrl = 'url(#' + pathId + ')';
       <slot />
     </div>
   )}
-</div>
+</span>
 
 <style define:vars={{pathUrl, objectFit}}>
   .oval {
