@@ -274,7 +274,7 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
   
 
   nav {
-    --speed: 1s;
+    --speed: 0.1s;
   }
 
 
