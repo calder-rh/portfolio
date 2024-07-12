@@ -8,6 +8,8 @@
 }
 
 #header {
+  --header-height: 86px;
+
   position: absolute;
   top: 0;
   left: 0;
@@ -15,7 +17,7 @@
   z-index: 2;
   padding: 10px 20px;
   box-sizing: border-box;
-  height: 86px;
+  height: var(--header-height);
   background-color: var(--offwhite);
 
   display: flex;
@@ -84,13 +86,11 @@ nav li {
 }
 
 nav .oval, nav .oval .oval-link-container {
-  --oval-color: gray;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: background-color 0s;
 }
 
 nav .oval-text {
@@ -127,13 +127,11 @@ nav path {
 
 nav .oval.link {
   bottom: 0;
-  transition: 0.2s;
 }
 
 nav .oval.link:hover {
-  scale: 1;
+  scale: unset;
   bottom: 0.1em;
-  transition: 0.2s;
 }
 
 #close-menu {
@@ -142,7 +140,7 @@ nav .oval.link:hover {
 
 
 #close-menu polygon {
-  fill: var(--brown);
+  fill: var(--offwhite);
 }
 
 #close-menu svg {
@@ -154,35 +152,33 @@ nav .oval.link:hover {
 }
 
 
+nav:not(.thin) .oval.link { transition: bottom 0.06s ease-in }
+nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
+
+/* nav.closed:not(.thin) #menu { transition: none } */
+
+
 @media screen and (max-width: 780px) {
   nav {
     position: absolute;
-    top: 103px;
+    top: 0;
     right: 20px;
-    height: 297px;
-    width: 360px;
-  }
-
-  #menu-wrapper {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: flex-end;
-    height: 100%;
   }
 
   #close-menu {
     position: absolute;
     display: inline-block;
+    --close-menu-height: 60px;
     width: 60px;
-    height: 60px;
-    top: -90px;
-    right: 0px;
+    height: var(--close-menu-height);
     cursor: pointer;
   }
 
   #menu {
-    transform-origin: center right;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform-origin: top right;
   }
 
   #menu > ul {
@@ -192,7 +188,6 @@ nav .oval.link:hover {
     flex-direction: column;
     justify-content: space-between;
     gap: 40px;
-    transform-origin: center right;
   }
 
   #menu > ul > li {
@@ -200,12 +195,12 @@ nav .oval.link:hover {
     height: 70px;
   }
 
-  nav .oval {
-    transition: background-color 0s;
+  #menu .oval.link {
+    transition: scale 0.08s ease-in;
   }
 
-  #menu .oval.link, #close-menu {
-    transition: scale 0.2s;
+  #menu .oval.link:hover {
+    transition: scale 0.08s ease-out;
   }
 
   #menu .oval.link:hover {
@@ -213,7 +208,7 @@ nav .oval.link:hover {
     scale: 1.04;
   }
 
-  #social-links .oval.link:hover, #close-menu:hover {
+  #social-links .oval.link:hover {
     scale: 1.1;
   }
 
@@ -274,35 +269,75 @@ nav .oval.link:hover {
     /* background-color: #fff; */
   }
 
+  
 
-
-  nav.closed {
-    top: 0px;
-    height: 100%;
-    transition: 0.25s ease-out;
+  nav {
+    --speed: 0.1s;
   }
+
 
   nav.closed #menu {
-    transform-origin: center right;
-    scale: 0.1;
+    top: calc(var(--header-height) / 2 - 14.85px);
+    right: 0;
     cursor: pointer;
     gap: 50px;
+    scale: 0.1;
   }
 
-  nav.closed #close-menu {
-    right: -100px;
+  nav.closed.ish #menu {
+    scale: 0.15;
+  }
+
+  nav.closed.ish:not(.reverse) #menu {
+    transition: scale var(--speed) ease-in;
+  }
+
+  nav.thin.closed #menu, nav.closed.ish.reverse #menu {
+    transition: scale var(--speed) ease-out;
   }
 
   nav.closed .oval-text, nav.closed path {
     opacity: 0;
   }
 
+  nav.closed #close-menu {
+    display: none;
+  }
+
   nav.closed ul * {
     pointer-events: none;
   }
 
-  nav.closed #menu:hover {
-    scale: 0.11;
+  nav.closed.no-transitions #menu, nav.closed.ish.no-transitions #menu {
+    transition: none;
+  }
+
+
+
+
+  nav.open #menu {
+    top: 110px;
+  }
+
+  nav.open.ish #menu {
+    scale: 0.6;
+  }
+
+  nav.open.ish:not(.reverse) #menu {
+    transition: scale var(--speed) ease-in;
+  }
+
+  nav.open #menu, nav.open.ish.reverse #menu {
+    transition: scale var(--speed) ease-out;
+  }
+
+  nav.open #close-menu {
+    top: calc(var(--header-height) / 2 - var(--close-menu-height) / 2);
+    right: 0;
+  }
+
+  nav.open.no-transitions #menu, nav.open.ish.no-transitions #menu {
+    transition: none;
   }
 }
 
@@ -319,19 +354,12 @@ nav .oval.link:hover {
   nav:not(.closed) #menu-background {
     width: calc(100vw + 50%)
   }
-
-
 }
 
-/* 
-* {
+/* * {
   outline: 1px solid black;
 }
 
 #menu {
   outline: 1px solid red;
-} */
-
-/* #menu-wrapper {
-  outline: 1px solid black;
-} */
+}*/

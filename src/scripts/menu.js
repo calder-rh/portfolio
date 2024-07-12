@@ -1,34 +1,71 @@
 import $ from 'jquery'
 
-const menuIcon = $('#menu')
-const closeMenu = $('#close-menu')
+const menu = $('#menu')
+const close = $('#close-menu')
 const nav = $('nav')
-const navAndChildren = $('nav, nav:hover, nav *')
 
-const alwaysTransitioning = $('#menu .oval.link, #close-menu, #menu .oval.link:hover')
-function setAlwaysThings () {
-  alwaysTransitioning.css('transition', 'scale 0.2s, top 0.2s, right 0.2s, bottom 0.2s')
-  $('nav.closed #menu').css('transition', 'scale 0.2s')
-}
-
-function toggleMenu() {
-  navAndChildren.css('transition', '0.25s ease-out')
-  $('nav.closed #menu').css('transition', 'scale 0.25s ease-out')
-  setAlwaysThings();
-  setTimeout(() => {navAndChildren.css('transition', '0s'); setAlwaysThings()}, 0.25)
-  nav.toggleClass('closed')
-}
-
+let shouldICareAboutMouseenter = true;
 let lastWidth = document.documentElement.clientWidth
+
+
+
+close.on('mouseenter', () => {
+  if (shouldICareAboutMouseenter) {
+    nav.addClass('ish')
+  }
+})
+
+close.on('mouseleave', () => {
+  if (nav.hasClass('open')) {
+    nav.removeClass('ish')
+    shouldICareAboutMouseenter = true
+  }
+})
+
+close.on('click', () => {
+  nav.addClass('no-transitions')
+  nav.removeClass('open').addClass('closed ish reverse')
+  shouldICareAboutMouseenter = false
+  setTimeout(() => {
+    nav.removeClass('no-transitions ish reverse')
+  }, 1)
+})
+
+
+
+menu.on('mouseenter', () => {
+  if (nav.hasClass('closed') && shouldICareAboutMouseenter) {
+    nav.addClass('ish')
+  }
+})
+
+menu.on('mouseleave', () => {
+  if (nav.hasClass('closed')) {
+    nav.removeClass('ish')
+    shouldICareAboutMouseenter = true
+  }
+})
+
+menu.on('click', () => {
+  nav.addClass('no-transitions')
+  nav.removeClass('closed').addClass('open ish reverse')
+  shouldICareAboutMouseenter = false;
+  setTimeout(() => {
+    nav.removeClass('no-transitions ish reverse')
+  }, 1)
+})
+
+
+
 function resize() {
   const width = document.documentElement.clientWidth
-  if ((width < 780) != (lastWidth < 780)) {
-    navAndChildren.css('transition', 'none')
-    setTimeout(() => {navAndChildren.css('transition', '0.25s ease-out'); setAlwaysThings();}, 0.25)
-  }
-  lastWidth = width;
+  nav.toggleClass('thin', width <= 780)
+  // if (lastWidth <= 780 != width <= 780) {
+
+  // }
+
+  // lastWidth = width;
 }
 
-menuIcon.click(toggleMenu)
-closeMenu.click(toggleMenu)
+$(document).ready(resize)
 $(window).on('resize', resize)

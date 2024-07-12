@@ -129,11 +129,18 @@ a {
   color: inherit;
   position: relative;
   bottom: 0px;
-  transition: bottom 0.2s;
+  transition: bottom 0.06s ease-in;
   z-index: 0;
 }
 
-.oval-container svg {
+a:hover {
+  position: relative;
+  bottom: 0.1em;
+  padding-bottom: 0.1em;
+  transition: bottom 0.06s ease-out;
+}
+
+.oval-clip {
   position: fixed;
 }
 
@@ -153,12 +160,12 @@ a {
 
 .oval.link {
   position: relative;
-  transition: scale 0.2s;
+  transition: scale 0.08s ease-in;
 }
 
 .oval.link:hover {
   scale: var(--oval-scale);
-  transition: scale 0.2s;
+  transition: scale 0.08s ease-out;
   z-index: 1;
 }
 
@@ -172,12 +179,6 @@ a {
   text-align: center;
   box-sizing: border-box;
   padding: 15% 15%;
-}
-
-a:hover {
-  position: relative;
-  bottom: 0.1em;
-  transition: bottom 0.2s;
 }
 
 .oval > a:hover {
