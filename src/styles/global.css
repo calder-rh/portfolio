@@ -39,6 +39,7 @@
   --blue: #60889a;
   --offwhite: #dbdee3;
   --inverse-text: #d0c8c5;
+  --oval-scale: 1.1;
 }
 
 html {
@@ -156,7 +157,7 @@ a {
 }
 
 .oval.link:hover {
-  scale: 1.1;
+  scale: var(--oval-scale);
   transition: scale 0.2s;
   z-index: 1;
 }

@@ -84,7 +84,7 @@ nav li {
 }
 
 nav .oval, nav .oval .oval-link-container {
-  /* --oval-color: gray; */
+  --oval-color: gray;
   width: 100%;
   height: 100%;
   display: flex;
@@ -127,13 +127,13 @@ nav path {
 
 nav .oval.link {
   bottom: 0;
-  transition: bottom 0.2s;
+  transition: 0.2s;
 }
 
 nav .oval.link:hover {
   scale: 1;
   bottom: 0.1em;
-  transition: bottom 0.2s;
+  transition: 0.2s;
 }
 
 #close-menu {
@@ -204,14 +204,13 @@ nav .oval.link:hover {
     transition: background-color 0s;
   }
 
-  nav .oval.link, #close-menu {
+  #menu .oval.link, #close-menu {
     transition: scale 0.2s;
   }
 
   #menu .oval.link:hover {
     bottom: 0;
     scale: 1.04;
-    transition: scale 0.2s;
   }
 
   #social-links .oval.link:hover, #close-menu:hover {
@@ -275,9 +274,12 @@ nav .oval.link:hover {
     /* background-color: #fff; */
   }
 
+
+
   nav.closed {
     top: 0px;
     height: 100%;
+    transition: 0.25s ease-out;
   }
 
   nav.closed #menu {
@@ -298,6 +300,10 @@ nav .oval.link:hover {
   nav.closed ul * {
     pointer-events: none;
   }
+
+  nav.closed #menu:hover {
+    scale: 0.11;
+  }
 }
 
 
@@ -311,7 +317,7 @@ nav .oval.link:hover {
   }
 
   nav:not(.closed) #menu-background {
-    width: calc(100vw + 45%)
+    width: calc(100vw + 50%)
   }
 
 

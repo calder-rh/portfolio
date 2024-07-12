@@ -95,6 +95,9 @@ function setupColumns() {
           firstItems[minIndex] = true
           $(squish).data('min-width', 100)
         }
+        if (numColumns === 1) {
+          $(squish).css('--oval-scale', '1.05')
+        }
       })
 
       // $('.oval-column').each((index, column) => {
