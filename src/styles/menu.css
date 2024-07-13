@@ -168,7 +168,7 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
   }
 
   #close-menu {
-    display: none;
+    display: block;
     position: absolute;
     --close-menu-height: 60px;
     width: 60px;
@@ -277,6 +277,10 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
     --speed: 0.1s;
   }
 
+  .menu-label {
+    transition: var(--speed);
+  }
+
 
   nav.closed #menu {
     top: calc(var(--header-height) / 2 - 14.85px);
@@ -298,7 +302,7 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
     transition: var(--speed) ease-out;
   }
 
-  nav.closed .oval-text, nav.closed path {
+  nav.closed .menu-label {
     opacity: 0;
   }
 
@@ -347,10 +351,6 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
     transition: var(--speed) ease-out;
   }
 
-  nav.open #close-menu {
-    display: block;
-  }
-
   nav.open.no-transitions #menu, nav.open.ish.no-transitions #menu {
     transition: none;
   }
@@ -379,6 +379,14 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
   nav.open:not(.ish) #menu-background {
     right: calc(-20px - 10vw);
     width: calc(120vw);
+  }
+
+  nav.open.width-snap:not(.ish) #menu > ul {
+    transition: none;
+  }
+
+  nav.open.width-snap:not(.ish) #menu-background {
+    transition: none;
   }
 
   /* nav:not(.closed) #menu-background {
