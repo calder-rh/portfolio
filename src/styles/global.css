@@ -136,8 +136,8 @@ a {
 
 a:hover {
   position: relative;
-  bottom: 0.1em;
-  padding-bottom: 0.1em;
+  bottom: 0.1rem;
+  padding-bottom: 0.1rem;
   transition: bottom 0.06s ease-out;
 }
 

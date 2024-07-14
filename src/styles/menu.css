@@ -136,7 +136,7 @@ nav .oval.link {
 
 nav .oval.link:hover {
   scale: unset;
-  bottom: 0.1em;
+  bottom: 0.1rem;
 }
 
 #close-menu {
