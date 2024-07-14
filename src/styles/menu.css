@@ -188,9 +188,15 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
   }
 
   #menu-background {
+    display: none;
     position: absolute;
     z-index: -1;
-    transform-origin: top right;
+    right: auto;
+    bottom: auto;
+  }
+
+  #menu-background.show {
+    display: block;
   }
 
   #menu > ul {
@@ -317,7 +323,7 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
     transition: none;
   }
 
-  nav.closed #menu-background {
+  /* nav.closed #menu-background {
     width: calc(360px * 1.6 * 0.1);
     right: calc(-0.5 * (1.6 - 1) * 360px * 0.1);
     height: calc(297px * 1.6 * 0.1);
@@ -329,11 +335,7 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
     right: calc(-0.5 * (1.6 - 1) * 360px * 0.3);
     height: calc(297px * 1.6 * 0.3);
     top: calc(var(--header-height) / 2 - 14.85px - 0.5 * (1.6 - 1) * 297px * 0.3)
-  }
-
-  nav.background #menu-background {
-    display: block;
-  }
+  } */
 
 
   nav.open #menu {
@@ -357,7 +359,7 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
     transition: none;
   }
 
-  nav.open #menu-background {
+  /* nav.open #menu-background {
     width: calc(360px * 1.6);
     right: calc(-0.5 * (1.6 - 1) * 360px);
     height: calc(297px * 1.6);
@@ -369,7 +371,7 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
     right: calc(-0.5 * (1.6 - 1) * 360px * 0.6);
     height: calc(297px * 1.6 * 0.6);
     top: calc(var(--header-height) / 2 + 47px - 0.5 * (1.6 - 1) * 297px * 0.6)
-  }
+  } */
 }
 
 
