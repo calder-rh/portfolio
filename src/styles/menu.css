@@ -8,21 +8,21 @@
 }
 
 #header {
-  --header-height: 5.4rem;
+  --header-height: 5.375rem;
 
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 2;
-  padding: 10px 1.25rem;
+  padding: 0.625rem 1.25rem;
   box-sizing: border-box;
   height: var(--header-height);
   background-color: var(--offwhite);
 
   display: flex;
   justify-content: space-between;
-  align-items: center
+  align-items: center;
 }
 
 #header a {
@@ -37,11 +37,11 @@
 }
 
 #logo {
-  /* width: 60px;
+  /* width: 3.75rem;
   height: auto; */
   height: 3.75rem;
   width: auto;
-  margin-right: 12px;
+  margin-right: 0.75rem;
 }
 
 #name {
@@ -49,13 +49,15 @@
   font-style: normal;
   font-variation-settings: 'wght' 450, 'wdth' 110;
   font-size: 1.4rem;
+  line-height: 1.2;
   margin: 0;
   position: relative;
-  top: 1px;
+  top: 0.2rem;
 }
 
 nav {
   display: flex;
+  width: auto;
   flex-direction: column;
   justify-content: center;
   height: 100%;
@@ -79,7 +81,7 @@ nav ul a {
 nav li {
   list-style: none;
   height: 100%;
-  margin: 0px 3px;
+  margin: 0 0.1875rem;
   position: relative;
 }
 
@@ -98,29 +100,29 @@ nav .oval, nav .oval .oval-link-container {
 nav .oval-text {
   font-family: 'Konsole';
   font-size: 1.1rem;
-  padding: 0 30px;
+  padding: 0 1.875rem;
 }
 
 #social-links {
-  margin-left: 18px;
+  margin-left: 1.125rem;
 }
 
 #social-links li {
-  width: 40px;
-  height: 50px;
+  width: 2.5rem;
+  height: 3.125rem;
 }
 
 nav svg {
-  height: 22px;
+  height: 1.375rem;
   width: auto;
 }
 
 #li-icon svg {
-  height: 21px;
+  height: 1.3125rem;
 }
 
 #gh-icon svg {
-  height: 23px;
+  height: 1.4375rem;
 }
 
 nav path {
@@ -146,7 +148,7 @@ nav .oval.link:hover {
 }
 
 #close-menu svg {
-  height: 26px;
+  height: 1.625rem;
 }
 
 #menu-background {
@@ -160,18 +162,23 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
 /* nav.closed:not(.thin) #menu { transition: none } */
 
 
-@media screen and (max-width: 780px) {
+@media screen and (max-width: 48.75rem) {
+  #header {
+    padding-right: calc(3.75rem + 2.5rem)
+  }
+
   nav {
     position: absolute;
     top: 0;
     right: 1.25rem;
+    z-index: 1;
   }
 
   #close-menu {
     display: block;
     position: absolute;
-    --close-menu-height: 60px;
-    width: 60px;
+    --close-menu-height: 3.75rem;
+    width: 3.75rem;
     height: var(--close-menu-height);
     top: calc(var(--header-height) / 2 - var(--close-menu-height) / 2);
     right: 0;
@@ -200,17 +207,22 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
   }
 
   #menu > ul {
-    width: 360px;
+    width: 22.5rem;
+    height: 18.5625rem;
+    max-height: 18.5625rem;
     display: flex;
     --oval-color: var(--brown);
     flex-direction: column;
     justify-content: space-between;
-    gap: 40px;
+  }
+
+  nav.open:not(.ish) #menu > ul {
+    height: calc(100vh - (var(--header-height) / 2 + 4.1875rem) - 1.25rem);
   }
 
   #menu > ul > li {
     width: 100%;
-    height: 70px;
+    height: 4.375rem;
   }
 
   #menu .oval.link {
@@ -244,8 +256,8 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
   }
 
   #menu > ul >li:last-child {
-    height: 82px;
-    margin-top: -5px;
+    height: 5.125rem;
+    margin-top: -0.3125rem;
   }
 
   #social-links {
@@ -257,12 +269,12 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
 
   #social-links li {
     height: 100%;
-    width: 86px;
+    width: 5.375rem;
     margin: 0;
   }
 
   nav .oval img {
-    height: 26px;
+    height: 1.625rem;
   }
 
   nav path {
@@ -288,10 +300,10 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
 
 
   nav.closed #menu {
-    top: calc(var(--header-height) / 2 - 14.85px);
+    top: calc(var(--header-height) / 2 - 0.9281rem);
     right: 0;
     cursor: pointer;
-    gap: 50px;
+    gap: 3.125rem;
     scale: 0.1;
   }
 
@@ -318,32 +330,36 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
   nav.closed ul * {
     pointer-events: none;
   }
-
-  nav.closed.no-transitions #menu, nav.closed.ish.no-transitions #menu {
+ 
+  /* nav.closed.no-transitions #menu, nav.closed.ish.no-transitions #menu {
     transition: none;
+  } */
+
+  nav.no-transitions * {
+    transition: none !important;
   }
 
   /* nav.closed #menu-background {
-    width: calc(360px * 1.6 * 0.1);
-    right: calc(-0.5 * (1.6 - 1) * 360px * 0.1);
-    height: calc(297px * 1.6 * 0.1);
-    top: calc(var(--header-height) / 2 - 14.85px - 0.5 * (1.6 - 1) * 297px * 0.1);
+    width: calc(22.5rem * 1.6 * 0.1);
+    right: calc(-0.5 * (1.6 - 1) * 22.5rem * 0.1);
+    height: calc(18.5625rem * 1.6 * 0.1);
+    top: calc(var(--header-height) / 2 - 0.9281rem - 0.5 * (1.6 - 1) * 18.5625rem * 0.1);
   }
 
   nav.closed.ish #menu-background {
-    width: calc(360px * 1.6 * 0.3);
-    right: calc(-0.5 * (1.6 - 1) * 360px * 0.3);
-    height: calc(297px * 1.6 * 0.3);
-    top: calc(var(--header-height) / 2 - 14.85px - 0.5 * (1.6 - 1) * 297px * 0.3)
+    width: calc(22.5rem * 1.6 * 0.3);
+    right: calc(-0.5 * (1.6 - 1) * 22.5rem * 0.3);
+    height: calc(18.5625rem * 1.6 * 0.3);
+    top: calc(var(--header-height) / 2 - 0.9281rem - 0.5 * (1.6 - 1) * 18.5625rem * 0.3)
   } */
 
 
   nav.open #menu {
-    top: calc(var(--header-height) / 2 + 67px);
+    top: calc(var(--header-height) / 2 + 4.1875rem);
   }
 
   nav.open.ish #menu {
-    top: calc(var(--header-height) / 2 + 47px);
+    top: calc(var(--header-height) / 2 + 2.9375rem);
     scale: 0.6;
   }
 
@@ -355,53 +371,40 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
     transition: var(--speed) ease-out;
   }
 
-  nav.open.no-transitions #menu, nav.open.ish.no-transitions #menu {
+  /* nav.open.no-transitions #menu, nav.open.ish.no-transitions #menu {
     transition: none;
-  }
+  } */
 
   /* nav.open #menu-background {
-    width: calc(360px * 1.6);
-    right: calc(-0.5 * (1.6 - 1) * 360px);
-    height: calc(297px * 1.6);
-    top: calc(var(--header-height) / 2 + 67px - 0.5 * (1.6 - 1) * 297px);
+    width: calc(22.5rem * 1.6);
+    right: calc(-0.5 * (1.6 - 1) * 22.5rem);
+    height: calc(18.5625rem * 1.6);
+    top: calc(var(--header-height) / 2 + 4.1875rem - 0.5 * (1.6 - 1) * 18.5625rem);
   }
 
   nav.open.ish #menu-background {
-    width: calc(360px * 1.6 * 0.6);
-    right: calc(-0.5 * (1.6 - 1) * 360px * 0.6);
-    height: calc(297px * 1.6 * 0.6);
-    top: calc(var(--header-height) / 2 + 47px - 0.5 * (1.6 - 1) * 297px * 0.6)
+    width: calc(22.5rem * 1.6 * 0.6);
+    right: calc(-0.5 * (1.6 - 1) * 22.5rem * 0.6);
+    height: calc(18.5625rem * 1.6 * 0.6);
+    top: calc(var(--header-height) / 2 + 2.9375rem - 0.5 * (1.6 - 1) * 18.5625rem * 0.6)
   } */
 }
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 26rem) {
   nav.open:not(.ish) #menu > ul {
-    width: calc(100vw - 40px);
-  }
-
-  nav.open:not(.ish) #menu-background {
-    right: calc(-1.25rem - 10vw);
-    width: calc(120vw);
+    width: calc(100vw - 2.5rem);
   }
 
   nav.open.width-snap:not(.ish) #menu > ul {
     transition: none;
   }
-
-  nav.open.width-snap:not(.ish) #menu-background {
-    transition: none;
-  }
-
-  /* nav:not(.closed) #menu-background {
-    width: calc(100vw + 50%)
-  } */
 }
 
 /* * {
-  outline: 1px solid black;
+  outline: 0.0625rem solid black;
 }
 
 #menu {
-  outline: 1px solid red;
+  outline: 0.0625rem solid red;
 }*/

@@ -59,6 +59,7 @@ menu.on('click', () => {
 
 
 function positionBackground() {
+  console.log('hi')
   const width_factor = 1.6
   const height_factor = 1.6
   const {left, top, width, height} = menu[0].getBoundingClientRect()
@@ -66,44 +67,55 @@ function positionBackground() {
   const bg_top = top - 0.5 * (height_factor - 1) * height
   const bg_width = width * width_factor
   const bg_height = height * height_factor
-  // bg.css({
-  //   left: `${bg_left}px`,
-  //   top: `${bg_top}px`,
-  //   width: `${bg_width}px`,
-  //   height: `${bg_height}px`
-  // })
   bg.css({
     left: `${bg_left}px`,
     top: `${bg_top}px`,
     width: `${bg_width}px`,
     height: `${bg_height}px`
   })
+}
 
-  if (transitioning) window.requestAnimationFrame(positionBackground)
+function animateBackground() {
+  positionBackground()
+  if (transitioning) window.requestAnimationFrame(animateBackground)
 }
 
 
-function resize() {
+function handleResize() {
   const width = document.documentElement.clientWidth
   nav.toggleClass('thin', width <= 780)
-  if (width <= 600) {
-    nav.addClass('width-snap')
+  positionBackground()
+}
+
+
+let resizeTimeout = null
+
+function resize() {
+  if (resizeTimeout) {
+    clearTimeout(resizeTimeout)
+    resizeTimeout = null
   } else {
-    nav.removeClass('width-snap')
+    nav.addClass('no-transitions')
   }
+  resizeTimeout = setTimeout(() => {
+    nav.removeClass('no-transitions')
+    resizeTimeout = null
+  }, 100)
+  handleResize()
 }
 
 $(document).ready(resize)
 $(window).on('resize', resize)
 
 menu.on('transitionstart', (event) => {
+  console.log('um')
   transitioning = true
-  window.requestAnimationFrame(positionBackground)
+  window.requestAnimationFrame(animateBackground)
 })
 
 menu.on('transitionend', (event) => {
   transitioning = false
-  window.requestAnimationFrame(positionBackground)
+  positionBackground()
   if (nav.hasClass('closed') && !nav.hasClass('ish')) { 
     bg.removeClass('show')
   }
