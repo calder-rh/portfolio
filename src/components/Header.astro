@@ -20,12 +20,15 @@ function color() {
       <span id="name">Calder Ruhl&nbsp;Hansen</span>
     </div>
   </a>
-  <div id="menu-background" class="scaling-menu">
-    <Oval squareness={40} id="menu-bg-oval"></Oval>
-  </div>
+
   <nav class="closed">
-    <div id="menu" class="scaling-menu">
-      <ul class="scaling-menu">
+    <div id="menu-bg-scaler" class="menu-transition menu-scale">
+      <div id="menu-background">
+        <Oval squareness={40} id="menu-bg-oval"></Oval>
+      </div>
+    </div>
+    <div id="menu" class="menu-transition menu-scale">
+      <ul class="menu-transition">
         <li><TextOval squareness={43} link="/work"><span class="menu-label">Work</span></TextOval></li>
         <li><TextOval squareness={43} link="/about"><span class="menu-label">About</span></TextOval></li>
         <li>

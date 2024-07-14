@@ -3,13 +3,9 @@ import $ from 'jquery'
 const menu = $('#menu')
 const close = $('#close-menu')
 const nav = $('nav')
-const bg = $('#menu-background')
+const bg = $('#menu-bg-scaler')
 
 let shouldICareAboutMouseenter = true
-
-let lastWidth = document.documentElement.clientWidth
-
-let transitioning = false
 
 
 close.on('mouseenter', () => {
@@ -58,33 +54,9 @@ menu.on('click', () => {
 
 
 
-function positionBackground() {
-  console.log('hi')
-  const width_factor = 1.6
-  const height_factor = 1.6
-  const {left, top, width, height} = menu[0].getBoundingClientRect()
-  const bg_left = left - 0.5 * (width_factor - 1) * width
-  const bg_top = top - 0.5 * (height_factor - 1) * height
-  const bg_width = width * width_factor
-  const bg_height = height * height_factor
-  bg.css({
-    left: `${bg_left}px`,
-    top: `${bg_top}px`,
-    width: `${bg_width}px`,
-    height: `${bg_height}px`
-  })
-}
-
-function animateBackground() {
-  positionBackground()
-  if (transitioning) window.requestAnimationFrame(animateBackground)
-}
-
-
 function handleResize() {
   const width = document.documentElement.clientWidth
   nav.toggleClass('thin', width <= 780)
-  positionBackground()
 }
 
 
@@ -109,13 +81,9 @@ $(window).on('resize', resize)
 
 menu.on('transitionstart', (event) => {
   console.log('um')
-  transitioning = true
-  window.requestAnimationFrame(animateBackground)
 })
 
 menu.on('transitionend', (event) => {
-  transitioning = false
-  positionBackground()
   if (nav.hasClass('closed') && !nav.hasClass('ish')) { 
     bg.removeClass('show')
   }
