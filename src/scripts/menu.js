@@ -47,7 +47,7 @@ menu.on('mouseleave', () => {
 menu.on('click', () => {
   nav.addClass('background')
   setTimeout(() => {
-    nav.removeClass('closed').addClass('open')
+    nav.removeClass('closed width-snap').addClass('open')
     shouldICareAboutMouseenter = false;
     nav.removeClass('ish reverse')
   })
@@ -63,7 +63,6 @@ function resize() {
   } else {
     nav.removeClass('width-snap')
   }
-  lastWidth = width
 }
 
 $(document).ready(resize)
