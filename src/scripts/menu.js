@@ -4,7 +4,6 @@ const menu = $('#menu')
 const close = $('#close-menu')
 const nav = $('nav')
 
-
 let shouldICareAboutMouseenter = true
 
 let lastWidth = document.documentElement.clientWidth
@@ -24,16 +23,17 @@ close.on('mouseleave', () => {
 })
 
 close.on('click', () => {
-  nav.removeClass('open').addClass('closed ish reverse')
+  nav.removeClass('open').addClass('closed')
   shouldICareAboutMouseenter = false
-  setTimeout(() => nav.removeClass('ish reverse'), 1)
+  nav.removeClass('ish reverse')
 })
 
 
 
 menu.on('mouseenter', () => {
   if (nav.hasClass('closed') && shouldICareAboutMouseenter) {
-    nav.addClass('ish')
+    nav.addClass('background')
+    setTimeout(() => nav.addClass('ish'))
   }
 })
 
@@ -45,9 +45,12 @@ menu.on('mouseleave', () => {
 })
 
 menu.on('click', () => {
-  nav.removeClass('closed').addClass('open ish reverse')
-  shouldICareAboutMouseenter = false;
-  setTimeout(() => nav.removeClass('ish reverse'), 1)
+  nav.addClass('background')
+  setTimeout(() => {
+    nav.removeClass('closed').addClass('open')
+    shouldICareAboutMouseenter = false;
+    nav.removeClass('ish reverse')
+  })
 })
 
 
@@ -65,3 +68,9 @@ function resize() {
 
 $(document).ready(resize)
 $(window).on('resize', resize)
+
+menu.on('transitionend', (event) => {
+  if (nav.hasClass('closed') && !nav.hasClass('ish')) { 
+    nav.removeClass('background')
+  }
+})
