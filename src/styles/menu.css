@@ -374,11 +374,11 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
 
 
 @media screen and (max-width: 26rem) {
-  nav.open:not(.ish) #menu > ul {
+  nav.open:not(.ish) .menu-scale {
     width: calc(100vw - 2.5rem);
   }
 
-  nav.open.width-snap:not(.ish) #menu > ul {
+  nav.open.width-snap:not(.ish) .menu-scale {
     transition: none;
   }
 }
