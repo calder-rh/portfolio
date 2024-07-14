@@ -59,7 +59,6 @@ let numColumns
 function setupColumns() {
   window.requestAnimationFrame(() => {
     const bodyWidth = $('body').width()
-    // numColumns = Math.min(Math.floor(bodyWidth / columnWidth), squishList.length)
     numColumns = Math.floor(bodyWidth / columnWidth)
 
     if (numColumns == 0) numColumns = 1
@@ -85,7 +84,7 @@ function setupColumns() {
       }
       
       const firstItems = new Array(numColumns).fill(false)
-      squishList.each((index, squish) => {
+      squishList.each((_, squish) => {
         const minIndex = heights.reduce((minIdx, currentValue, currentIndex, arr) => {
           return currentValue < arr[minIdx] ? currentIndex : minIdx
         }, 0)
@@ -99,10 +98,6 @@ function setupColumns() {
           $(squish).css('--oval-scale', '1.05')
         }
       })
-
-      // $('.oval-column').each((index, column) => {
-      //   $(column).css('width', `${bodyWidth / numColumns}px`)
-      // })
     }
   })
 }
@@ -136,22 +131,10 @@ function squishOvals() {
         element.style.height = `${newHeight}px`
         element.style.width = `${newWidth}%`
       }
-
-      // if (position < 0) {
-      //   element.style.height = `${maxHeight}px`
-      // } else if (position > 1) {
-      //   element.style.height = `${minHeight}px`
-      // } else {
-      //   const a = (1 - position) ** $(element).data('power')
-      //   const newHeight = maxHeight * a + minHeight * (1 - a)
-      //   element.style.height = `${newHeight}px`
-      // }
     })
   })
 }
 
-// document.addEventListener("DOMContentLoaded", squishOvals)
-// document.addEventListener("mousewheel", squishOvals)
 
 function ready() {
   setupSquishes()
