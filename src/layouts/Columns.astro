@@ -1,0 +1,105 @@
+---
+const { id, columnWidth=300, columnGap=0, maxColumns=null, paddingFunction='flat', maxPadding=50 } = Astro.props
+---
+
+<div id={id} class="column-component" data-frontmatter={JSON.stringify({columnWidth, columnGap, maxColumns, paddingFunction, maxPadding})}>
+  <div class="columns"></div>
+  <div class="waiting-room">
+    <slot />
+  </div>
+</div>
+
+<script>
+  import $ from 'jquery'
+
+  const paddingFunctions = {
+    flat: function(index, total) { return 0 },
+
+    frown: function(index, total) {
+      let a = index / (total - 1)
+      let frowniness = 1 + 4 * a * (a - 1)
+      return (total % 2 == 0) ? (frowniness - (1 + 4 * ((total / 2) / (total - 1)) * ((total / 2) / (total - 1) - 1))) : frowniness
+    }
+  }
+
+  const columnComponents = $('.column-component')
+  let prevNumColumns = 0
+
+  const items = $('.waiting-room > *')
+
+  function labelItems() {
+    items.addClass('column-item')
+  }
+
+  function moveToWaitingRoom() {
+    columnComponents.each((idx, columnComponent) => {
+      const waitingRoom = $(columnComponent).find('.waiting-room')
+      const items = $(columnComponent).find('.column-item')
+      items.appendTo(waitingRoom)
+    })
+  }
+
+  function setupColumns() {
+    window.requestAnimationFrame(() => {
+      const bodyWidth = $('body').width()
+      
+      columnComponents.each((_, columnComponent) => {
+        const columns = $(columnComponent).find('.columns')
+        const { columnWidth, columnGap, maxColumns, paddingFunction, maxPadding } = $(columnComponent).data('frontmatter')
+
+        let numColumns = Math.max(Math.floor((bodyWidth - columnWidth) / (columnWidth + columnGap)) + 1, maxColumns)
+        if (numColumns == 0) numColumns = 1
+        $(columnComponent).data('numColumns', numColumns)
+  
+        if (numColumns !== prevNumColumns) {
+          prevNumColumns = numColumns
+        
+          moveToWaitingRoom()
+          columns.empty()
+            
+          const heights = []
+          for (let i = 0; i < numColumns; i++) {
+            let d = $('<div>', {class: 'column'})
+            const padding = (paddingFunctions[paddingFunction](i, numColumns)) * maxPadding
+            heights.push(padding)
+            d.css('padding-top', `${padding}px`)
+            d.appendTo(columns)
+          }
+          
+          items.each((_, item) => {
+            const minIndex = heights.reduce((minIdx, currentValue, currentIndex, arr) => {
+              return currentValue < arr[minIdx] ? currentIndex : minIdx
+            }, 0)
+            $(columns.children()[minIndex]).append(item)
+            heights[minIndex] += $(item).height()
+          })
+        }
+      })
+    })
+  }
+
+  // function ready() {
+  //   labelItems()
+  //   setupColumns()
+  // }
+
+  $(document).ready(labelItems)
+  $(document).on('setupColumns', setupColumns)
+  $(window).on('resize', setupColumns)
+</script>
+
+<style is:global define:vars={{colWidthStyle: '300px'}}>
+  .waiting-room {
+    display: none;
+  }
+
+  .columns {
+    display: flex;
+    justify-content: center;
+  }
+
+  .column {
+    flex: 1 0 300px;
+    height: auto;
+  }
+</style>

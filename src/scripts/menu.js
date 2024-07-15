@@ -79,11 +79,7 @@ function resize() {
 $(document).ready(resize)
 $(window).on('resize', resize)
 
-menu.on('transitionstart', (event) => {
-  console.log('um')
-})
-
-menu.on('transitionend', (event) => {
+menu.on('transitionend', () => {
   if (nav.hasClass('closed') && !nav.hasClass('ish')) { 
     bg.removeClass('show')
   }

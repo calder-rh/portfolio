@@ -5,6 +5,7 @@ import BaseLayout from 'src/layouts/BaseLayout.astro';
 import TextOval from '@src/layouts/TextOval.astro';
 import Oval from '@src/layouts/Oval.astro';
 import Squish from 'src/layouts/Squish.astro';
+import Columns from '@src/layouts/Columns.astro';
 
 import random from "../scripts/random";
 import { adjustColor, cssString } from '@src/scripts/color-utils';
@@ -45,34 +46,12 @@ for (let content of allWork) {
 		</p>
 	</TextOval>
 
-	<div id="oval-columns"></div>
-
-	<div id="oval-waiting-room">
+	<Columns id="ovals" paddingFunction="flat">
 		{images.map(({id, url, img}) => <Squish><Oval squareness={32} id={id} image={img} link={url} format="png" style={`--oval-color: ${color()}`}/></Squish>)}
-		<!-- {images.map(({url, img}) => <Squish><Oval squareness={32} id={1} image={img} link={url} /></Squish>)} -->
 		{Array.from({length: 50}, (e, i) => i).map((i) => <Squish><TextOval squareness={32} id={i} link="/" style={`--oval-color: ${color()}`}></TextOval></Squish>)}
-		<!-- {placeholderData.map(([i, text]) => <Squish><TextOval squareness={32} id={i}>{text}</TextOval></Squish>)}
-		<Squish><TextOval squareness={32} id={"ig"} link="https://instagram.com/calder.rh">Instagram.</TextOval></Squish> -->
-	</div>
-
-	<script>
-		import '../scripts/squish-ovals.js';
-	</script>
+	</Columns>
 </BaseLayout>
 
-<style>
-	:global(#intro) {
-		max-width: 800px;
-		margin: auto;
-	}
-
-	:global(#intro) p {
-		font-size: 1.3rem;
-	}
-
-	#squish-ovals {
-		width: 100%;
-		height: auto;
-	} 
-
-</style>
+<script>
+	import '../scripts/squish-ovals.js';
+</script>

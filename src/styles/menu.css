@@ -204,10 +204,10 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
   #menu-background {
     /* display: none; */
     position: absolute;
-    top: -30%;
-    left: -30%;
-    width: 160%;
-    height: 160%;
+    bottom: -25%;
+    left: -25%;
+    width: 200%;
+    height: 200%;
   }
 
   #menu-bg-scaler.show, #menu-bg-scaler.show #menu-background {
@@ -307,6 +307,12 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
     --speed: 0.1s;
   }
 
+  @media (hover: none) {
+    nav {
+      --speed: 0.15s;
+    }
+  }
+
   .menu-label {
     transition: var(--speed);
   }
@@ -378,8 +384,9 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
     width: calc(100vw - 2.5rem);
   }
 
-  nav.open.width-snap:not(.ish) .menu-scale {
-    transition: none;
+  nav.open:not(.ish) #menu-background {
+    width: 160%;
+    height: 160%;
   }
 }
 

@@ -1,8 +1,6 @@
 import $ from 'jquery'
 import random from "./random"
 
-const columnWidth = 300
-
 const squishList = $('.squish')
 
 function setupSquishes() {
@@ -36,70 +34,7 @@ function setupSquishes() {
 
     squish.css('width', `${minWidth}px`)
     squish.css('height', `${minHeight}px`)
-    // squish.css('width', `${random(90, 100)}%`)
-    // squish.css('left', `${random(-5, 5)}px`)
   }
-}
-
-function putOvalsInWaitingRoom() {
-  const squishList = $('.squish')
-  squishList.appendTo('#oval-waiting-room')
-}
-
-
-function parabolicPadding(i, numColumns) {
-  const maxPadding = 50
-  const a = i / (numColumns - 1)
-  return (1 + 4 * a * (a - 1)) * maxPadding
-}
-
-let prevNumColumns = 0
-let numColumns
-
-function setupColumns() {
-  window.requestAnimationFrame(() => {
-    const bodyWidth = $('body').width()
-    numColumns = Math.floor(bodyWidth / columnWidth)
-
-    if (numColumns == 0) numColumns = 1
-
-    if (numColumns !== prevNumColumns) {
-      prevNumColumns = numColumns
-      const columnsContainer = $('#oval-columns')
-    
-      putOvalsInWaitingRoom()
-      columnsContainer.empty()
-
-      const columnsArray = []
-      const paddingAdjustment = (numColumns % 2 == 0) ? parabolicPadding(numColumns / 2, numColumns) : 0
-      
-      const heights = []
-      for (let i = 0; i < numColumns; i++) {
-        let d = $('<div>', {id: `col${i}`, class: 'oval-column'})
-        const padding = parabolicPadding(i, numColumns) - paddingAdjustment
-        heights.push(padding)
-        d.css('padding-top', padding)
-        d.appendTo(columnsContainer)
-        columnsArray.push(d)
-      }
-      
-      const firstItems = new Array(numColumns).fill(false)
-      squishList.each((_, squish) => {
-        const minIndex = heights.reduce((minIdx, currentValue, currentIndex, arr) => {
-          return currentValue < arr[minIdx] ? currentIndex : minIdx
-        }, 0)
-        $(columnsArray[minIndex]).append(squish)
-        heights[minIndex] += $(squish).data('max-height')
-        if (!firstItems[minIndex]) {
-          firstItems[minIndex] = true
-          $(squish).data('min-width', 100)
-        }
-        if (numColumns === 1) {
-          $(squish).css('--oval-scale', '1.05')
-        }
-      })
-    }
-  })
 }
 
 
@@ -112,7 +47,7 @@ function squishOvals() {
       const maxHeight = $(element).data('max-height') * (mobile? 0.7 : 1)
       const minHeight = short ? maxHeight : $(element).data('min-height')
       const maxWidth = $(element).data('max-width')
-      const minWidth = short ? maxWidth : $(element).data(numColumns === 1 ? 'sc-min-width' : 'min-width')
+      const minWidth = short ? maxWidth : $(element).data($('#ovals').data('numColumns') === 1 ? 'sc-min-width' : 'min-width')
       const squishStart = $(element).data('squish-start')
       const squishEnd = squishStart - (maxHeight - minHeight) / document.documentElement.clientHeight
 
@@ -135,16 +70,21 @@ function squishOvals() {
   })
 }
 
+function firstSquishes() {
+  $('.column').each((idx, item) => {
+		let firstChild = $($(item).children()[0])
+		firstChild.data('min-width', 1000)
+	})
+}
 
 function ready() {
   setupSquishes()
-  setupColumns()
+  document.dispatchEvent(new Event('setupColumns'))
+  firstSquishes()
   squishOvals()
-  const params = new URLSearchParams(window.location.search)
 }
 
 function resize() {
-  setupColumns()
   squishOvals()
 }
 

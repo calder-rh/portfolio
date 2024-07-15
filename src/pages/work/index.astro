@@ -1,6 +1,10 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro"
+import Columns from "@src/layouts/Columns.astro"
 ---
 
-<BaseLayout pageTitle="About">
+<BaseLayout title="Work">
+  <Columns id="asdf" width={100} maxCount={5}, padding={10}>
+  </Columns>
+  <Columns id="hjkl"></Columns>
 </BaseLayout>

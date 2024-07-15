@@ -2,30 +2,31 @@ body {
   max-width: unset;
 }
 
-#oval-waiting-room {
-  display: none;
+#intro {
+  max-width: 800px;
+  margin: auto;
 }
+
+#intro p {
+  font-size: 1.3rem;
+}
+
+#squish-ovals {
+  width: 100%;
+  height: auto;
+} 
 
 #content {
   margin-top: 10vh;
 }
 
-#oval-columns {
-  display: flex;
-  justify-content: center;
+.columns {
   margin-bottom: 100vh;
   padding: 0px 50px;
 }
 
-.oval-column {
-  flex: 1 0 300px;
-  /* width: 300px; */
-  /* min-height: 300px; */
-  height: auto;
-} 
-
 @media screen and (max-width: 800px) {
-  #oval-columns {
+  .columns {
     padding: 0px 0px;
   }
 
@@ -37,8 +38,6 @@ body {
 .squish {
   margin-left: auto;
   margin-right: auto;
-  /* margin: 0; */
-  /* padding: 0; */
   overflow: visible;
   position: relative;
 }
@@ -55,7 +54,6 @@ body {
 }
 
 #intro {
-  /* background-color: rgb(235, 238, 242); */
   background-color: var(--offwhite);
 }
 
