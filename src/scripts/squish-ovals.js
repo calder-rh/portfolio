@@ -32,8 +32,8 @@ function setupSquishes() {
     squish.data('squish-start', squishStart)
     squish.data('power', 1)
 
-    squish.css('width', `${minWidth}px`)
-    squish.css('height', `${minHeight}px`)
+    squish.css('width', `${maxWidth}px`)
+    squish.css('height', `${maxHeight}px`)
   }
 }
 
@@ -73,22 +73,18 @@ function squishOvals() {
 function firstSquishes() {
   $('.column').each((idx, item) => {
 		let firstChild = $($(item).children()[0])
-		firstChild.data('min-width', 1000)
+		firstChild.data('min-width', 100)
 	})
 }
 
 function ready() {
   setupSquishes()
-  document.dispatchEvent(new Event('setupColumns'))
-  firstSquishes()
-  squishOvals()
-}
-
-function resize() {
+  $('#oval-cols')[0].dispatchEvent(new Event('items-ready'))
   squishOvals()
 }
 
 $(document).ready(ready)
+$('#oval-cols').on('columns-loaded', firstSquishes)
 $(window).on('scroll', squishOvals)
-$(window).on('resize', resize)
+$(window).on('resize', squishOvals)
 

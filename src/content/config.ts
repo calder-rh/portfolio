@@ -4,12 +4,12 @@ const workCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    description: z.string().optional(),
-    header: z.object({
-      image: z.string(),
-      fullwidth: z.boolean().optional(),
-      collect: z.boolean().optional()
-    }).optional(),
+    description: z.ostring(),
+    tags: z.array(z.string()),
+    start_date: z.date().optional(),
+    date: z.union([z.date(), z.literal('present')]),
+    priority: z.onumber(),
+    draft: z.oboolean()
   })
 });
 

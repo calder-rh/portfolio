@@ -385,8 +385,8 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
   }
 
   nav.open:not(.ish) #menu-background {
-    width: 160%;
-    height: 160%;
+    width: 150%;
+    height: 150%;
   }
 }
 

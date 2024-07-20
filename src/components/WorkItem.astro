@@ -1,0 +1,22 @@
+---
+import { Image } from "astro:assets"
+import Cap from "./Cap.astro"
+const { data: {title, description, tags, images} } = Astro.props
+---
+
+<!-- <a> -->
+  <div class="work-item" data-tags={JSON.stringify(tags)}>
+    <Cap side="top" squareness={38}></Cap>
+    <div class="work-content">
+      <div class="work-content-bg"></div>
+      <div class="work-content-inner">
+        <h3 class="work-title">{title}</h3>
+        {description && <p class="work-description">{description}</p>}
+        {images.length > 0 && <div class="work-images">
+          {images.map(({url, img, alt}) => <a href={url}><Image src={img} alt={alt}/></a>)}
+        </div>}
+      </div>
+    </div>
+    <Cap side="bottom" squareness={35}></Cap>
+  </div>
+<!-- </a> -->

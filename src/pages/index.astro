@@ -14,7 +14,7 @@ function color() {
 	return cssString(adjustColor({r: 168, g: 178, b: 190}, random(0.7, 1.2), random(0.9, 1.05)))
 }
 
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 
 const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
 
@@ -46,9 +46,9 @@ for (let content of allWork) {
 		</p>
 	</TextOval>
 
-	<Columns id="ovals" paddingFunction="flat">
+	<Columns id="oval-cols" columnWidth={300} columnGap={0} paddingFunction="frown">
 		{images.map(({id, url, img}) => <Squish><Oval squareness={32} id={id} image={img} link={url} format="png" style={`--oval-color: ${color()}`}/></Squish>)}
-		{Array.from({length: 50}, (e, i) => i).map((i) => <Squish><TextOval squareness={32} id={i} link="/" style={`--oval-color: ${color()}`}></TextOval></Squish>)}
+		{Array.from({length: 10}, (e, i) => i).map((i) => <Squish><TextOval squareness={32} id={i} link="/" style={`--oval-color: ${color()}`}></TextOval></Squish>)}
 	</Columns>
 </BaseLayout>
 

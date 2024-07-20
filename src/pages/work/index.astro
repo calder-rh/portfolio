@@ -1,10 +1,49 @@
 ---
+import WorkItem from "@src/components/WorkItem.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro"
 import Columns from "@src/layouts/Columns.astro"
+
+import '@src/styles/work.css'
+
+import { getCollection } from 'astro:content';
+
+const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
+
+const allWork = await getCollection('work');
+
+const workItems = []
+for (let content of allWork) {
+  const workItem = {
+    title: content.data.title,
+    description: content.data.description,
+    tags: content.data.tags,
+    images: []
+  }
+  const { remarkPluginFrontmatter } = await content.render()
+  for (let item of remarkPluginFrontmatter.toc) {
+    if (item.type === 'image') {
+      const previewPath = item.image.preview
+      if (previewPath) {
+        workItem.images.push({
+          id: item.id,
+          url: `/work${content.slug}#${item.id}`,
+					img: imageImporters[previewPath](),
+          alt: item.alt
+        })
+      }
+    }
+  }
+  workItems.push(workItem)
+}
 ---
 
 <BaseLayout title="Work">
-  <Columns id="asdf" width={100} maxCount={5}, padding={10}>
+  <div id="tags"></div>
+  <Columns id="work-cols" columnWidth={450} columnGap={20}>
+    {workItems.map((data) => <WorkItem data={data}/>)}
   </Columns>
-  <Columns id="hjkl"></Columns>
 </BaseLayout>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => document.getElementById('work-cols')?.dispatchEvent(new Event('items-ready')))
+</script>
