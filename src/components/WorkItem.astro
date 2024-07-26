@@ -1,20 +1,42 @@
 ---
 import { Image } from "astro:assets"
 import Cap from "./Cap.astro"
+import random from "@src/scripts/random"
+import { adjustColor, cssString } from '@src/scripts/color-utils';
+
 const { data: {title, description, tags, images} } = Astro.props
+
+const allTags = tags.slice()
+import { default as tagTaxonomy } from '@src/other/tag-taxonomy.json'
+for (let i = 0; i < allTags.length; i++) {
+  const tag = allTags[i]
+  if (!(tag in tagTaxonomy)) continue
+  let parents = tagTaxonomy[tag]
+  if (!Array.isArray(parents)) parents = [parents]
+  allTags.push(...parents)
+}
+allTags.push('all')
+
 ---
 
 <!-- <a> -->
-  <div class="work-item" data-tags={JSON.stringify(tags)}>
+  <div class="work-item" data-tags={JSON.stringify(allTags)} style=`--min-width: ${random(0.05, 0.07)}; --min-height: ${0.6 + title.length / 80}rem; --work-item-color: var(--offwhite)`>
     <Cap side="top" squareness={38}></Cap>
-    <div class="work-content">
-      <div class="work-content-bg"></div>
-      <div class="work-content-inner">
-        <h3 class="work-title">{title}</h3>
-        {description && <p class="work-description">{description}</p>}
-        {images.length > 0 && <div class="work-images">
-          {images.map(({url, img, alt}) => <a href={url}><Image src={img} alt={alt}/></a>)}
-        </div>}
+    <div class="work-content-wrapper">
+      <div class="work-content">
+        <div class="work-content-bg"></div>
+        <div class="work-content-inner konsole">
+          <h3 class="work-title work-text">{title}</h3>
+          {description && <p class="work-description work-text">{description}</p>}
+          {images.length > 0 &&
+            <div class="work-images">
+              <div class="image-rows"></div>
+              <div class="image-waiting-room">
+                {images.map(({url, img, alt}) => <a href={url}><Image src={img} alt={alt} format="png" height={200} loading="eager"/></a>)}
+              </div>
+            </div>
+          }
+        </div>
       </div>
     </div>
     <Cap side="bottom" squareness={35}></Cap>

@@ -1,66 +1,246 @@
+:root {
+  --short-transition: 0.1s;
+  --long-transition: 0.3s;
+  --background: rgb(158, 183, 195);
+  --menu-white: var(--offwhite);
+}
+
+
+.waiting-room {
+  display: block;
+  visibility: hidden;
+}
+
+/* #header {
+  position: fixed !important;
+} */
+
+
+#work-cols {
+  margin: 0 20px;
+  /* padding: 0 20px; */
+}
+
 .work-item .cap-container {
   width: 100%;
   height: 6rem;
 }
 
 .work-item .cap {
-  background-color: var(--offwhite);
+  background-color: var(--work-item-color);
   margin: 0;
   z-index: 0;
 }
 
-.work-content {
-  /* outline: 1px solid red; */
-  position: relative;
-  padding: 0 1.5rem;
-  margin: -1rem 0;
-  z-index: 1;
-  width: calc(100% - 3rem);
+.work-item .cap.bottom {
+  margin-top: -0.5px;
 }
 
-.work-content-bg {
-  position: absolute;
-  top: 1rem;
-  bottom: 1rem;
-  left: 0;
-  right: 0;
-  background-color: var(--offwhite);
-  z-index: 0;
+.work-content-wrapper {
+  margin-top: -0.5px;
+  height: calc(var(--content-height) - 3rem);
+  background-color: var(--work-item-color);
+}
+
+.work-content {
+  position: relative;
+  top: -1.5rem;
+  z-index: 1;
+  transform-origin: 0 1.5rem;
 }
 
 .work-content-inner {
   position: relative;
   z-index: 1;
+  padding: 0 1.5rem;
 }
 
-.work-content h3 {
-  margin-top: 0;
-}
-
-.work-content *:last-child {
+.work-content-inner *:last-child {
   margin-bottom: 0;
 }
 
-.work-content img {
-  height: 50px;
+.image-rows {
+  margin-top: 1rem;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.work-images a {
+  margin: 0;
+  padding: 0;
+  height: 130px;
+  text-decoration: none;
+}
+
+.image-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.image-row img {
+  height: 100%;
   width: auto;
 }
 
-
-
-
-.work-item * {
-  transition: 1s;
+.image-waiting-room {
+  width: 0;
+  height: 0;
+  visibility: hidden;
 }
 
-.work-item.minimized .cap-container {
-  width: 4rem;
-  height: 2rem;
+
+.work-item.closable.closed .work-content-wrapper {
+  height: 0;
 }
 
-.work-item.minimized .work-content {
-  /* height: 0;
-  margin: 0; */
+/* .work-item.closed .work-content-inner {
+  opacity: 0;
+} */
+
+.work-item.closable.closed .work-content {
   scale: 1 0;
-  /* overflow: hidden; */
+}
+
+.work-item.closable.closed {
+  scale: var(--min-width) 1;
+}
+
+.work-item.closable.closed .cap-container {
+  height: var(--min-height);
+}
+
+.work-item.closable.closed.ish {
+  scale: calc(var(--min-width) * 3) 1;
+}
+
+.work-item.closable.closed.ish .cap-container {
+  height: calc(var(--min-height) * 2);
+}
+
+.work-item.closable.open.ish {
+  scale: 0.8 1;
+}
+
+.work-item.closable.open.ish .work-content {
+  scale: 1 0.8;
+}
+
+.work-item.closable.open.ish .cap-container {
+  height: 4.8rem;
+}
+
+
+
+.work-item.closable, .work-item.closable * {
+  transition-duration: var(--long-transition);
+  transition-timing-function: ease-out;
+}
+
+.work-item.closable.ish, .work-item.closable.ish * {
+  transition-timing-function: ease-in;
+}
+
+.work-item.closable.short, .work-item.closable.short * {
+  transition-duration: var(--short-transition);
+}
+
+
+
+
+
+
+.work-title {
+  margin-top: 0;
+  font-size: 1.2rem;
+  font-variation-settings: 'wght' 450, 'wdth' 120;
+  margin-bottom: 0.4rem;
+}
+
+.work-description {
+  font-size: 1rem;
+  font-variation-settings: 'wght' 420, 'wdth' 110;
+  margin-top: 0;
+  margin-bottom: 0.3rem;
+}
+
+
+
+body {
+  margin-top: 5.375rem;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#tags {
+  display: flex;
+  align-items: center;
+  height: 12rem;
+  padding: 0 20px;
+  overflow: scroll;
+  scroll-behavior: smooth;
+  background-color: #4d362e;
+}
+
+#tag-separator {
+  height: 2rem;
+  background-color: var(--offwhite);
+}
+
+/* rgb(85, 93, 104) */
+
+.work-tag {
+  flex: 1 1 0px;
+  /* --oval-color: #bbbcc8; */
+  --oval-color: var(--offwhite);
+  scroll-margin: 0 3rem;
+  cursor: pointer;
+}
+
+.work-tag .oval-text {
+  text-transform: uppercase;
+  --k-wdth: 120;
+  line-height: 1.3;
+  color: #4d362e;
+}
+
+.work-tag.closed {
+  height: 50%;
+}
+
+.work-tag.closed.ish {
+  height: 60%;
+}
+
+.work-tag.open {
+  height: 100%;
+}
+
+.work-tag.open.ish {
+  height: 90%;
+}
+
+
+.work-tag {
+  transition-duration: var(--long-transition);
+  transition-timing-function: ease-out;
+}
+
+.work-tag.ish {
+  transition-timing-function: ease-in;
+}
+
+.work-tag.short {
+  transition-duration: var(--short-transition);
+}
+
+
+
+
+
+.work-tag .oval {
+  height: 100%;
 }

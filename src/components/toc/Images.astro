@@ -10,8 +10,7 @@ const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{j
 
 <div class="section-padding">
   <div class="toc-images">
-    {items.map(item => {
-      console.log(item.image)
+    {items.filter(item => (item.image.toc !== undefined)).map(item => {
       const tocID = `toc-${item.id}`
       const imagePath = item.image.toc
       if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif}"`)

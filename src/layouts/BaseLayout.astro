@@ -24,3 +24,23 @@ const adjustedPageTitle = (() => {
 		<slot />
 	</body>
 </html>
+
+<script>
+	let resizeTimeout = null
+
+	function resize() {
+		if (resizeTimeout) {
+			clearTimeout(resizeTimeout)
+			resizeTimeout = null
+		} else {
+			document.body.classList.add('no-transitions')
+		}
+		resizeTimeout = setTimeout(() => {
+			document.body.classList.remove('no-transitions')
+			resizeTimeout = null
+		}, 100)
+	}
+
+	document.addEventListener('DOMContentLoaded', resize)
+	window.addEventListener('resize', resize)
+</script>

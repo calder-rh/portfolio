@@ -1,8 +1,8 @@
 ---
-const { id, columnWidth=300, columnGap=0, maxColumns=null, paddingFunction='flat', maxPadding=50, customColumnLoader=false } = Astro.props
+const { id, columnWidth=300, columnGap=0, maxColumns=null, paddingFunction='flat', maxPadding=50, prepareItems=true, fillColumns=true } = Astro.props
 ---
 
-<div id={id} class="column-component" data-frontmatter={JSON.stringify({columnWidth, columnGap, maxColumns, paddingFunction, maxPadding, customColumnLoader})}>
+<div id={id} class="column-component" data-frontmatter={JSON.stringify({columnWidth, columnGap, maxColumns, paddingFunction, maxPadding, prepareItems, fillColumns})}>
   <div class="columns"></div>
   <div class="waiting-room">
     <slot />
@@ -47,15 +47,15 @@ const { id, columnWidth=300, columnGap=0, maxColumns=null, paddingFunction='flat
 
   function createColumns(columnComponent) {
     window.requestAnimationFrame(() => {
-      const bodyWidth = $('body').width()
+      const bodyWidth = $(columnComponent).width()
       const columns = $(columnComponent).find('.columns')
       const { columnWidth, columnGap, maxColumns, paddingFunction, maxPadding } = $(columnComponent).data('frontmatter')
 
-      let numColumns = Math.floor((bodyWidth - columnWidth) / (columnWidth + columnGap)) + 1
+      let numColumns = Math.ceil((bodyWidth - columnWidth) / (columnWidth + columnGap)) + 1
       if (maxColumns !== null && maxColumns < numColumns) numColumns = maxColumns
       if (numColumns == 0) numColumns = 1
       $(columnComponent).data('numColumns', numColumns)
-
+      
       if (numColumns !== prevNumColumns) {
         prevNumColumns = numColumns
       
@@ -68,12 +68,17 @@ const { id, columnWidth=300, columnGap=0, maxColumns=null, paddingFunction='flat
           d.css('padding-top', `${padding}px`)
           d.appendTo(columns)
         }
+
+        const waitingRoom = $(columnComponent).find('.waiting-room')
+        const columnWidth = columns.children()[0].offsetWidth
+        waitingRoom.css('width', `${columnWidth}px`)
+
         columnComponent.dispatchEvent(new Event('columns-created'))
       }
     })
   }
 
-  function loadColumns(columnComponent) {
+  function fillColumns(columnComponent) {
     const columnArray = $(columnComponent).find('.column')
     const numColumns = columnArray.length
     const { paddingFunction, maxPadding } = $(columnComponent).data('frontmatter')
@@ -88,22 +93,35 @@ const { id, columnWidth=300, columnGap=0, maxColumns=null, paddingFunction='flat
         return currentValue < arr[minIdx] ? currentIndex : minIdx
       }, 0)
       $(columnArray[minIndex]).append(item)
-      heights[minIndex] += $(item).height()
+      let itemHeight = $(item).data('fullHeight')
+      if (itemHeight === undefined) itemHeight = $(item).height()
+      heights[minIndex] += itemHeight
     })
 
-    columnComponent.dispatchEvent(new Event('columns-loaded'))
+    columnComponent.dispatchEvent(new Event('columns-filled'))
   }
 
-  columnComponents.each((idx, columnComponent) => {
-    $(columnComponent).on('items-ready', () => {
+
+
+  addEventListener('DOMContentLoaded', () => {
+    columnComponents.each((idx, columnComponent) => {
       labelItems(columnComponent)
       createColumns(columnComponent)
     })
   })
+
   columnComponents.each((idx, columnComponent) => {
-    if (!$(columnComponent).data('frontmatter').customColumnLoader) {
-      $(columnComponent).on('columns-created', () => loadColumns(columnComponent))
+    if ($(columnComponent).data('frontmatter').prepareItems) {
+      $(columnComponent).on('columns-created', () => columnComponent.dispatchEvent(new Event('items-ready')))
     }
+  })
+
+  columnComponents.each((idx, columnComponent) => {
+    $(columnComponent).on('items-ready', () => {
+      if ($(columnComponent).data('frontmatter').fillColumns) {
+        fillColumns(columnComponent)
+      }
+    })
   })
 
   $(window).on('resize', () => {
@@ -114,6 +132,7 @@ const { id, columnWidth=300, columnGap=0, maxColumns=null, paddingFunction='flat
 <style is:global define:vars={{colWidthStyle: `${columnWidth}px`, colGapStyle: `${columnGap}px`}}>
   .waiting-room {
     display: none;
+    background-color: black;
   }
 
   .columns {
@@ -123,7 +142,7 @@ const { id, columnWidth=300, columnGap=0, maxColumns=null, paddingFunction='flat
   }
 
   .column {
-    flex: 1 0 var(--colWidthStyle);
+    flex: 1 1 var(--colWidthStyle);
     height: auto;
   }
 </style>

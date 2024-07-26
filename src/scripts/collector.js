@@ -109,7 +109,7 @@ export function collector() {
           const format = node.attributes.find(attribute => attribute.name == 'format')
           
           const tocImage = {}
-          let last = mainImgPath;
+          let last = mainImgPath
           for (let {name, abbrev, suffix} of useInfo) {
             if (uses !== null && !uses.includes(abbrev)) continue
 
@@ -126,6 +126,7 @@ export function collector() {
             if (!found) tocImage[name] = last
           }
 
+          console.log(tocImage)
           tocItem.image = tocImage
           tocItem.alt = alt
           tocItem.format = format ? format.value : mainExtension.slice(1)

@@ -1,7 +1,7 @@
 ---
 const { side, squareness, classes=[], ...rest } = Astro.props
 
-const classList = ["cap"]
+const classList = ["cap", side]
 if (classes) classList.push(...classes)
 const classesUsed = classList.join(" ")
 

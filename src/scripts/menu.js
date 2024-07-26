@@ -60,24 +60,8 @@ function handleResize() {
 }
 
 
-let resizeTimeout = null
-
-function resize() {
-  if (resizeTimeout) {
-    clearTimeout(resizeTimeout)
-    resizeTimeout = null
-  } else {
-    nav.addClass('no-transitions')
-  }
-  resizeTimeout = setTimeout(() => {
-    nav.removeClass('no-transitions')
-    resizeTimeout = null
-  }, 100)
-  handleResize()
-}
-
-$(document).ready(resize)
-$(window).on('resize', resize)
+$(document).ready(handleResize)
+$(window).on('resize', handleResize)
 
 menu.on('transitionend', () => {
   if (nav.hasClass('closed') && !nav.hasClass('ish')) { 

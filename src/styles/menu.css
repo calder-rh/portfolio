@@ -18,7 +18,7 @@
   padding: 0.625rem 1.25rem;
   box-sizing: border-box;
   height: var(--header-height);
-  background-color: var(--offwhite);
+  background-color: var(--menu-white);
 
   display: flex;
   justify-content: space-between;
@@ -145,7 +145,7 @@ nav .oval.link:hover {
 
 
 #close-menu polygon {
-  fill: var(--offwhite);
+  fill: var(--menu-white);
 }
 
 #close-menu svg {
@@ -186,12 +186,12 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
   }
 
   #menu {
-    z-index: 1;
+    z-index: 2;
   }
 
   #menu-bg-scaler {
     display: none;
-    z-index: -1;
+    z-index: 0;
   }
 
   .menu-scale {
@@ -298,7 +298,7 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
   #menu-bg-oval {
     width: 100%;
     height: 100%;
-    --oval-color: var(--offwhite);
+    --oval-color: var(--menu-white);
   }
 
   
@@ -370,11 +370,6 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
 
   nav.open .menu-transition, nav.open.ish.reverse .menu-transition {
     transition: var(--speed) ease-out;
-  }
-
-
-  nav.no-transitions * {
-    transition: none !important;
   }
 }
 

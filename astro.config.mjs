@@ -9,7 +9,7 @@ export default defineConfig({
   redirects: {
     '/work/d16': '../links/d16-workshop'
   },
-  integrations: [mdx()],
+  integrations: [mdx(), ],
   markdown: {
     remarkPlugins: [collector]
   }

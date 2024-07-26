@@ -128,7 +128,6 @@ $('#toc-close').on('click', () => {
 })
 
 tocItem.on('click', () => {
-  console.log('hi')
   if (document.documentElement.clientWidth <= 1300) {
     toc.addClass('small')
   }

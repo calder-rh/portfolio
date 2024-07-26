@@ -6,26 +6,44 @@ import Columns from "@src/layouts/Columns.astro"
 import '@src/styles/work.css'
 
 import { getCollection } from 'astro:content';
+import WorkTag from "@src/components/WorkTag.astro";
+import { default as tagTaxonomy } from '@src/other/tag-taxonomy.json'
 
 const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
 
 const allWork = await getCollection('work');
 
 const workItems = []
+const tagSet = new Set()
+
 for (let content of allWork) {
+  const tags = content.data.tags
+  const inferredTags = tags.slice()
+  for (let i = 0; i < tags.length; i++) {
+    const tag = tags[i]
+    if (!(tag in tagTaxonomy)) continue
+    let parents = tagTaxonomy[tag]
+    if (!Array.isArray(parents)) parents = [parents]
+    for (let parent of parents) {
+      if (!(inferredTags.includes(parent))) inferredTags.push(parent)
+    }
+  }
+  inferredTags.push('all')
+
+  // if (content.data.draft) continue
   const workItem = {
     title: content.data.title,
     description: content.data.description,
     tags: content.data.tags,
     images: []
   }
+  for (let tag of inferredTags) tagSet.add(tag)
   const { remarkPluginFrontmatter } = await content.render()
   for (let item of remarkPluginFrontmatter.toc) {
     if (item.type === 'image') {
       const previewPath = item.image.preview
       if (previewPath) {
         workItem.images.push({
-          id: item.id,
           url: `/work${content.slug}#${item.id}`,
 					img: imageImporters[previewPath](),
           alt: item.alt
@@ -35,15 +53,21 @@ for (let content of allWork) {
   }
   workItems.push(workItem)
 }
+
+const allTags = Array.from(tagSet).sort()
 ---
 
 <BaseLayout title="Work">
-  <div id="tags"></div>
-  <Columns id="work-cols" columnWidth={450} columnGap={20}>
+  <div id="tags">
+    {allTags.map(tag => <WorkTag tag={tag}></WorkTag>)}
+  </div>
+  <div id="tag-separator" />
+  <Columns id="work-cols" columnWidth={600} columnGap={20} prepareItems={false} fillColumns={false}>
     {workItems.map((data) => <WorkItem data={data}/>)}
   </Columns>
 </BaseLayout>
 
 <script>
-  window.addEventListener('DOMContentLoaded', () => document.getElementById('work-cols')?.dispatchEvent(new Event('items-ready')))
+  import '@src/scripts/work.js'
+  // addEventListener('DOMContentLoaded', () => document.getElementById('work-cols')?.dispatchEvent(new Event('items-ready')))
 </script>

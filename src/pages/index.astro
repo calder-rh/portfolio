@@ -46,7 +46,7 @@ for (let content of allWork) {
 		</p>
 	</TextOval>
 
-	<Columns id="oval-cols" columnWidth={300} columnGap={0} paddingFunction="frown">
+	<Columns id="oval-cols" columnWidth={300} columnGap={0} paddingFunction="frown" prepareItems={false}>
 		{images.map(({id, url, img}) => <Squish><Oval squareness={32} id={id} image={img} link={url} format="png" style={`--oval-color: ${color()}`}/></Squish>)}
 		{Array.from({length: 10}, (e, i) => i).map((i) => <Squish><TextOval squareness={32} id={i} link="/" style={`--oval-color: ${color()}`}></TextOval></Squish>)}
 	</Columns>

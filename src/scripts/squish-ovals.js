@@ -32,6 +32,8 @@ function setupSquishes() {
     squish.data('squish-start', squishStart)
     squish.data('power', 1)
 
+    squish.data('fullHeight', maxHeight)
+
     squish.css('width', `${maxWidth}px`)
     squish.css('height', `${maxHeight}px`)
   }
@@ -83,8 +85,9 @@ function ready() {
   squishOvals()
 }
 
-$(document).ready(ready)
-$('#oval-cols').on('columns-loaded', firstSquishes)
+// $(document).ready(ready)
+$('#oval-cols').on('columns-created', ready)
+$('#oval-cols').on('columns-filled', firstSquishes)
 $(window).on('scroll', squishOvals)
 $(window).on('resize', squishOvals)
 

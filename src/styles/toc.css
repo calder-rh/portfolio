@@ -165,8 +165,8 @@ a.ol-fifth {
 
 .toc-image.onscreen img {
   transition: 0.2s;
-  border: 3px solid var(--offwhite);
-  background-color: var(--offwhite);
+  border: 3px solid var(--menu-white);
+  background-color: var(--menu-white);
 }
 
 .toc-image-a:hover {
@@ -196,7 +196,7 @@ a.ol-fifth {
 }
 
 #top-shape {
-  fill: var(--offwhite);
+  fill: var(--menu-white);
 }
 
 #top-text {
@@ -240,7 +240,7 @@ a.ol-fifth {
 }
 
 #close-shape {
-  fill: var(--offwhite);
+  fill: var(--menu-white);
   width: 100%;
   height: 100%;
 }
@@ -291,7 +291,7 @@ a.ol-fifth {
 
 #toc {
   box-sizing: border-box;
-  /* border: 0 solid var(--offwhite); */
+  /* border: 0 solid var(--menu-white); */
 }
 
 #toc.small {
@@ -336,7 +336,7 @@ a.ol-fifth {
 
 @media screen and (max-width: 1400px) {
   #toc:not(.small) {
-    outline: 12px solid var(--offwhite);
+    outline: 12px solid var(--menu-white);
     /* box-sizing: border-box; */
   }
 
