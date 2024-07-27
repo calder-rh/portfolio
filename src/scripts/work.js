@@ -261,7 +261,7 @@ window.addEventListener('resize', resize)
 
 function selectTag(element, tag) {
   setURLTag(tag)
-  element.scrollIntoView({inline: 'center'})
+  element.scrollIntoView({block: 'nearest', inline: 'center'})
   for (let otherWorkTag of workTags) {
     const isThis = otherWorkTag == element
     otherWorkTag.classList.toggle('open', isThis)
