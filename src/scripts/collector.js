@@ -126,7 +126,6 @@ export function collector() {
             if (!found) tocImage[name] = last
           }
 
-          console.log(tocImage)
           tocItem.image = tocImage
           tocItem.alt = alt
           tocItem.format = format ? format.value : mainExtension.slice(1)

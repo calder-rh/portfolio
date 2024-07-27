@@ -16,6 +16,7 @@ const cols = document.getElementById('work-cols')
 const workTagContainer = document.querySelector('#tags')
 const workTags = document.querySelectorAll('.work-tag')
 const workItems = document.querySelectorAll('.work-item')
+const workItemArray = Array.from(workItems)
 
 
 function remToPx(rem) {    
@@ -81,7 +82,7 @@ function layoutImages(item) {
     row.className = 'image-row'
     rows.prepend(row)
     currentWidth = 0
-   gapCount = 0
+    gapCount = 0
     return row
   }
 
@@ -149,8 +150,82 @@ function resizeWorkItems() {
   cols.dispatchEvent(new Event('items-ready'))
 }
 
-function fillColumns() {
-  
+async function fillColumns() {
+  const tags = Array.from(workTags).map(element => element.dataset.slug)
+  const columns = cols.querySelectorAll('.column')
+  const numColumns = columns.length
+
+  function initialTagInfo() {
+    return {
+      waitTime: 1,
+      columnHeights: new Array(numColumns).fill(0)
+    }
+  }
+
+  const tagInfo = {
+    all: initialTagInfo()
+  }
+  for (let tag of tags) {
+    tagInfo[tag] = initialTagInfo()
+  }
+
+  const prioritizedItemsMap = new Map()
+  for (let workItem of workItems) {
+    const data = JSON.parse(workItem.dataset.data)
+    const priority = data.priority || Infinity
+    if (!prioritizedItemsMap.has(priority)) prioritizedItemsMap.set(priority, [])
+    prioritizedItemsMap.get(priority).push(workItem)
+  }
+  const prioritizedItems = []
+  for (let priority of Array.from(prioritizedItemsMap.keys()).sort()) {
+    const datedPriorityPool = prioritizedItemsMap.get(priority).map(element => ({element: element, date: new Date (JSON.parse(element.dataset.data).date)}))
+    datedPriorityPool.sort((a, b) => b.date - a.date)
+    const priorityPool = datedPriorityPool.map(item => item.element)
+    prioritizedItems.push(priorityPool)
+  }
+
+  for (let i = 0; i < workItemArray.length; i++) {
+    const priorityPool = prioritizedItems[0]
+    const tagWeights = {}
+    for (let [tag, {waitTime, columnHeights}] of Object.entries(tagInfo)) {
+      // tagWeights[tag] = waitTime * (Math.max(...columnHeights) - Math.min(...columnHeights))
+      tagWeights[tag] = {used: waitTime < i + 1, waitTime, unbalancedness: Math.max(...columnHeights) - Math.min(...columnHeights)}
+      // tagWeights[tag] = waitTime
+    }
+    tags.sort((a, b) => {
+      const aWeights = tagWeights[a]
+      const bWeights = tagWeights[b]
+      // return bWeights.waitTime - aWeights.waitTime
+      if (!aWeights.used || !bWeights.used) return bWeights.waitTime - aWeights.waitTime
+      return bWeights.waitTime * bWeights.unbalancedness - aWeights.waitTime * aWeights.unbalancedness
+    })
+
+    let { chosenTag, chosenItem } = (() => {
+      for (let tag of tags) {
+        const foundIndex = priorityPool.findIndex(workItem => JSON.parse(workItem.dataset.data).tags.includes(tag))
+        if (foundIndex !== -1) {
+          const foundItem = priorityPool[foundIndex]
+          priorityPool.splice(foundIndex, 1)
+          if (priorityPool.length === 0) prioritizedItems.shift()
+          return { chosenTag: tag, chosenItem: foundItem }
+        }
+      }
+    })()
+
+    const columnHeights = tagInfo[chosenTag].columnHeights
+    const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights))
+    const fullHeight = Number(chosenItem.dataset.fullHeight)
+    const minHeight = remToPx(Number(chosenItem.dataset.minheight))
+    const allItemTags = JSON.parse(chosenItem.dataset.data).tags
+        
+    columns[shortestColumnIndex].appendChild(chosenItem)
+    for (let [tag, info] of Object.entries(tagInfo)) {
+      const hasTag = allItemTags.includes(tag)
+      info.columnHeights[shortestColumnIndex] += hasTag ? fullHeight : minHeight
+      if (hasTag) info.waitTime = 1
+      else tagInfo[tag].waitTime++
+    }
+  }
 
   cols.dispatchEvent(new Event('columns-filled'))
 }
@@ -160,7 +235,6 @@ function resize() {
   for (let item of document.querySelectorAll('.work-images')) {
     layoutImages(item)
   }
-  resizeWorkItems()
 }
 
 function setupItems() {
@@ -187,7 +261,7 @@ window.addEventListener('resize', resize)
 
 function selectTag(element, tag) {
   setURLTag(tag)
-  element.scrollIntoViewIfNeeded()
+  element.scrollIntoView({inline: 'center'})
   for (let otherWorkTag of workTags) {
     const isThis = otherWorkTag == element
     otherWorkTag.classList.toggle('open', isThis)
@@ -195,7 +269,7 @@ function selectTag(element, tag) {
     otherWorkTag.classList.remove('short', 'ish')
   }
   for (let workItem of workItems) {
-    const hasTag = workItem.dataset.tags.includes(tag)
+    const hasTag = JSON.parse(workItem.dataset.tags).includes(tag)
     workItem.classList.toggle('open', hasTag)
     workItem.classList.toggle('closed', !hasTag)
     workItem.classList.remove('short', 'ish')
@@ -209,7 +283,7 @@ function mouseEnterTag(element, tag) {
   }
   for (let workItem of workItems) {
     const isOpen = workItem.classList.contains('open')
-    const hasTag = workItem.dataset.tags.includes(tag)
+    const hasTag = JSON.parse(workItem.dataset.tags).includes(tag)
     workItem.classList.add('short')
     workItem.classList.toggle('ish', isOpen !== hasTag)
     // workItem.classList.toggle('closed', !hasTag)
@@ -230,15 +304,15 @@ function mouseLeaveTag(element, tag) {
 
 
 addEventListener('DOMContentLoaded', () => {
-  const tag = getURLTag() || 'all'
-  const element = document.querySelector(`[data-tag="${tag}"]`)
+  const tag = (getURLTag() || 'all').replace(' ', '-')
+  const element = workTagContainer.querySelector(`[data-slug="${tag}"]`)
   if (element) {
     selectTag(element, tag)
   }
 })
 
 for (let element of document.querySelectorAll('.work-tag')) {
-  const tag = element.dataset.tag
+  const tag = element.dataset.slug
   element.addEventListener('click', () => selectTag(element, tag))
   element.addEventListener('mouseenter', () => mouseEnterTag(element, tag))
   element.addEventListener('mouseleave', () => mouseLeaveTag(element, tag))

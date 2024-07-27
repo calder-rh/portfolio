@@ -2,25 +2,14 @@
 import { Image } from "astro:assets"
 import Cap from "./Cap.astro"
 import random from "@src/scripts/random"
-import { adjustColor, cssString } from '@src/scripts/color-utils';
 
-const { data: {title, description, tags, images} } = Astro.props
-
-const allTags = tags.slice()
-import { default as tagTaxonomy } from '@src/other/tag-taxonomy.json'
-for (let i = 0; i < allTags.length; i++) {
-  const tag = allTags[i]
-  if (!(tag in tagTaxonomy)) continue
-  let parents = tagTaxonomy[tag]
-  if (!Array.isArray(parents)) parents = [parents]
-  allTags.push(...parents)
-}
-allTags.push('all')
-
+const { data } = Astro.props
+const { title, description, tags, date, priority, draft, images } = data
+const minHeight = 0.6 + title.length / 80
 ---
 
 <!-- <a> -->
-  <div class="work-item" data-tags={JSON.stringify(allTags)} style=`--min-width: ${random(0.05, 0.07)}; --min-height: ${0.6 + title.length / 80}rem; --work-item-color: var(--offwhite)`>
+  <div class="work-item" data-data={JSON.stringify(data)} data-tags={JSON.stringify(tags)} data-minHeight={`${minHeight}`} style=`--min-width: ${random(0.05, 0.07)}; --min-height: ${minHeight}rem; --work-item-color: var(--offwhite)`>
     <Cap side="top" squareness={38}></Cap>
     <div class="work-content-wrapper">
       <div class="work-content">

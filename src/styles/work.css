@@ -185,6 +185,12 @@ body {
   background-color: #4d362e;
 }
 
+@media screen and (max-height: 800px) {
+  #tags {
+    height: 8rem;
+  }
+}
+
 #tag-separator {
   height: 2rem;
   background-color: var(--offwhite);
@@ -205,6 +211,7 @@ body {
   --k-wdth: 120;
   line-height: 1.3;
   color: #4d362e;
+  padding: 0 1.5rem;
 }
 
 .work-tag.closed {

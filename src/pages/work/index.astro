@@ -1,43 +1,31 @@
 ---
-import WorkItem from "@src/components/WorkItem.astro";
+import WorkItem from "@src/components/WorkItem.astro"
 import BaseLayout from "../../layouts/BaseLayout.astro"
 import Columns from "@src/layouts/Columns.astro"
 
 import '@src/styles/work.css'
 
-import { getCollection } from 'astro:content';
-import WorkTag from "@src/components/WorkTag.astro";
-import { default as tagTaxonomy } from '@src/other/tag-taxonomy.json'
+import { getCollection } from 'astro:content'
+import WorkTag from "@src/components/WorkTag.astro"
+import { inferTags } from '@src/scripts/infer-tags.js'
 
-const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
-
-const allWork = await getCollection('work');
+const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}')
+const allWork = await getCollection('work')
+const allTags = await getCollection('tags')
 
 const workItems = []
-const tagSet = new Set()
 
 for (let content of allWork) {
-  const tags = content.data.tags
-  const inferredTags = tags.slice()
-  for (let i = 0; i < tags.length; i++) {
-    const tag = tags[i]
-    if (!(tag in tagTaxonomy)) continue
-    let parents = tagTaxonomy[tag]
-    if (!Array.isArray(parents)) parents = [parents]
-    for (let parent of parents) {
-      if (!(inferredTags.includes(parent))) inferredTags.push(parent)
-    }
-  }
-  inferredTags.push('all')
-
   // if (content.data.draft) continue
   const workItem = {
     title: content.data.title,
     description: content.data.description,
-    tags: content.data.tags,
+    tags: await inferTags(content.data.tags.map(item => item.slug)),
+    date: content.data.date,
+    priority: content.data.priority,
+    draft: content.data.draft,
     images: []
   }
-  for (let tag of inferredTags) tagSet.add(tag)
   const { remarkPluginFrontmatter } = await content.render()
   for (let item of remarkPluginFrontmatter.toc) {
     if (item.type === 'image') {
@@ -54,12 +42,38 @@ for (let content of allWork) {
   workItems.push(workItem)
 }
 
-const allTags = Array.from(tagSet).sort()
+const tagSorting = {}
+
+for (let tag of allTags) {
+  const slug = tag.slug
+
+  const lowestPriority = Math.max(...Array.from(allWork).map(item => item.data.priority))
+  let itemWeight = 0
+  for (let item of allWork) {
+    const tags = await inferTags(item.data.tags.map(tag => tag.slug))
+    if (tags.includes(slug)) itemWeight += lowestPriority + 1 - item.data.priority
+  }
+  
+  let numChildren = 0
+  for (let tag of allTags) {
+    const parents = await inferTags([tag.slug])
+    if (parents.includes(slug)) numChildren += 1
+  }
+
+  tagSorting[slug] = {numChildren, itemWeight}
+}
+
+const sortedTags = Array.from(allTags).sort((a, b) => {
+  const aSorting = tagSorting[a.slug]
+  const bSorting = tagSorting[b.slug]
+  if (aSorting.numChildren != bSorting.numChildren) return bSorting.numChildren - aSorting.numChildren
+  else return bSorting.itemWeight - aSorting.itemWeight
+})
 ---
 
 <BaseLayout title="Work">
   <div id="tags">
-    {allTags.map(tag => <WorkTag tag={tag}></WorkTag>)}
+    {sortedTags.map(tag => <WorkTag tag={tag.data.name} slug={tag.slug}></WorkTag>)}
   </div>
   <div id="tag-separator" />
   <Columns id="work-cols" columnWidth={600} columnGap={20} prepareItems={false} fillColumns={false}>
@@ -69,5 +83,4 @@ const allTags = Array.from(tagSet).sort()
 
 <script>
   import '@src/scripts/work.js'
-  // addEventListener('DOMContentLoaded', () => document.getElementById('work-cols')?.dispatchEvent(new Event('items-ready')))
 </script>

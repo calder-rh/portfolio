@@ -1,12 +1,11 @@
 ---
 import TextOval from "@src/layouts/TextOval.astro"
 
-const { tag, selected } = Astro.props
-let classes = 'work-tag'
-if (selected) classes += ' selected'
+const { tag, slug } = Astro.props
+let classes = 'work-tag closed'
 ---
 
-<div class={classes} data-tag={tag}>
+<div class={classes} data-tag={tag} data-slug={slug}>
   <TextOval squareness={32}>
     {tag}
   </TextOval>

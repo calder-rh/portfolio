@@ -1,11 +1,11 @@
-import { z, defineCollection } from 'astro:content';
+import { z, defineCollection, reference } from 'astro:content';
 
 const workCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
     description: z.ostring(),
-    tags: z.array(z.string()),
+    tags: z.array(reference('tags')),
     start_date: z.date().optional(),
     date: z.union([z.date(), z.literal('present')]),
     priority: z.onumber(),
@@ -13,6 +13,15 @@ const workCollection = defineCollection({
   })
 });
 
+const tagCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    name: z.string(),
+    parents: z.array(reference('tags')).optional()
+  })
+})
+
 export const collections = {
   'work': workCollection,
+  'tags': tagCollection
 };
