@@ -1,8 +1,12 @@
 function setURLTag(tag) {
   const hyphenTag = tag.replace(' ', '-')
+  const spaceTag = tag.replace('-', ' ')
   const url = new URL(window.location.href)
   url.searchParams.set('tag', hyphenTag)
   window.history.pushState({}, '', url)
+  let capitalizedTag = spaceTag.charAt(0).toUpperCase() + spaceTag.slice(1)
+  if (capitalizedTag == 'All') capitalizedTag = 'Work'
+  document.title = `${capitalizedTag} – Calder Ruhl Hansen`
 }
 
 function getURLTag() {
@@ -16,6 +20,7 @@ const cols = document.getElementById('work-cols')
 const workTagContainer = document.querySelector('#tags')
 const workTags = document.querySelectorAll('.work-tag')
 const workItems = document.querySelectorAll('.work-item')
+const nonDraftWorkItems = document.querySelectorAll('.work-item:not(.draft)')
 const workItemArray = Array.from(workItems)
 
 
@@ -36,15 +41,12 @@ function contentWidth() {
 }
 
 const totalImages = document.querySelectorAll('.work-images').length
-let imageSectionsLoaded = 0
 
 function imageLoad() {
   if (totalImages === 0) {
     resizeWorkItems()
   } else {
-    for (let item of document.querySelectorAll('.work-images')) {
-      item.addEventListener('images-loaded', () => layoutImages(item))
-  
+    for (let item of document.querySelectorAll('.work-images')) {  
       const images = item.querySelectorAll('img')
       const total = images.length
       let loaded = 0
@@ -68,6 +70,8 @@ function layoutImages(item) {
   const gap = remToPx(0.6)
   const defaultImageHeight = remToPx(10)
   const rowWidth = contentWidth()
+
+  let imageSectionsLoaded = 0
 
   for (let image of images) {
     waitingRoom.append(image)
@@ -125,7 +129,7 @@ function layoutImages(item) {
   resizeRow()
 
   imageSectionsLoaded++
-  if (imageSectionsLoaded == totalImages) resizeWorkItems()
+  if (imageSectionsLoaded === totalImages) resizeWorkItems()
 }
 
 function workItemsWidth() {
@@ -135,13 +139,18 @@ function workItemsWidth() {
 }
 
 function resizeWorkItems() {
-  document.querySelectorAll('.work-content-wrapper').forEach((item) => {
-    // const contentHeight = item.querySelector('.work-content-inner')?.clientHeight
-    const contentHeight = item.querySelector('.work-title').innerHTML.length * 8
+  workItems.forEach((item) => {
+    item.classList.remove('closable')
 
-    if (contentHeight) {
-      item.style.setProperty('--content-height', `${contentHeight}px`)
-    }
+    const contentHeight = (() => {
+      const contentHeight = item.querySelector('.work-content')?.clientHeight
+      if (JSON.parse(item.dataset.data).draft) return Math.max((item.querySelector('.work-title-contents').innerHTML.length) * 8, contentHeight)
+      else return contentHeight
+    })()
+    
+    item.style.setProperty('--content-height', `${contentHeight}px`)
+    const openIshContentHeight = item.querySelector('.work-content-wrapper').clientHeight * 0.8
+    item.style.setProperty('--open-ish-content-height', `${openIshContentHeight}px`)
   })
   workItems.forEach(item => {
     item.dataset.fullHeight = item.offsetHeight
@@ -173,11 +182,17 @@ async function fillColumns() {
   for (let workItem of workItems) {
     const data = JSON.parse(workItem.dataset.data)
     const priority = data.priority || Infinity
-    if (!prioritizedItemsMap.has(priority)) prioritizedItemsMap.set(priority, [])
-    prioritizedItemsMap.get(priority).push(workItem)
+    const priorityKey = JSON.stringify({draft: data.draft, priority})
+    if (!prioritizedItemsMap.has(priorityKey)) prioritizedItemsMap.set(priorityKey, [])
+    prioritizedItemsMap.get(priorityKey).push(workItem)
   }
   const prioritizedItems = []
-  for (let priority of Array.from(prioritizedItemsMap.keys()).sort()) {
+  for (let priority of Array.from(prioritizedItemsMap.keys()).sort((a, b) => {
+    const aKey = JSON.parse(a)
+    const bKey = JSON.parse(b)
+    if (aKey.draft !== bKey.draft) return aKey.draft - bKey.draft
+    else return aKey.priority - bKey.priority
+  })) {
     const datedPriorityPool = prioritizedItemsMap.get(priority).map(element => ({element: element, date: new Date (JSON.parse(element.dataset.data).date)}))
     datedPriorityPool.sort((a, b) => b.date - a.date)
     const priorityPool = datedPriorityPool.map(item => item.element)
@@ -231,6 +246,7 @@ async function fillColumns() {
 }
 
 function resize() {
+  console.log(document.querySelector('.work-item').style.getPropertyValue('--open-ish-content-height'))
   workItemsWidth()
   for (let item of document.querySelectorAll('.work-images')) {
     layoutImages(item)
@@ -238,9 +254,6 @@ function resize() {
 }
 
 function setupItems() {
-  for (let item of workItems) {
-    item.classList.remove('closable')
-  }
   imageLoad()
 }
 
@@ -261,7 +274,7 @@ window.addEventListener('resize', resize)
 
 function selectTag(element, tag) {
   setURLTag(tag)
-  element.scrollIntoView({block: 'nearest', inline: 'center'})
+  element.scrollIntoViewIfNeeded()
   for (let otherWorkTag of workTags) {
     const isThis = otherWorkTag == element
     otherWorkTag.classList.toggle('open', isThis)
@@ -301,13 +314,56 @@ function mouseLeaveTag(element, tag) {
 }
 
 
-
+let lastSelection = null
 
 addEventListener('DOMContentLoaded', () => {
   const tag = (getURLTag() || 'all').replace(' ', '-')
   const element = workTagContainer.querySelector(`[data-slug="${tag}"]`)
   if (element) {
     selectTag(element, tag)
+  }
+
+  for (let item of nonDraftWorkItems) {
+    const url = item.querySelector('.work-url').href
+
+    item.querySelector('.work-content-wrapper').addEventListener('mousedown', () => {
+      const selection = window.getSelection()
+      if (selection) {
+        lastSelection = {
+          anchorOffset: selection.anchorOffset,
+          focusOffset: selection.focusOffset,
+          string: selection.toString()
+        }
+      } else {
+        lastSelection = null
+      }
+    })
+
+    item.querySelector('.work-content-wrapper').addEventListener('mouseup', () => {
+      const currentSelection = window.getSelection()
+      if (
+        currentSelection === null
+        || currentSelection.isCollapsed
+        || (
+          (lastSelection !== null) && (currentSelection !== null)
+          && (lastSelection.anchorOffset === currentSelection.anchorOffset)
+          && (lastSelection.focusOffset === currentSelection.focusOffset)
+          && (lastSelection.string === currentSelection.toString())
+        )) {
+        window.location.href = url
+      }
+    })
+
+    const scaler = item.querySelector('.work-item-scaler')
+    function expand() {scaler.classList.add('hovered')}
+    function contract() {scaler.classList.remove('hovered')}
+
+    for (let cap of item.querySelectorAll('.cap')) {
+      cap.addEventListener('mouseenter', expand)
+      cap.addEventListener('mouseleave', contract)
+    }
+    item.querySelector('.work-content-wrapper').addEventListener('mouseenter', expand)
+    item.querySelector('.work-content-wrapper').addEventListener('mouseleave', contract)
   }
 })
 

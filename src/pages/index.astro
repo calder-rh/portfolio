@@ -16,7 +16,7 @@ function color() {
 
 import { getCollection } from 'astro:content';
 
-const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
+const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif,svg}');
 
 const allWork = await getCollection('work');
 const images = [];
@@ -29,7 +29,7 @@ for (let content of allWork) {
 			if (bubblePath) {
 				images.push({
 					id: item.id,
-					url: `/work${content.slug}#${item.id}`,
+					url: `/work/${content.slug}#${item.id}`,
 					img: imageImporters[bubblePath](),
 				})
 			}

@@ -5,7 +5,7 @@ const paddingValue = Math.max(items[0].ancestors.filter(e => e !== null).length 
 const padding = `${paddingValue}px`
 import { tocColor, cssString } from '@src/scripts/color-utils.js'
 
-const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif}')
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif,svg}')
 ---
 
 <div class="section-padding">
@@ -13,7 +13,7 @@ const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{j
     {items.filter(item => (item.image.toc !== undefined)).map(item => {
       const tocID = `toc-${item.id}`
       const imagePath = item.image.toc
-      if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif}"`)
+      if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif,svg}"`)
       return <a href={`#${item.id}`} class="toc-image-a">
         <div class="toc-item toc-image" id={tocID} style={`--toc-item-color: ${cssString(tocColor())}`} data-data={JSON.stringify({id: item.id, ancestors: item.ancestors})}>
           <div class="toc-image-wrapper">

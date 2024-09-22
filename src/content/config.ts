@@ -9,7 +9,8 @@ const workCollection = defineCollection({
     start_date: z.date().optional(),
     date: z.union([z.date(), z.literal('present')]),
     priority: z.onumber(),
-    draft: z.oboolean()
+    draft: z.oboolean(),
+    show_toc: z.oboolean()
   })
 });
 

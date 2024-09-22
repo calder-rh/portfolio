@@ -4,30 +4,34 @@ import Cap from "./Cap.astro"
 import random from "@src/scripts/random"
 
 const { data } = Astro.props
-const { title, description, tags, date, priority, draft, images } = data
+const { title, description, tags, images, draft, slug } = data
 const minHeight = 0.6 + title.length / 80
+const url = `/work/${slug}`
 ---
 
-<!-- <a> -->
-  <div class="work-item" data-data={JSON.stringify(data)} data-tags={JSON.stringify(tags)} data-minHeight={`${minHeight}`} style=`--min-width: ${random(0.05, 0.07)}; --min-height: ${minHeight}rem; --work-item-color: var(--offwhite)`>
-    <Cap side="top" squareness={38}></Cap>
+<div class={"work-item no-rise" + (draft ? " draft" : "")} data-data={JSON.stringify(data)} data-tags={JSON.stringify(tags)} data-minHeight={`${minHeight}`} style=`--min-width: ${random(0.05, 0.07)}; --min-height: ${minHeight}rem; --work-item-color: var(--offwhite)`>
+  <div class="work-item-scaler">
+    <Cap side="top" squareness={38} url={draft ? null : url}></Cap>
     <div class="work-content-wrapper">
-      <div class="work-content">
-        <div class="work-content-bg"></div>
-        <div class="work-content-inner konsole">
-          <h3 class="work-title work-text">{title}</h3>
-          {description && <p class="work-description work-text">{description}</p>}
-          {images.length > 0 &&
-            <div class="work-images">
-              <div class="image-rows"></div>
-              <div class="image-waiting-room">
-                {images.map(({url, img, alt}) => <a href={url}><Image src={img} alt={alt} format="png" height={200} loading="eager"/></a>)}
-              </div>
+      <div class="work-content konsole">
+        <h3 class="work-title work-text">{
+          (() => {
+            if (draft) return <span class="work-title-contents">{title}</span>
+            else return <a href={url} class="work-url work-title-contents">{title}</a>
+          })()
+        }</h3>
+        {description && <p class="work-description work-text">{description}</p>}
+        {draft && <p class="coming-soon">coming soon</p>}
+        {images.length > 0 &&
+          <div class="work-images">
+            <div class="image-rows"></div>
+            <div class="image-waiting-room">
+              {images.map(({url, img, alt}) => <Image src={img} alt={alt} format="png" height={200} loading="eager"/>)}
             </div>
-          }
-        </div>
+          </div>
+        }
       </div>
     </div>
-    <Cap side="bottom" squareness={35}></Cap>
+    <Cap side="bottom" squareness={35} url={draft ? null : url}></Cap>
   </div>
-<!-- </a> -->
+</div>

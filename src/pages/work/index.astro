@@ -9,7 +9,7 @@ import { getCollection } from 'astro:content'
 import WorkTag from "@src/components/WorkTag.astro"
 import { inferTags } from '@src/scripts/infer-tags.js'
 
-const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}')
+const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif,svg}')
 const allWork = await getCollection('work')
 const allTags = await getCollection('tags')
 
@@ -23,7 +23,8 @@ for (let content of allWork) {
     tags: await inferTags(content.data.tags.map(item => item.slug)),
     date: content.data.date,
     priority: content.data.priority,
-    draft: content.data.draft,
+    draft: content.data.draft === true,
+    slug: content.slug,
     images: []
   }
   const { remarkPluginFrontmatter } = await content.render()

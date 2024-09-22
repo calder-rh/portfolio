@@ -144,6 +144,11 @@ a:hover {
   transition: bottom 0.06s ease-out;
 }
 
+.no-rise a:hover {
+  bottom: 0;
+  padding-bottom: 0;
+}
+
 .oval-clip {
   position: fixed;
 }

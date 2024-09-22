@@ -2,11 +2,11 @@
 import '@src/styles/article.css'
 import BaseLayout from "./BaseLayout.astro";
 import TOC from '@src/components/toc/TOC.astro';
-const {title, description, toc} = Astro.props;
+const {title, description, showToc, toc} = Astro.props;
 ---
 
 <BaseLayout title={title}>
-  <TOC toc={toc} />
+  {showToc && <TOC toc={toc} />}
   <div id="content">
     <div class="page-intro">
       <h1 class="page-title konsole">{title}</h1>
