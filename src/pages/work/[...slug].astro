@@ -5,7 +5,6 @@ import 'src/scripts/collector.js';
 
 export async function getStaticPaths() {
   const workPages = await getCollection('work');
-  console.log(workPages)
   return workPages.filter(entry => !(entry.data.draft)).map(entry => ({
     params: { slug: entry.slug }, props: { entry },
   }))

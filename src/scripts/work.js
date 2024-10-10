@@ -58,6 +58,7 @@ function imageLoad() {
         if (image.complete) loadOne()
         else image.addEventListener('load', () => loadOne())
       }
+      resizeWorkItems()
     }
   }
 }
@@ -70,8 +71,6 @@ function layoutImages(item) {
   const gap = remToPx(0.6)
   const defaultImageHeight = remToPx(10)
   const rowWidth = contentWidth()
-
-  let imageSectionsLoaded = 0
 
   for (let image of images) {
     waitingRoom.append(image)
@@ -127,9 +126,6 @@ function layoutImages(item) {
     firstIteration = false
   }
   resizeRow()
-
-  imageSectionsLoaded++
-  if (imageSectionsLoaded === totalImages) resizeWorkItems()
 }
 
 function workItemsWidth() {
@@ -251,6 +247,7 @@ function resize() {
   for (let item of document.querySelectorAll('.work-images')) {
     layoutImages(item)
   }
+  resizeWorkItems()
 }
 
 function setupItems() {
