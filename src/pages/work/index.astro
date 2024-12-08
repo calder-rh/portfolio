@@ -61,12 +61,13 @@ for (let tag of allTags) {
     if (parents.includes(slug)) numChildren += 1
   }
 
-  tagSorting[slug] = {numChildren, itemWeight}
+  tagSorting[slug] = {unlisted: tag.data.unlisted, numChildren, itemWeight}
 }
 
 const sortedTags = Array.from(allTags).sort((a, b) => {
   const aSorting = tagSorting[a.slug]
   const bSorting = tagSorting[b.slug]
+  if (aSorting.unlisted != bSorting.unlisted) return bSorting.unlisted - aSorting.unlisted
   if (aSorting.numChildren != bSorting.numChildren) return bSorting.numChildren - aSorting.numChildren
   else return bSorting.itemWeight - aSorting.itemWeight
 })
@@ -74,7 +75,7 @@ const sortedTags = Array.from(allTags).sort((a, b) => {
 
 <BaseLayout title="Work">
   <div id="tags">
-    {sortedTags.map(tag => <WorkTag tag={tag.data.name} slug={tag.slug}></WorkTag>)}
+    {sortedTags.map(tag => <WorkTag tag={tag.data.name} slug={tag.slug} unlisted={tag.data.unlisted}></WorkTag>)}
   </div>
   <div id="tag-separator" />
   <Columns id="work-cols" columnWidth={600} columnGap={20} prepareItems={false} fillColumns={false}>

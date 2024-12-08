@@ -314,6 +314,14 @@ function mouseLeaveTag(element, tag) {
 let lastSelection = null
 
 addEventListener('DOMContentLoaded', () => {
+  for (let tag of document.querySelectorAll('.work-tag')) {
+    if (shouldShowTag(tag)) {
+      tag.style.display = 'block';
+    } else {
+      tag.remove()
+    }
+  }
+
   const tag = (getURLTag() || 'all').replace(' ', '-')
   const element = workTagContainer.querySelector(`[data-slug="${tag}"]`)
   if (element) {
@@ -363,6 +371,13 @@ addEventListener('DOMContentLoaded', () => {
     item.querySelector('.work-content-wrapper').addEventListener('mouseleave', contract)
   }
 })
+
+function shouldShowTag(tag) {
+  const currentUrl = new URL(window.location.href)
+  const unlistedTag = currentUrl.searchParams.get('unlisted-tag')
+  console.log(unlistedTag)
+  return !(JSON.parse(tag.dataset.unlisted)) || (tag.dataset.slug === unlistedTag)
+}
 
 for (let element of document.querySelectorAll('.work-tag')) {
   const tag = element.dataset.slug

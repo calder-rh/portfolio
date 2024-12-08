@@ -26,6 +26,8 @@ const adjustedPageTitle = (() => {
 </html>
 
 <script>
+	import preserveUnlistedTag from '../scripts/unlisted-tag.js';
+
 	let resizeTimeout = null
 
 	function resize() {
@@ -42,5 +44,6 @@ const adjustedPageTitle = (() => {
 	}
 
 	document.addEventListener('DOMContentLoaded', resize)
+	document.addEventListener('DOMContentLoaded', preserveUnlistedTag)
 	window.addEventListener('resize', resize)
 </script>

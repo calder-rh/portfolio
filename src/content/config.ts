@@ -18,6 +18,7 @@ const tagCollection = defineCollection({
   type: 'content',
   schema: z.object({
     name: z.string(),
+    unlisted: z.boolean().default(false),
     parents: z.array(reference('tags')).optional()
   })
 })
