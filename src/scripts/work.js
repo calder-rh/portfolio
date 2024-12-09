@@ -1,12 +1,11 @@
-function setURLTag(tag) {
+function setURLTag(element, tag) {
   const hyphenTag = tag.replace(' ', '-')
   const spaceTag = tag.replace('-', ' ')
   const url = new URL(window.location.href)
   url.searchParams.set('tag', hyphenTag)
   window.history.pushState({}, '', url)
-  let capitalizedTag = spaceTag.charAt(0).toUpperCase() + spaceTag.slice(1)
-  if (capitalizedTag == 'All') capitalizedTag = 'Work'
-  document.title = `${capitalizedTag} – Calder Ruhl Hansen`
+  let pageTitle = element.dataset.titleName
+  document.title = `${pageTitle} – Calder Ruhl Hansen`
 }
 
 function getURLTag() {
@@ -270,7 +269,7 @@ window.addEventListener('resize', resize)
 
 
 function selectTag(element, tag) {
-  setURLTag(tag)
+  setURLTag(element, tag)
   element.scrollIntoViewIfNeeded()
   for (let otherWorkTag of workTags) {
     const isThis = otherWorkTag == element

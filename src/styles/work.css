@@ -236,6 +236,10 @@ body {
   padding: 0 1.5rem;
 }
 
+.work-tag.unlisted {
+  margin-right: 1.5rem;
+}
+
 .work-tag.closed {
   height: 50%;
 }

@@ -9,7 +9,7 @@ export async function inferTags(tags) {
     let parents = tagData.data.parents
     if (!parents) continue
     for (let parent of parents) {
-      allTags.push((await getEntry('tags', parent.slug)).data.name)
+      allTags.push(parent.slug)
     }
   }
   allTags.push('all')
