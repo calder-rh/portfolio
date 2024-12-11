@@ -2,6 +2,7 @@
 import { Image } from "astro:assets"
 import Cap from "./Cap.astro"
 import random from "@src/scripts/random"
+import { marked } from 'marked'
 
 const { data } = Astro.props
 const { title, description, tags, images, draft, slug } = data
@@ -16,8 +17,9 @@ const url = `/work/${slug}`
       <div class="work-content konsole">
         <h3 class="work-title work-text">{
           (() => {
-            if (draft) return <span class="work-title-contents">{title}</span>
-            else return <a href={url} class="work-url work-title-contents">{title}</a>
+            const mdTitle = marked.parse(title).replaceAll(/<\/?p>/gi, '')
+            if (draft) return <span class="work-title-contents" set:html={mdTitle} />
+            else return <a href={url} class="work-url work-title-contents" set:html={mdTitle} />
           })()
         }</h3>
         {description && <p class="work-description work-text">{description}</p>}
