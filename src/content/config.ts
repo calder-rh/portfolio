@@ -20,6 +20,7 @@ const tagCollection = defineCollection({
     title: z.string(),
     'listed as': z.ostring(),
     unlisted: z.boolean().default(false),
+    'hide others': z.boolean().default(false),
     parents: z.array(reference('tags')).optional()
   })
 })

@@ -7,7 +7,7 @@ const {title, description, showToc, toc} = Astro.props;
 
 <BaseLayout title={title}>
   {showToc && <TOC toc={toc} />}
-  <div id="content">
+  <div class="content" id="article">
     <div class="page-intro">
       <h1 class="page-title konsole">{title}</h1>
       {description && <p class="page-description konsole">{description}</p>}

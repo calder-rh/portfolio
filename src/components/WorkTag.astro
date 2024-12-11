@@ -1,11 +1,11 @@
 ---
 import TextOval from "@src/layouts/TextOval.astro"
 
-const { listName, titleName, slug, unlisted } = Astro.props
+const { listName, titleName, slug, unlisted, hideOthers } = Astro.props
 let classes = 'work-tag closed' + (unlisted ? ' unlisted' : '')
 ---
 
-<div class={classes} data-list-name={listName} data-title-name={titleName} data-slug={slug} data-unlisted={JSON.stringify(unlisted)} style=`display: ${unlisted ? 'none' : 'block'}`>
+<div class={classes} data-list-name={listName} data-title-name={titleName} data-slug={slug} data-unlisted={JSON.stringify(unlisted)} data-hide-others={JSON.stringify(hideOthers)} style=`display: ${unlisted ? 'none' : 'block'}`>
   <TextOval squareness={32}>
     {listName}
   </TextOval>

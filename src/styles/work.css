@@ -122,6 +122,10 @@
   height: var(--min-height);
 }
 
+#work-cols.hide-others .work-item.closable.closed:not(.ish) .cap-container {
+  height: 0;
+}
+
 .work-item.closable.closed.ish {
   scale: calc(var(--min-width) * 3) 1;
 }
@@ -144,6 +148,10 @@
 
 .work-item.closable.open.ish .cap-container {
   height: 4.8rem;
+}
+
+.work-item.closable.hidden .cap-container {
+  height: 0;
 }
 
 
@@ -214,7 +222,9 @@ body {
 }
 
 #tag-separator {
-  height: 2rem;
+  /* height: 2rem; */
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   background-color: var(--offwhite);
 }
 
@@ -276,4 +286,56 @@ body {
 
 .work-tag .oval {
   height: 100%;
+}
+
+
+
+
+#tag-separator {
+  overflow: hidden;
+}
+
+#tag-intro-container {
+  padding: 0 1.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition-duration: var(--long-transition);
+}
+
+#tag-intro-current {
+  position: relative;
+  /* width: 100%; */
+}
+
+#tag-intro-incoming {
+  position: absolute;
+  top: 0;
+  width: calc(100% - 3rem);
+  transform-origin: top;
+}
+
+#tag-intro-waiting-room {
+  height: 0;
+  visibility: hidden;
+}
+
+#tag-intro-container.transitioning * {
+  transition: opacity var(--long-transition);
+}
+
+
+
+.tag-intro h1 {
+  font-family: 'Konsole';
+  font-size: 1.8rem;
+  font-weight: normal;
+  font-variation-settings: 'wght' 450, 'wdth' 115;
+  line-height: 1.3;
+  margin-bottom: 0;
+}
+
+.tag-intro h1 ~ p {
+  margin-top: .3rem;
 }

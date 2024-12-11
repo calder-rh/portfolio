@@ -1,6 +1,5 @@
 function setURLTag(element, tag) {
   const hyphenTag = tag.replace(' ', '-')
-  const spaceTag = tag.replace('-', ' ')
   const url = new URL(window.location.href)
   url.searchParams.set('tag', hyphenTag)
   window.history.pushState({}, '', url)
@@ -21,6 +20,20 @@ const workTags = document.querySelectorAll('.work-tag')
 const workItems = document.querySelectorAll('.work-item')
 const nonDraftWorkItems = document.querySelectorAll('.work-item:not(.draft)')
 const workItemArray = Array.from(workItems)
+const tagDict = {}
+for (let tag of workTags) {
+  tagDict[tag.dataset.slug] = tag
+}
+
+const allTagIntroContainer = document.getElementById('tag-intro-container')
+const currentIntroContainer = document.getElementById('tag-intro-current')
+const incomingIntroContainer = document.getElementById('tag-intro-incoming')
+const tagIntroWaitingRoom = document.getElementById('tag-intro-waiting-room')
+const tagIntros = document.querySelectorAll('.tag-intro')
+const tagIntroDict = {}
+for (let tagIntro of tagIntros) {
+  tagIntroDict[tagIntro.dataset.slug] = tagIntro
+}
 
 
 function remToPx(rem) {    
@@ -158,6 +171,7 @@ async function fillColumns() {
   const tags = Array.from(workTags).map(element => element.dataset.slug)
   const columns = cols.querySelectorAll('.column')
   const numColumns = columns.length
+  setHideOthers()
 
   function initialTagInfo() {
     return {
@@ -241,7 +255,6 @@ async function fillColumns() {
 }
 
 function resize() {
-  console.log(document.querySelector('.work-item').style.getPropertyValue('--open-ish-content-height'))
   workItemsWidth()
   for (let item of document.querySelectorAll('.work-images')) {
     layoutImages(item)
@@ -264,13 +277,26 @@ window.addEventListener('resize', resize)
 
 
 
+function setHideOthers() {
+  const url = new URL(window.location.href)
+  const tagElement = tagDict[url.searchParams.get('tag') || 'all']
+  const numCols = cols.querySelectorAll('.column').length
+  cols.classList.toggle('hide-others', numCols == 1 || JSON.parse(tagElement.dataset.hideOthers))
+}
 
 
-
+let tagChangeTimeout
 
 function selectTag(element, tag) {
-  setURLTag(element, tag)
   element.scrollIntoViewIfNeeded()
+
+  const url = new URL(window.location.href)
+  const selectedIsCurrent = tag === (url.searchParams.get('tag') || 'all')
+
+  setURLTag(element, tag)
+
+  setHideOthers()
+
   for (let otherWorkTag of workTags) {
     const isThis = otherWorkTag == element
     otherWorkTag.classList.toggle('open', isThis)
@@ -283,6 +309,65 @@ function selectTag(element, tag) {
     workItem.classList.toggle('closed', !hasTag)
     workItem.classList.remove('short', 'ish')
   }
+
+  if (selectedIsCurrent) return;
+
+  const alreadyTransitioning = allTagIntroContainer.classList.contains('transitioning')
+  const currentIntro = currentIntroContainer.querySelector('.tag-intro')
+  const incomingIntro = tagIntroDict[tag]
+  const oldIncomingIntro = alreadyTransitioning ? incomingIntroContainer.querySelector('.tag-intro') : null
+  const reverseTransition = currentIntro == incomingIntro
+
+  const currentHeight = currentIntro.offsetHeight + (currentIntro.offsetHeight === 0 ? 0 : remToPx(2.45))
+  const incomingHeight = incomingIntro.offsetHeight + (incomingIntro.offsetHeight === 0 ? 0 : remToPx(2.45))
+
+  if (!alreadyTransitioning) {
+    allTagIntroContainer.classList.add('transitioning')
+    allTagIntroContainer.style.height = `${currentHeight}px`
+    incomingIntroContainer.appendChild(incomingIntro)
+    setTimeout(() => {
+      allTagIntroContainer.style.height = `${incomingHeight}px`
+      incomingIntroContainer.style.opacity = '1'
+      currentIntroContainer.style.opacity = '0'
+    }, 1)
+    tagChangeTimeout = setTimeout(() => {
+      allTagIntroContainer.classList.remove('transitioning')
+      allTagIntroContainer.style.height = 'initial';
+      incomingIntroContainer.style.opacity = '0'
+      currentIntroContainer.style.opacity = '1'
+      currentIntroContainer.appendChild(incomingIntro)
+      tagIntroWaitingRoom.appendChild(currentIntro)
+    }, 300)
+  } else {
+    clearTimeout(tagChangeTimeout)
+    allTagIntroContainer.style.height = `${incomingHeight}px`
+
+    if (!reverseTransition) {
+      tagIntroWaitingRoom.appendChild(oldIncomingIntro)
+      incomingIntroContainer.appendChild(incomingIntro)
+      incomingIntroContainer.style.opacity = '1'
+      currentIntroContainer.style.opacity = '0'
+
+      tagChangeTimeout = setTimeout(() => {
+        allTagIntroContainer.classList.remove('transitioning')
+        allTagIntroContainer.style.height = 'initial';
+        incomingIntroContainer.style.opacity = '0'
+        currentIntroContainer.style.opacity = '1'
+        currentIntroContainer.appendChild(incomingIntro)
+        tagIntroWaitingRoom.appendChild(currentIntro)
+      }, 300)
+    } else {
+      incomingIntroContainer.style.opacity = '0'
+      currentIntroContainer.style.opacity = '1'
+
+      tagChangeTimeout = setTimeout(() => {
+        allTagIntroContainer.classList.remove('transitioning')
+        allTagIntroContainer.style.height = 'initial';
+        tagIntroWaitingRoom.appendChild(oldIncomingIntro)
+      }, 300)
+    }
+  }
+  
 }
 
 function mouseEnterTag(element, tag) {
@@ -326,6 +411,8 @@ addEventListener('DOMContentLoaded', () => {
   if (element) {
     selectTag(element, tag)
   }
+
+  currentIntroContainer.appendChild(tagIntroDict[tag])
 
   for (let item of nonDraftWorkItems) {
     const url = item.querySelector('.work-url').href
@@ -374,7 +461,6 @@ addEventListener('DOMContentLoaded', () => {
 function shouldShowTag(tag) {
   const currentUrl = new URL(window.location.href)
   const unlistedTag = currentUrl.searchParams.get('unlisted-tag')
-  console.log(unlistedTag)
   return !(JSON.parse(tag.dataset.unlisted)) || (tag.dataset.slug === unlistedTag)
 }
 
@@ -384,5 +470,3 @@ for (let element of document.querySelectorAll('.work-tag')) {
   element.addEventListener('mouseenter', () => mouseEnterTag(element, tag))
   element.addEventListener('mouseleave', () => mouseLeaveTag(element, tag))
 }
-
-

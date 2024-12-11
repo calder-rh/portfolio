@@ -5,7 +5,7 @@ import Columns from "@src/layouts/Columns.astro"
 
 import '@src/styles/work.css'
 
-import { getCollection } from 'astro:content'
+import { getCollection, render } from 'astro:content'
 import WorkTag from "@src/components/WorkTag.astro"
 import { inferTags } from '@src/scripts/infer-tags.js'
 
@@ -71,13 +71,32 @@ const sortedTags = Array.from(allTags).sort((a, b) => {
   if (aSorting.numChildren != bSorting.numChildren) return bSorting.numChildren - aSorting.numChildren
   else return bSorting.itemWeight - aSorting.itemWeight
 })
+
+const renderedIntros =  await Promise.all(allTags.map(async (tag) => {
+  const { Content } = await render(tag);
+  return { slug: tag.slug, content: Content }
+}))
+
 ---
 
 <BaseLayout title="Work">
   <div id="tags">
-    {sortedTags.map(tag => <WorkTag listName={tag.data['listed as'] ?? tag.data.title} titleName={tag.data.title} slug={tag.slug} unlisted={tag.data.unlisted}></WorkTag>)}
+    {sortedTags.map(tag => <WorkTag listName={tag.data['listed as'] ?? tag.data.title} titleName={tag.data.title} slug={tag.slug} unlisted={tag.data.unlisted} hideOthers={tag.data['hide others']}></WorkTag>)}
   </div>
-  <div id="tag-separator" />
+  <div id="tag-separator">
+    <div id="tag-intro-container">
+      <div id="tag-intro-current" />
+      <div id="tag-intro-incoming" />
+      <div id="tag-intro-waiting-room">
+        {renderedIntros.map((item) => 
+          <div class="tag-intro " data-slug={item.slug}>
+            <item.content />
+          </div>
+        )}
+      </div>
+    </div>
+    <!-- <p>Hi!</p> -->
+  </div>
   <Columns id="work-cols" columnWidth={600} columnGap={20} prepareItems={false} fillColumns={false}>
     {workItems.map((data) => <WorkItem data={data}/>)}
   </Columns>

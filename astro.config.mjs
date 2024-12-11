@@ -10,7 +10,7 @@ export default defineConfig({
   site: 'https://calder-rh.github.io/portfolio',
 
   redirects: {
-    '/work/d16': '../links/d16-workshop'
+    '/mas-portfolio': '/work/?unlisted-tag=mas-portfolio&tag=mas-portfolio'
   },
 
   // integrations: [mdx(), ],

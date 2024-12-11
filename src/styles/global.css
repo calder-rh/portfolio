@@ -57,7 +57,7 @@ html {
   scroll-behavior: smooth;
 }
 
-#content * {
+.content * {
   scroll-margin-top: 200px;
 }
 
@@ -66,12 +66,12 @@ p, li {
 }
 
 body {
-  padding: 0 20px;
+  padding: 0 1.25rem;
   margin: 180px auto 100px auto;
   overflow-x: hidden;
 }
 
-#content {
+.content {
   margin: 0 auto;
   width: auto;
   max-width: 720px;
@@ -205,7 +205,7 @@ p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
     font-size: 13px;
   }
 
-  #content {
+  #article {
     padding: 100px 10px;
   }
 
