@@ -17,7 +17,7 @@
 
 
 #work-cols {
-  margin: 0 20px;
+  margin: 0 1.25rem;
   /* padding: 0 20px; */
 }
 
@@ -177,12 +177,14 @@
 .work-title {
   margin-top: 0;
   font-size: 1.2rem;
+  line-height: 1.4em;
   font-variation-settings: 'wght' 450, 'wdth' 120;
   margin-bottom: 0.4rem;
 }
 
 .work-description, .coming-soon {
   font-size: 1rem;
+  line-height: 1.4em;
   font-variation-settings: 'wght' 420, 'wdth' 110;
   margin-top: 0;
   margin-bottom: 0.3rem;
@@ -209,7 +211,7 @@ body {
   display: flex;
   align-items: center;
   height: 12rem;
-  padding: 0 20px;
+  padding: 0 1.25rem;
   overflow: scroll;
   scroll-behavior: smooth;
   background-color: #4d362e;
@@ -247,7 +249,7 @@ body {
 }
 
 .work-tag.unlisted {
-  margin-right: 1.5rem;
+  margin-right: 1.25rem;
 }
 
 .work-tag.closed {

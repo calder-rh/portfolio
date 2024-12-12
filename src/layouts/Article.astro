@@ -3,14 +3,21 @@ import '@src/styles/article.css'
 import BaseLayout from "./BaseLayout.astro";
 import TOC from '@src/components/toc/TOC.astro';
 const {title, description, showToc, toc} = Astro.props;
+
+import { marked, Marked } from 'marked';
+import markedPlaintify from 'marked-plaintify'
+const mdTitle = marked.parse(title).replaceAll(/<\/?p>/gi, '')
+const plainTitle = new Marked()
+  .use(markedPlaintify())
+  .parse(title)
 ---
 
-<BaseLayout title={title}>
+<BaseLayout title={plainTitle}>
   {showToc && <TOC toc={toc} />}
   <div class="content" id="article">
     <div class="page-intro">
-      <h1 class="page-title konsole">{title}</h1>
-      {description && <p class="page-description konsole">{description}</p>}
+      <h1 class="page-title konsole" set:html={mdTitle}></h1>
+      <!-- {description && <p class="page-description konsole">{description}</p>} -->
     </div>
     <slot />
   </div>

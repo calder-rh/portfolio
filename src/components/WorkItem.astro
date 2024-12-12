@@ -28,7 +28,7 @@ const url = `/work/${slug}`
           <div class="work-images">
             <div class="image-rows"></div>
             <div class="image-waiting-room">
-              {images.map(({url, img, alt}) => <Image src={img} alt={alt} format="png" height={200} loading="eager"/>)}
+              {images.map(({url, img, alt}) => <Image src={img} alt={alt} format="png" width={600} loading="eager"/>)}
             </div>
           </div>
         }

@@ -9,8 +9,13 @@ const {
   caption,
   width,
   id,
+  classes=[],
   format='png'
 } = Astro.props;
+
+const classList = ["img"]
+if (classes) classList.push(...classes);
+const classesUsed = classList.join(" ");
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif,svg}')
 
@@ -18,6 +23,6 @@ const imagePath = '/src/assets/work/' + src;
 if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif,svg}"`);
 ---
 
-<div class="img">
+<div class={classesUsed}>
   {(uses === undefined || uses.includes('f')) && <Image id={id} src={images[imagePath]()} alt={alt} format={format}></Image>}
 </div>
