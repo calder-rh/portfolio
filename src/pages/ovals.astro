@@ -1,25 +1,14 @@
 ---
 import '../styles/global.css';
 import '../styles/oval-page.css';
-import Oval from '../layouts/Oval.astro';
+import Oval from '../layouts/Oval.astro'
+import BaseLayout from '@src/layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Ovals</title>
-	</head>
-	<body>
-		<h1>Welcome to my website! Here are some&nbsp;ovals:</h1>
-		<div id="ovals">
-			{[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => <Oval id={n} color="rgb(6, 12, 18)" link="/"></Oval>)}
-		</div>
-	</body>
 
-	<script>
-		import '../scripts/clip-paths.js';
-	</script>
-</html>
+<BaseLayout title="Ovals">
+	<h1>Welcome to my website! Here are some&nbsp;ovals:</h1>
+	<div id="ovals">
+		{[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => <div id="op-container"><Oval id={n}></Oval></div>)}
+	</div>
+</BaseLayout>

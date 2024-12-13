@@ -1,7 +1,7 @@
 :root {
   --short-transition: 0.1s;
   --long-transition: 0.3s;
-  --background: rgb(158, 183, 195);
+  --background: #9eb7c3;
   --menu-white: var(--offwhite);
 }
 
