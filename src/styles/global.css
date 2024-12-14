@@ -285,6 +285,7 @@ p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
 .caption {
   font-style: italic;
   font-size: 1.1rem;
+  line-height: 1.4;
   color: #463f3c;
   text-align: center;
   margin-top: 2rem;
