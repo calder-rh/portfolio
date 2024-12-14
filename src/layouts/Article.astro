@@ -22,3 +22,13 @@ const plainTitle = new Marked()
     <slot />
   </div>
 </BaseLayout>
+
+<script>
+  const captions = document.querySelectorAll('.caption');
+  captions.forEach(caption => {
+    const prevSibling = caption.previousElementSibling;
+    if (prevSibling) {
+      prevSibling.classList.add('captioned');
+    }
+  });
+</script>

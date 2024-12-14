@@ -37,12 +37,13 @@
   --orange: #ED4B00;
   --brown: #332019;
   --blue: #60889a;
-  --background: rgb(203, 208, 215);
+  --background: #cbd0d7;
   /* --menu-white: #dbdee3; */
-  --menu-white: rgb(217, 220, 225);
+  --menu-white: #d9dce1;
   --offwhite: rgb(229, 231, 235);
   --inverse-text: #d0c8c5;
   --oval-scale: 1.1;
+  --content-width: 720px;
 }
 
 html {
@@ -67,27 +68,31 @@ p, li {
 
 body {
   padding: 0 1.25rem;
-  margin: 180px auto 100px auto;
+  margin: 11.25rem auto 100px auto;
   overflow-x: hidden;
 }
 
 .content {
   margin: 0 auto;
   width: auto;
-  max-width: 720px;
+  max-width: var(--content-width);
 }
 
 /* .content .img, .content .media {
   margin: 2rem 0;
 } */
+ 
 
-.content .img:not(:first-child), .content .media:not(:first-child) {
+.content .img:not(:first-child), .content .media:not(:first-child), .content .box:not(:first-child)  {
   margin-top: 2rem;
 }
 
-.content .img:not(:last-child), .content .media:not(:last-child) {
+.content .img:not(:last-child), .content .media:not(:last-child), .content .box:not(:last-child) {
   margin-bottom: 2rem;
 }
+
+
+
 
 .media.youtube {
   position: relative;
@@ -231,17 +236,9 @@ p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
   html {
     font-size: 13px;
   }
-
-  /* #article {
-    padding: 50px 0;
-  } */
-
-  body {
-    margin-top: 100px;
-  }
 }
 
-.wide-content {
+.box {
   width: calc(100vw - 2.5rem);
   max-width: var(--max-width);
   position: relative;
@@ -250,6 +247,12 @@ p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
   transform: translate(var(--offset));
   padding-top: var(--top);
   padding-bottom: var(--bottom);
+}
+
+@media screen and (max-width: 752px) {
+  .box {
+    transform: translate(-50%);
+  }
 }
 
 .fullwidth {
@@ -263,14 +266,60 @@ p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
 .img img {
   width: 100%;
   height: auto;
-  display: inline-block;
+  display: block;
 }
 
+
+.shadow {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+}
 
 .sc {
   font-variant: all-small-caps;
 }
 
+.captioned {
+  margin-bottom: 0 !important;
+}
+
+.caption {
+  font-style: italic;
+  font-size: 1.1rem;
+  color: #463f3c;
+  text-align: center;
+  margin-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.caption a {
+  text-decoration-color: #463f3c;
+}
+
+.content h2 {
+  text-transform: uppercase;
+  font-size: 1.6rem;
+  letter-spacing: 0.03em;
+  /* font-variant: all-small-caps; */
+  /* font-style: italic; */
+  font-weight: normal;
+  margin-top: 4rem;
+  border-bottom: 3px solid var(--brown);
+  margin-bottom: 2rem;
+}
+
+.content h3 {
+  font-size: 1.5rem;
+  margin-top: 4rem;
+  margin-bottom: 1rem;
+}
+
+.content ul {
+
+}
+
+.content ul li {
+
+}
 
 
 body.no-transitions * {

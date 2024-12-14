@@ -1,0 +1,13 @@
+---
+const {factor=1, offset=0, top=0, bottom=0} = Astro.props;
+const style = `--offset: ${-50 + offset}%; --top: ${top}rem; --bottom: ${bottom}rem; ` 
++ (factor > 1 ? 
+  `--max-width: ${factor * 100}%;`
+  :
+  `--max-width: ${factor * 45}rem;`
+)
+---
+
+<div class="box" style={style}>
+  <slot></slot>
+</div>

@@ -40,10 +40,9 @@ export function collector() {
       for (let node of element.children) {
         if (node.type === 'mdxJsxFlowElement') {
           const name = node.name
-          const containerNames = ['Wide']
+          const containerNames = ['Box']
           const classAttr = node.attributes.find(item => item.name === 'class');
           if (containerNames.includes(name) || (classAttr && /\bcollect\b/.test(classAttr.value))) {
-            console.log(node)
             collectFrom(node)
             continue
           }
@@ -110,7 +109,6 @@ export function collector() {
           }
           
           if (isImg) {
-            console.log(node)
             const mainImgPath = 'src/assets/work/' + node.attributes.find(attribute => attribute.name === 'src').value
             const parentPath = path.dirname(mainImgPath)
             const mainExtension = path.extname(mainImgPath)
