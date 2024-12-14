@@ -315,12 +315,23 @@ p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
 }
 
 .content ul {
-
+  padding-left: 1.2em;
 }
 
 .content ul li {
-
+  list-style: none;
+  position: relative;
 }
+
+.content ul li::before {
+  content: "•";
+  font-size: 1em;
+  font-family: inherit;
+  color: currentColor;
+  position: absolute;
+  left: -1em;
+}
+
 
 
 body.no-transitions * {
