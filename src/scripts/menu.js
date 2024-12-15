@@ -25,11 +25,13 @@ close.on('mouseleave', () => {
   }
 })
 
-close.on('click', () => {
+function doClose() {
   nav.removeClass('open').addClass('closed')
   shouldICareAboutMouseenter = false
   nav.removeClass('ish reverse')
-})
+}
+
+close.on('click', doClose)
 
 
 
@@ -57,21 +59,30 @@ menu.on('click', () => {
 })
 
 
-
+let lastWidth = document.documentElement.clientWidth
 function handleResize() {
   const width = document.documentElement.clientWidth
   nav.toggleClass('thin', width <= 780)
+  if (lastWidth > 780 && width <= 780) {
+    nav.removeClass('open').addClass('closed')
+    nav.removeClass('ish reverse')  
+  }
+  lastWidth = width
 }
 
 
 $(document).ready(handleResize)
 $(window).on('resize', handleResize)
 
+menu.on('transitionstart', () => {
+  if (!nav.hasClass('closed') || nav.hasClass('ish')) {
+    headerContainer.style.height = `100vh`
+  }
+})
+
 menu.on('transitionend', () => {
   if (nav.hasClass('closed') && !nav.hasClass('ish')) { 
     bg.removeClass('show')
     headerContainer.style.height = headerHeight
-  } else {
-    headerContainer.style.height = `100vh`
   }
 })

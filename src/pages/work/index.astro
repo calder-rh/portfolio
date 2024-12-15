@@ -45,32 +45,48 @@ for (let content of allWork) {
 
 const tagSorting = {}
 
-for (let tag of allTags) {
-  const slug = tag.slug
+const orderedTags = [
+  'all',
+  'art',
+  'design',
+  'code',
+  'writing-systems',
+  'encoding-systems',
+  'lettering',
+  'type',
+  '3d',
+  'generative-art',
+  'photography',
+  'sound'
+]
 
-  const lowestPriority = Math.max(...Array.from(allWork).map(item => item.data.priority))
-  let itemWeight = 0
-  for (let item of allWork) {
-    if (item.data.draft) continue
-    const tags = await inferTags(item.data.tags.map(tag => tag.slug))
-    if (tags.includes(slug)) itemWeight += lowestPriority + 1 - item.data.priority
-  }
+// for (let tag of allTags) {
+//   const slug = tag.slug
+
+//   const lowestPriority = Math.max(...Array.from(allWork).map(item => item.data.priority))
+//   let itemWeight = 0
+//   for (let item of allWork) {
+//     if (item.data.draft) continue
+//     const tags = await inferTags(item.data.tags.map(tag => tag.slug))
+//     if (tags.includes(slug)) itemWeight += lowestPriority + 1 - item.data.priority
+//   }
   
-  let numChildren = 0
-  for (let tag of allTags) {
-    const parents = await inferTags([tag.slug])
-    if (parents.includes(slug)) numChildren += 1
-  }
+//   let numChildren = 0
+//   for (let tag of allTags) {
+//     const parents = await inferTags([tag.slug])
+//     if (parents.includes(slug)) numChildren += 1
+//   }
 
-  tagSorting[slug] = {unlisted: tag.data.unlisted, numChildren, itemWeight}
-}
+//   tagSorting[slug] = {unlisted: tag.data.unlisted, numChildren, itemWeight}
+// }
 
 const sortedTags = Array.from(allTags).sort((a, b) => {
-  const aSorting = tagSorting[a.slug]
-  const bSorting = tagSorting[b.slug]
-  if (aSorting.unlisted != bSorting.unlisted) return bSorting.unlisted - aSorting.unlisted
-  if (aSorting.numChildren != bSorting.numChildren) return bSorting.numChildren - aSorting.numChildren
-  else return bSorting.itemWeight - aSorting.itemWeight
+  // const aSorting = tagSorting[a.slug]
+  // const bSorting = tagSorting[b.slug]
+  if (a.data.unlisted != b.data.unlisted) return b.data.unlisted - a.data.unlisted
+  return orderedTags.indexOf(a.slug) - orderedTags.indexOf(b.slug)
+  // if (aSorting.numChildren != bSorting.numChildren) return bSorting.numChildren - aSorting.numChildren
+  // else return bSorting.itemWeight - aSorting.itemWeight
 })
 
 const renderedIntros =  await Promise.all(allTags.map(async (tag) => {
