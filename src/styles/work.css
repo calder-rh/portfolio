@@ -43,6 +43,23 @@
   background-color: var(--work-item-color);
 }
 
+.work-link {
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+}
+
+/* .work-link.dragging {
+  pointer-events: none;
+} */
+
+.work-link:hover {
+  position: absolute;
+}
+
 .work-item:not(.draft) .work-content-wrapper {
   cursor: pointer;
 }

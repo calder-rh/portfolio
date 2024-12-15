@@ -404,7 +404,7 @@ function mouseLeaveTag(element, tag) {
 }
 
 
-let lastSelection = null
+let isClicked = false
 
 addEventListener('DOMContentLoaded', () => {
   for (let tag of document.querySelectorAll('.work-tag')) {
@@ -426,33 +426,7 @@ addEventListener('DOMContentLoaded', () => {
   for (let item of nonDraftWorkItems) {
     const url = item.querySelector('.work-url').href
 
-    item.querySelector('.work-content-wrapper').addEventListener('mousedown', () => {
-      const selection = window.getSelection()
-      if (selection) {
-        lastSelection = {
-          anchorOffset: selection.anchorOffset,
-          focusOffset: selection.focusOffset,
-          string: selection.toString()
-        }
-      } else {
-        lastSelection = null
-      }
-    })
-
-    item.querySelector('.work-content-wrapper').addEventListener('mouseup', () => {
-      const currentSelection = window.getSelection()
-      if (
-        currentSelection === null
-        || currentSelection.isCollapsed
-        || (
-          (lastSelection !== null) && (currentSelection !== null)
-          && (lastSelection.anchorOffset === currentSelection.anchorOffset)
-          && (lastSelection.focusOffset === currentSelection.focusOffset)
-          && (lastSelection.string === currentSelection.toString())
-        )) {
-        window.location.href = url
-      }
-    })
+    const workLink = item.querySelector('.work-link')
 
     const scaler = item.querySelector('.work-item-scaler')
     function expand() {scaler.classList.add('hovered')}
