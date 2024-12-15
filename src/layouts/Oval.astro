@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import randomOvalPath from "../scripts/clip-paths";
 import random from '@src/scripts/random.js'
 
-const { squareness=30, id, classes=[], link, newTab, image, format="png", contain, altText, data, style="" } = Astro.props;
+const { squareness=30, id, classes=[], link, newTab, image, imageWidth, format="png", contain, altText, data, style="" } = Astro.props;
 const classList = ["oval"]
 if (link) classList.push("link");
 if (classes) classList.push(...classes);
@@ -25,14 +25,14 @@ const pathUrl = 'url(#' + pathId + ')';
     <div class={classesUsed} id={id} data-data={data} style={style}>
       <a href={link} target={newTab ? "_blank" : null} rel={newTab ? "noopener noreferrer" : null}>
         <div class="oval-link-container">
-          {image !== undefined && <Image src={image} alt={altTextUsed} format={format}/>}
+          {image !== undefined && <Image src={image} width={imageWidth} alt={altTextUsed} format={format}/>}
           <slot />
         </div>
       </a>
     </div>
   ) : (
     <div class={classesUsed} id={id} data-data={data} style={style}>
-      {image !== undefined && <Image src={image} alt={altTextUsed} format={format}/>}
+      {image !== undefined && <Image src={image} width={imageWidth} alt={altTextUsed} format={format}/>}
       <slot />
     </div>
   )}

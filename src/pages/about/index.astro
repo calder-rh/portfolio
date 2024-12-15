@@ -1,6 +1,20 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import Article from "../../layouts/Article.astro";
+import '@src/styles/about.css'
+import { Image } from "astro:assets";
+import portrait from '@src/assets/about/portrait.jpg'
 ---
 
-<BaseLayout pageTitle="About">
-</BaseLayout>
+
+<Article title="About">
+  <div id="portrait-bio">
+    <Image id="portrait" src={portrait} width={300} alt="Portrait of me"></Image>
+    <div id="bio">
+      <p>
+        Hi! I’m a person who makes systems of meaningful shapes. I grew up in Richmond, California, in a family that likes orange, brown, light blue, and slightly irregular ovals (hmm…) I studied type design at <a href="https://letterformarchive.org/type-west-in-person/">Type West</a>, then computer science and other topics at Brown University. I graduated in 2023 and am currently living in Providence and designing things at <a href="https://swayspace.com">Swayspace</a>. 
+      </p>
+    </div>
+  </div>
+  <h4>Colophon</h4>
+  <p>The typefaces on this site are <a href="https://elenaschneider.com/Konsole">Konsole</a> by Elena Schneider and <a href="https://www.cnap.fr/sites/infini/en/">Infini</a> by Sandrine Nugue. The website is built with <a href="https://astro.build">Astro</a>.</p>
+</Article>

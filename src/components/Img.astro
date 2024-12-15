@@ -4,6 +4,7 @@ import { Image } from "astro:assets";
 
 const {
   src,
+  fullSrc,
   alt,
   uses='ftpb',
   caption,
@@ -19,10 +20,16 @@ const classesUsed = classList.join(" ");
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif,svg}')
 
-const imagePath = '/src/assets/work/' + src;
+const imagePath = (() => {
+  if (fullSrc) {
+    return '/src/assets/' + fullSrc;
+  } else {
+    return '/src/assets/work/' + src;
+  }
+})()
 if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif,svg}"`);
 ---
 
 <div class={classesUsed}>
-  {(uses === undefined || uses.includes('f')) && <Image id={id} src={images[imagePath]()} alt={alt} format={format}></Image>}
+  {(uses === undefined || uses.includes('f')) && <Image id={id} src={images[imagePath]()} width={width} alt={alt} format={format} loading="lazy"></Image>}
 </div>

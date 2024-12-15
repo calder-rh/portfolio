@@ -236,9 +236,15 @@ async function fillColumns() {
     prioritizedItemsMap.get(priorityKey).push(workItem)
   }
   const prioritizedItems = []
+
+  // const currentUrl = new URL(window.location.href)
+  // const unlistedTag = currentUrl.searchParams.get('unlisted-tag')
   for (let priority of Array.from(prioritizedItemsMap.keys()).sort((a, b) => {
     const aKey = JSON.parse(a)
     const bKey = JSON.parse(b)
+    // const aUnlisted = unlistedTag && aKey.tags && aKey.tags.contains(unlistedTag)
+    // const bUnlisted = unlistedTag && bKey.tags && bKey.tags.contains(unlistedTag)
+    // if (aUnlisted !== bUnlisted) return aUnlisted - bUnlisted
     if (aKey.draft !== bKey.draft) return aKey.draft - bKey.draft
     else return aKey.priority - bKey.priority
   })) {
@@ -324,7 +330,6 @@ function setHideOthers(tag = null) {
   }
   const tagElement = tagDict[tag || 'all']
   const numCols = cols.querySelectorAll('.column').length
-  console.log(numCols == 1 || JSON.parse(tagElement.dataset.hideOthers))
   cols.classList.toggle('hide-others', numCols == 1 || JSON.parse(tagElement.dataset.hideOthers))
 }
 
@@ -486,7 +491,7 @@ function shouldShowTag(tag) {
 
 for (let element of document.querySelectorAll('.work-tag')) {
   const tag = element.dataset.slug
-  element.addEventListener('pointerdown', () => {
+  element.addEventListener('mousedown', () => {
     const currentTag = getURLTag();
     selectTag(tag, currentTag)
     setURLTag(element.dataset.titleName, tag, true)

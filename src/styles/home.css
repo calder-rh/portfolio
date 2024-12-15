@@ -1,3 +1,12 @@
+/* 
+html {
+  background-color: var(--offwhite);
+}
+
+#header {
+  background-color: var(--offwhite) !important;
+} */
+
 body {
   max-width: unset;
 }

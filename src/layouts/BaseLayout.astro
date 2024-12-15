@@ -26,7 +26,7 @@ const adjustedPageTitle = (() => {
 </html>
 
 <script>
-	import preserveUnlistedTag from '../scripts/unlisted-tag.js';
+	import processLinks from '../scripts/links.js';
 
 	let resizeTimeout = null
 
@@ -43,7 +43,6 @@ const adjustedPageTitle = (() => {
 		}, 100)
 	}
 
-	document.addEventListener('DOMContentLoaded', resize)
-	document.addEventListener('DOMContentLoaded', preserveUnlistedTag)
+	document.addEventListener('DOMContentLoaded', () => {processLinks(); resize()})
 	window.addEventListener('resize', resize)
 </script>

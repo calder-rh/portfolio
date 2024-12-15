@@ -53,8 +53,25 @@ for (let content of allWork) {
 	</TextOval>
 
 	<Columns id="oval-cols" columnWidth={300} columnGap={0} paddingFunction="frown" prepareItems={false}>
-		{images.map(({id, url, img}) => <Squish><Oval squareness={32} id={id} image={img} link={url} format="png" style={`--oval-color: ${color()}`}/></Squish>)}
-		{Array.from({length: 50}, (e, i) => i).map((i) => <Squish><TextOval squareness={32} id={i} link="/" style={`--oval-color: ${color()}`}></TextOval></Squish>)}
+		{
+			(() => {
+				let arr = Array(50).fill(null).concat(images);
+				let currentIndex = arr.length
+				while (currentIndex != 0)  {
+					let randomIndex = Math.floor(Math.random() * currentIndex)
+					currentIndex--
+					;[arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]]
+				}
+				return arr
+			})().map((e, i) => {
+				if (e) {
+					const {id, url, img} = e
+					return <Squish><Oval squareness={32} id={id} image={img} imageWidth={400} link={url} style={`--oval-color: ${color()}`}/></Squish>
+				} else {
+					return <Squish><TextOval squareness={32} id={i} style={`--oval-color: ${color()}`}></TextOval></Squish>
+				}
+			})
+		}
 	</Columns>
 </BaseLayout>
 

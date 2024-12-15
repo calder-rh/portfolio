@@ -15,7 +15,7 @@ const url = `/work/${slug}`
     <Cap side="top" squareness={38} url={draft ? null : url}></Cap>
     <div class="work-content-wrapper">
       <div class="work-content konsole">
-        <a class="work-link no-rise" href={url}/>
+        {!draft && <a class="work-link no-rise" href={url}/>}
         <h3 class="work-title work-text">{
           (() => {
             const mdTitle = marked.parse(title).replaceAll(/<\/?p>/gi, '')
