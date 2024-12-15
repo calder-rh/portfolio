@@ -5,6 +5,10 @@ const close = $('#close-menu')
 const nav = $('nav')
 const bg = $('#menu-bg-scaler')
 
+const headerContainer = document.querySelector('#header-container')
+const headerHeight = window.getComputedStyle(document.documentElement).getPropertyValue('--header-height');
+
+
 let shouldICareAboutMouseenter = true
 
 
@@ -66,5 +70,8 @@ $(window).on('resize', handleResize)
 menu.on('transitionend', () => {
   if (nav.hasClass('closed') && !nav.hasClass('ish')) { 
     bg.removeClass('show')
+    headerContainer.style.height = headerHeight
+  } else {
+    headerContainer.style.height = `100vh`
   }
 })

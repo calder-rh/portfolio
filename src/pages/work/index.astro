@@ -51,6 +51,7 @@ for (let tag of allTags) {
   const lowestPriority = Math.max(...Array.from(allWork).map(item => item.data.priority))
   let itemWeight = 0
   for (let item of allWork) {
+    if (item.data.draft) continue
     const tags = await inferTags(item.data.tags.map(tag => tag.slug))
     if (tags.includes(slug)) itemWeight += lowestPriority + 1 - item.data.priority
   }

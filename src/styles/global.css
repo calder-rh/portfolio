@@ -57,8 +57,6 @@ html {
   color: var(--brown);
 
   scroll-behavior: smooth;
-
-  overflow-x: hidden;
 }
 
 .content * {

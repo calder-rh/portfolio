@@ -5,24 +5,32 @@
 
 :root {
   --menu-gray: rgb(71, 75, 84);
+  --header-height: 5.375rem;
 }
 
-#header {
-  --header-height: 5.375rem;
-
+#header-container {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
+  height: 100vh;
   z-index: 2;
+  overflow: hidden;
+}
+
+#header {
+  height: var(--header-height);
   padding: 0.625rem 1.25rem;
   box-sizing: border-box;
-  height: var(--header-height);
   background-color: var(--menu-white);
 
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+
+
+  /* pointer-events: default; */
 }
 
 #header a {
