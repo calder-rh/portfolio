@@ -54,10 +54,14 @@ function contentWidth() {
 
 const totalImages = document.querySelectorAll('.work-images').length
 
+let loadedImageSections = 0
+let totalImageSections = document.querySelectorAll('.work-images').length
+
 function imageLoad() {
   if (totalImages === 0) {
     resizeWorkItems()
   } else {
+    loadedImageSections = 0
     for (let item of document.querySelectorAll('.work-images')) {  
       const images = item.querySelectorAll('img')
       const total = images.length
@@ -70,10 +74,10 @@ function imageLoad() {
         if (image.complete) loadOne()
         else image.addEventListener('load', () => loadOne())
       }
-      resizeWorkItems()
     }
   }
 }
+
 
 
 function layoutImages(item) {
@@ -138,6 +142,11 @@ function layoutImages(item) {
     firstIteration = false
   }
   resizeRow()
+
+  loadedImageSections++
+  if (loadedImageSections === totalImageSections) {
+    resizeWorkItems()
+  }
 }
 
 function workItemsWidth() {
