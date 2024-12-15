@@ -1,16 +1,47 @@
-function setURLTag(element, tag) {
+function setupTags(updateHistory) {
+  for (let tag of document.querySelectorAll('.work-tag')) {
+    if (shouldShowTag(tag)) {
+      tag.style.display = 'block';
+    } else {
+      tag.remove()
+    }
+  }
+
+  const tag = getURLTag()
+  let tagElement
+  for (let element of workTagContainer.querySelectorAll('.work-tag')) {
+    const slug = element.dataset.slug
+    const intro = tagIntroDict[slug]
+    if (slug == tag) {
+      currentIntroContainer.appendChild(intro)
+      tagElement = element
+    } else {
+      tagIntroWaitingRoom.append(intro)
+    }
+  }
+  selectTag(tag, tag)
+  setURLTag(tagElement.dataset.titleName, tag, updateHistory)
+}
+
+function setURLTag(titleName, tag, updateHistory) {
   const hyphenTag = tag.replace(' ', '-')
   const url = new URL(window.location.href)
   url.searchParams.set('tag', hyphenTag)
-  window.history.pushState({}, '', url)
-  let pageTitle = element.dataset.titleName
+  if (updateHistory) window.history.pushState({titleName, tag}, '', url)
+  let pageTitle = titleName
   document.title = `${pageTitle} – Calder Ruhl Hansen`
 }
 
 function getURLTag() {
   const url = new URL(window.location.href)
-  return (url.searchParams.get('tag') || 'all').replace('-', ' ')
+  return (url.searchParams.get('tag') || 'all')
 }
+
+window.addEventListener('popstate', (event) => {
+  const {titleName, tag} = event.state
+  setupTags(false)
+});
+
 
 
 
@@ -286,25 +317,30 @@ window.addEventListener('resize', resize)
 
 
 
-function setHideOthers() {
-  const url = new URL(window.location.href)
-  const tagElement = tagDict[url.searchParams.get('tag') || 'all']
+function setHideOthers(tag = null) {
+  if (tag === null) {
+    const url = new URL(window.location.href)
+    tag = url.searchParams.get('tag')
+  }
+  const tagElement = tagDict[tag || 'all']
   const numCols = cols.querySelectorAll('.column').length
+  console.log(numCols == 1 || JSON.parse(tagElement.dataset.hideOthers))
   cols.classList.toggle('hide-others', numCols == 1 || JSON.parse(tagElement.dataset.hideOthers))
 }
 
 
 let tagChangeTimeout
 
-function selectTag(element, tag) {
+function selectTag(tag, oldTag) {
+  const element = tagDict[tag]
+
   element.scrollIntoViewIfNeeded()
 
   const url = new URL(window.location.href)
-  const selectedIsCurrent = tag === (url.searchParams.get('tag') || 'all')
+  // const selectedIsCurrent = tag === (url.searchParams.get('tag') || 'all')
+  const selectedIsCurrent = tag === oldTag
 
-  setURLTag(element, tag)
-
-  setHideOthers()
+  setHideOthers(tag)
 
   for (let otherWorkTag of workTags) {
     const isThis = otherWorkTag == element
@@ -318,7 +354,7 @@ function selectTag(element, tag) {
     workItem.classList.toggle('closed', !hasTag)
     workItem.classList.remove('short', 'ish')
   }
-
+  
   if (selectedIsCurrent) return;
 
   const alreadyTransitioning = allTagIntroContainer.classList.contains('transitioning')
@@ -376,7 +412,6 @@ function selectTag(element, tag) {
       }, 300)
     }
   }
-  
 }
 
 function mouseEnterTag(element, tag) {
@@ -407,26 +442,28 @@ function mouseLeaveTag(element, tag) {
 let isClicked = false
 
 addEventListener('DOMContentLoaded', () => {
-  for (let tag of document.querySelectorAll('.work-tag')) {
-    if (shouldShowTag(tag)) {
-      tag.style.display = 'block';
-    } else {
-      tag.remove()
-    }
-  }
-
-  const tag = (getURLTag() || 'all').replace(' ', '-')
-  const element = workTagContainer.querySelector(`[data-slug="${tag}"]`)
-  if (element) {
-    selectTag(element, tag)
-  }
-
-  currentIntroContainer.appendChild(tagIntroDict[tag])
+  setupTags(true)
+  
 
   for (let item of nonDraftWorkItems) {
-    const url = item.querySelector('.work-url').href
+    // const url = item.querySelector('.work-url').href
 
-    const workLink = item.querySelector('.work-link')
+    // const workLink = item.querySelector('.work-link')
+
+    // workLink.addEventListener('mousedown', () => {
+    //   console.log('clik')
+    //   isClicked = true
+    // })
+
+    // workLink.addEventListener('mousemove', () => {
+    //   if (isClicked) workLink.classList.add('dragging')
+    // })
+
+    // workLink.addEventListener('mouseup', () => {
+    //   console.log('uhasdf')
+    //   isClicked = false
+    //   workLink.classList.remove('dragging')
+    // })
 
     const scaler = item.querySelector('.work-item-scaler')
     function expand() {scaler.classList.add('hovered')}
@@ -449,7 +486,11 @@ function shouldShowTag(tag) {
 
 for (let element of document.querySelectorAll('.work-tag')) {
   const tag = element.dataset.slug
-  element.addEventListener('click', () => selectTag(element, tag))
+  element.addEventListener('pointerdown', () => {
+    const currentTag = getURLTag();
+    selectTag(tag, currentTag)
+    setURLTag(element.dataset.titleName, tag, true)
+  })
   element.addEventListener('mouseenter', () => mouseEnterTag(element, tag))
   element.addEventListener('mouseleave', () => mouseLeaveTag(element, tag))
 }
