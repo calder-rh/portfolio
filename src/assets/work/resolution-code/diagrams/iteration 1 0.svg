@@ -8,8 +8,15 @@
         stroke-miterlimit: 10;
         stroke-width: 4px;
       }
+
+      .cls-2 {
+        fill: #fff;
+      }
     </style>
   </defs>
+  <g id="Layer_3" data-name="Layer 3">
+    <rect class="cls-2" width="304" height="304"/>
+  </g>
   <g id="Layer_1" data-name="Layer 1">
     <path d="M155.75,0c19.7,145.31,61.68,199.28,148.25,213.88V0h-148.25Z"/>
   </g>

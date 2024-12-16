@@ -87,9 +87,10 @@ body {
   margin: 2rem 0;
 } */
 
-.box .img {
+/* .box .img {
   margin-top: var(--space);
-}
+  margin-bottom: var(--space);
+} */
 
 .content .img:not(:first-child), .content .media:not(:first-child), .content .box:not(:first-child)  {
   margin-top: var(--space);

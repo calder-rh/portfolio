@@ -29,6 +29,6 @@ const imagePath = (() => {
 if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif,svg}"`);
 ---
 
-<div class={classesUsed}>
-  {(uses === undefined || uses.includes('f')) && <Image id={id} src={images[imagePath]()} width={width} alt={alt} format={format} loading="lazy"></Image>}
+<div class={classesUsed} id={id}>
+  {(uses === undefined || uses.includes('f')) && <Image src={images[imagePath]()} width={width} alt={alt} format={format} loading="lazy"></Image>}
 </div>

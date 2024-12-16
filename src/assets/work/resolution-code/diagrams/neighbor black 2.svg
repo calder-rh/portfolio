@@ -6,34 +6,35 @@
         stroke: #252525;
       }
 
-      .cls-1, .cls-2, .cls-3 {
+      .cls-1, .cls-2, .cls-3, .cls-4 {
         stroke-miterlimit: 10;
         stroke-width: 4px;
       }
 
-      .cls-1, .cls-3 {
-        fill: none;
-      }
-
       .cls-2 {
-        fill: rgba(155, 185, 196, .5);
         stroke: #9bb9c4;
       }
 
+      .cls-2, .cls-4 {
+        fill: rgba(155, 185, 196, .5);
+      }
+
       .cls-3 {
+        fill: none;
         stroke: #ebebeb;
       }
 
-      .cls-4 {
+      .cls-5 {
         fill: #fff;
+      }
+
+      .cls-4 {
+        stroke: #ff6b5c;
       }
     </style>
   </defs>
   <g id="Layer_3" data-name="Layer 3">
-    <rect class="cls-4" x="0" width="304" height="304"/>
-  </g>
-  <g id="Layer_1" data-name="Layer 1">
-    <path d="M155.75,0c19.7,145.31,61.68,199.28,148.25,213.88V0h-148.25Z"/>
+    <rect class="cls-5" x="0" width="304" height="304"/>
   </g>
   <g id="pixels">
     <rect class="cls-3" x="189.5" y="189.5" width="37.5" height="37.5" transform="translate(416.5 0) rotate(90)"/>
@@ -49,8 +50,10 @@
     <rect class="cls-3" x="227" y="227" width="75" height="75"/>
     <rect class="cls-1" x="227" y="77" width="75" height="75"/>
     <rect class="cls-1" x="227" y="2" width="75" height="75"/>
-    <rect class="cls-2" x="152" y="2" width="18.75" height="18.75"/>
-    <rect class="cls-2" x="170.75" y="2" width="18.75" height="18.75"/>
+    <rect class="cls-2" x="152" y="2" width="9.37" height="9.37"/>
+    <rect class="cls-2" x="161.38" y="2" width="9.37" height="9.37"/>
+    <rect class="cls-2" x="152" y="11.37" width="9.37" height="9.37"/>
+    <rect class="cls-2" x="161.38" y="11.37" width="9.37" height="9.37"/>
     <rect class="cls-2" x="152" y="20.75" width="18.75" height="18.75"/>
     <rect class="cls-2" x="170.75" y="20.75" width="18.75" height="18.75"/>
     <rect class="cls-2" x="152" y="39.5" width="18.75" height="18.75"/>
@@ -85,5 +88,6 @@
     <rect class="cls-2" x="283.25" y="189.5" width="18.75" height="18.75"/>
     <rect class="cls-2" x="264.5" y="208.25" width="18.75" height="18.75"/>
     <rect class="cls-2" x="283.25" y="208.25" width="18.75" height="18.75"/>
+    <rect class="cls-4" x="170.75" y="2" width="18.75" height="18.75"/>
   </g>
 </svg>

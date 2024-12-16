@@ -17,6 +17,9 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [collector]
   },
+  
 
-  integrations: [mdx()],
+  integrations: [mdx({
+    smartypants: false,
+  }),],
 });

@@ -1,5 +1,5 @@
 ---
-const {factor=1, offset=0, top=0, bottom=0, space=0} = Astro.props;
+const {factor=1, offset=0, top=0, bottom=0, space=2} = Astro.props;
 const style = `--offset: ${-50 + offset}%; --top: ${top}rem; --bottom: ${bottom}rem; --space: ${space}rem; ` 
 + (factor > 1 ? 
   `--max-width: ${factor * 100}%;`
