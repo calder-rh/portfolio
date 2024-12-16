@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 304 304">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #252525;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        stroke-miterlimit: 10;
+        stroke-width: 4px;
+      }
+
+      .cls-1, .cls-3 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: rgba(155, 185, 196, .5);
+        stroke: #9bb9c4;
+      }
+
+      .cls-3 {
+        stroke: #ebebeb;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1" data-name="Layer 1">
+    <path d="M155.75,0c19.7,145.31,61.68,199.28,148.25,213.88V0h-148.25Z"/>
+  </g>
+  <g id="pixels">
+    <rect class="cls-3" x="2" y="2" width="150" height="150"/>
+    <rect class="cls-3" x="2" y="152" width="150" height="150"/>
+    <rect class="cls-3" x="152" y="227" width="75" height="75"/>
+    <rect class="cls-3" x="227" y="227" width="75" height="75"/>
+    <rect class="cls-1" x="227" y="77" width="75" height="75"/>
+    <rect class="cls-1" x="227" y="2" width="75" height="75"/>
+    <rect class="cls-2" x="189.5" y="2" width="37.5" height="37.5"/>
+    <rect class="cls-2" x="152" y="2" width="37.5" height="37.5"/>
+    <rect class="cls-2" x="189.5" y="39.5" width="37.5" height="37.5"/>
+    <rect class="cls-2" x="152" y="39.5" width="37.5" height="37.5"/>
+    <rect class="cls-2" x="189.5" y="77" width="37.5" height="37.5"/>
+    <rect class="cls-2" x="152" y="77" width="37.5" height="37.5"/>
+    <rect class="cls-2" x="189.5" y="114.5" width="37.5" height="37.5"/>
+    <rect class="cls-2" x="152" y="114.5" width="37.5" height="37.5"/>
+    <rect class="cls-2" x="264.5" y="189.5" width="37.5" height="37.5" transform="translate(491.5 -75) rotate(90)"/>
+    <rect class="cls-2" x="264.5" y="152" width="37.5" height="37.5" transform="translate(454 -112.5) rotate(90)"/>
+    <rect class="cls-2" x="227" y="189.5" width="37.5" height="37.5" transform="translate(454 -37.5) rotate(90)"/>
+    <rect class="cls-2" x="227" y="152" width="37.5" height="37.5" transform="translate(416.5 -75) rotate(90)"/>
+    <rect class="cls-2" x="189.5" y="189.5" width="37.5" height="37.5" transform="translate(416.5 0) rotate(90)"/>
+    <rect class="cls-2" x="189.5" y="152" width="37.5" height="37.5" transform="translate(379 -37.5) rotate(90)"/>
+    <rect class="cls-2" x="152" y="189.5" width="37.5" height="37.5" transform="translate(379 37.5) rotate(90)"/>
+    <rect class="cls-2" x="152" y="152" width="37.5" height="37.5" transform="translate(341.5 0) rotate(90)"/>
+  </g>
+</svg>

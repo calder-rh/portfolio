@@ -1,0 +1,63 @@
+.morse {
+  --k-wght: 700;
+  word-spacing: .5em;
+}
+
+.morse.centered {
+  font-size: 2em;
+  text-align: center;
+  --k-wght: 700;
+}
+
+#crh-encoding {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.encoding-col {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: start;
+}
+
+.encoding-pair {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+}
+
+.encoding {
+  font-family: Gintronic;
+  text-align: right;
+}
+
+.character {
+  width: 1em;
+  text-align: center;
+  font-family: Konsole;
+  font-variation-settings: "wdth" 115, "wght" 550;
+}
+
+.character.long {
+  width: 5em;
+  text-align: left;
+  padding-left: 0.1em;
+  font-family: Konsole;
+  font-variation-settings: "wdth" 115, "wght" 550;
+}
+
+@media screen and (max-width: 550px) {
+  #crh-encoding {
+    font-size: 3.3vw;
+  }
+}
+
+.encoding .prefix {
+  color: var(--blue);
+}

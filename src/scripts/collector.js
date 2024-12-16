@@ -113,7 +113,7 @@ export function collector() {
             const parentPath = path.dirname(mainImgPath)
             const mainExtension = path.extname(mainImgPath)
             const filename = path.basename(mainImgPath, mainExtension)
-            const uses = (node.attributes.find(attribute => attribute.name == 'uses') || {value: null}).value
+            const uses = (node.attributes.find(attribute => attribute.name == 'uses') || {value: "f"}).value
             const alt = node.attributes.find(attribute => attribute.name == 'alt')
             const format = node.attributes.find(attribute => attribute.name == 'format')
             

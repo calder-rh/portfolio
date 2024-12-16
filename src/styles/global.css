@@ -26,11 +26,15 @@
   font-style: italic;
 }
 
-
 @font-face {
   font-family: 'Infini';
   src: url('/fonts/Infini/03_Bold/infini-bold.woff');
   font-weight: bold;
+}
+
+@font-face {
+  font-family: 'Gintronic';
+  src: url('/fonts/Gintronic/Gintronic-Regular.woff2')
 }
 
 :root {
@@ -294,7 +298,7 @@ p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
   line-height: 1.4;
   color: #463f3c;
   text-align: center;
-  margin-top: 2rem;
+  padding-top: 2rem;
   padding-bottom: 2rem;
 }
 
@@ -336,8 +340,14 @@ p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
 }
 
 .content ul {
-  padding-left: 1.2em;
+  padding-left: 1.8em;
+  /* padding-left: 0; */
 }
+
+.content ol {
+  padding-left: 1.8em;
+}
+
 
 .content ul li {
   list-style: none;
