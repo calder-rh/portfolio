@@ -87,3 +87,66 @@
   margin: 0;
 }
 
+.instruction {
+  font-family: Konsole;
+  display: inline-block;
+  font-size: 1rem;
+  position: relative;
+  bottom: 0.05em;
+  font-variation-settings: "wdth" 110, "wght" 550;
+  padding: 0 0.3em;
+  /* text-transform: uppercase; */
+  background-color: var(--blue);
+}
+
+.instruction.white {
+  background-color: white;
+  color: var(--brown);
+}
+
+.instruction.black {
+  background-color: black;
+  color: #ddd;
+}
+
+.instruction.split {
+  background-color: var(--blue);
+  color: #ebeff2;
+}
+
+.shape-building {
+  width: 100%;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.instruction.short {
+  text-transform: uppercase;
+}
+
+.instruction-sequence .instruction:not(:last-child){
+  margin-right: 0.25rem;
+}
+
+#extending-sequence {
+  white-space: nowrap;
+  overflow: hidden;
+  margin: 2rem 0;
+  width: calc(var(--content-width) + 0.5 * (100vw - var(--content-width)) - 1rem);
+  max-width: calc(100vw - 2.25rem);
+
+  mask-image: linear-gradient(
+      to right, 
+      black 0%,       /* Fully opaque */
+      black calc(100% - 10rem), /* Fully opaque up to 10rem from the right */
+      transparent 100% /* Fade out completely at the right edge */
+  );
+  -webkit-mask-image: linear-gradient(
+      to right, 
+      black 0%, 
+      black calc(100% - 10rem), 
+      transparent 100%
+  );
+  mask-repeat: no-repeat;
+}

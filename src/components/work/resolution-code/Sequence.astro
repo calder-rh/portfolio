@@ -1,0 +1,18 @@
+---
+import Black from './Black.astro'
+import White from './White.astro'
+import Split from './Split.astro'
+let {instrs, small=false} = Astro.props
+---
+
+<span class="instruction-sequence">
+  {[...instrs].map(item => {
+    if (item == 'b') {
+      return <Black s={small}/>
+    } else if (item == 'w') {
+      return <White s={small}/>
+    } else {
+      return <Split s={small}/>
+    }
+  })}
+</span>

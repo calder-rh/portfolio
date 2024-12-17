@@ -9,6 +9,10 @@ priority: 1
 import Box from 'src/layouts/Box.astro';
 import Img from 'src/components/Img.astro';
 import Caption from 'src/layouts/Caption.astro';
+import Black from 'src/components/work/resolution-code/Black.astro';
+import Split from 'src/components/work/resolution-code/Split.astro';
+import White from 'src/components/work/resolution-code/White.astro';
+import Sequence from 'src/components/work/resolution-code/Sequence.astro';
 import 'src/styles/work/resolution-code.css';
 
 Resolution Code is an evolution of the ideas that prompted me to design [Contour Code]('/work/contouur-code). My original hope with Contour Code was that it could be used to assign meaning to any shape in one’s environment. However, I soon realized that it only works for crisp geometric shapes; most shapes from the real world are too rough or complicated for it to handle. I set out to create a more flexible system that can interpret a fractal just as easily as it interprets a circle. Resolution Code can do this, and it can also encode any given text into a shape, which will usually end up being a fractal. While Contour Code can represent a given text in many different ways depending on the artistic whims of the user, Resolution Code has exactly one way to represent any piece of text. In mathematical terms, it is a bijection between shapes (defined loosely) and strings of characters.
@@ -90,7 +94,7 @@ To address these issues, let’s do two things:
 
 (2) **Use an unambigous encoding system.** Any binary encoding will be designed to have this proprty, since computers need to be able to tell what text is represented from just the zeros and ones without relying on gaps between them. Usually they do this by making each character the same length — if every character is represented by 8 digits, then you always know where one ends and the next begins.
 
-We could use an existing encoding, like <span class="sc">ASCII</span> or Unicode, but these have some digit sequences that don’t represent actual characters. If you use the system to interpret an arbitrary image, you don’t want a quarter of the resulting characters to be invisible instructions for a nonexistent [teletype machine](https://en.wikipedia.org/wiki/ASCII#Control_code_table). So let’s use a custom encoding that doesn’t include those things:
+We could use an existing encoding, like <span class="sc">ASCII</span> or Unicode, but these have some digit sequences that don’t represent actual characters. If you use this system to interpret an arbitrary image, you don’t want a quarter of the resulting characters to be invisible instructions for a nonexistent [teletype machine](https://en.wikipedia.org/wiki/ASCII#Control_code_table). So let’s use a custom encoding that doesn’t include those things:
 
 <div id="crh-encoding">
   <div class="encoding-col" id="encoding-1">
@@ -199,7 +203,7 @@ We could use an existing encoding, like <span class="sc">ASCII</span> or Unicode
 
 Here, some of the characters are 6 bits long, while others are 7, but it’s still unambiguous — if you look at the first bit and it’s <span class="encoding prefix">1</span>, that tells you the encoding is 6 bits long, while if the first bit is <span class="encoding prefix">0</span>, that tells you it’s 7 bits long. So you can always tell when one character ends and the next begins.
 
-To convert an encoding to an image, let’s say that 0 is white and 1 is black. (If you’re a designer I know this might be the opposite of what you’re used to, but remember that “black” is really just shorthand for “a point inside the shape” while “white” means “outside the shape” — 1 is inside, 0 is outside.) 
+To convert an encoding to an image, let’s say that 0 is white and 1 is black. (If you’re a designer I know this might be the opposite of what you’re used to, but remember that “black” is really just shorthand for “a point inside the shape” while “white” means “outside the shape.” In is 1, out is 0.) 
 
 
 Now that we have this system, let’s encode some longer text. Here’s the [<span class="sc">UDHR</span>](https://www.ohchr.org/en/universal-declaration-of-human-rights) again:
@@ -228,42 +232,49 @@ Resolution Code uses a different way of describing shapes that better understand
 
 Let’s look at how it describes this shape/image (contrived to be a good example):
 
-<Img class="shape-building" src="resolution-code/diagrams/sample shape.svg" alt=""/>
+<Img classes={["shape-building"]} src="resolution-code/diagrams/sample shape.svg" alt=""/>
 
 We will start by representing this image at a 2×2 resolution. I’ll overlay a blank 2×2 grid on top of this, with the pixels waiting to be filled in:
 
-<Img class="shape-building" src="resolution-code/diagrams/iteration 1 0.svg" alt=""/>
+<Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 1 0.svg" alt=""/>
 
 Now let’s use the shape as a guide to fill in the pixels. The top left pixel covers a region of the image that’s fully white, so we can color this pixel white:
 
-<Img class="shape-building" src="resolution-code/diagrams/iteration 1 1.svg" alt=""/>
+<Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 1 1.svg" alt=""/>
 
-The top right pixel covers a region that’s partly black and partly white. We need more detail to represent what’s going on here, so we *divide it into four smaller pixels* that we’ll return to later.
+The top right pixel covers a region that’s partly black and partly white. We need more detail to represent what’s going on here, so we *split it into four smaller pixels* that we’ll return to later.
 
-<Img class="shape-building" src="resolution-code/diagrams/iteration 1 2.svg" alt=""/>
+<Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 1 2.svg" alt=""/>
 
-We proceed to the next row: the bottom right pixel is fully white, while the bottom right has both black and white, so we divide it as well:
+We proceed to the next row: the bottom left pixel is fully white, while the bottom right needs to be split:
 
-<Img class="shape-building" src="resolution-code/diagrams/iteration 1 3.svg" alt=""/>
+<Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 1 3.svg" alt=""/>
 
+Now we’ve reached the bottom of the image. At this point we’ve already defined half of the image. But there is the other half that needs more detail. So we go back and start a second iteration, doing the same thing at a smaller scale. As before, we read from left to right, then top to bottom. The first one needs to be split:
 
+<Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 2 1.svg" alt=""/>
 
+The second one is fully black:
 
-Now we’ve reached the bottom of the image. At this point we’ve already defined half of the image — the half that’s fully outside the shape.
-But there is the other half that needs more detail. So we go back to the start and start a second iteration, doing the same thing at a smaller scale.
-Reading from left to right, then top to bottom
-Split, In, Split, In, Split, Split, Out, Out
+<Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 2 2.svg" alt=""/>
 
+And so on:
 
+<Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 2 end.svg" alt=""/>
 
+As we go, we keep track of what we did with each pixel. In the first iteration earlier, the first pixel was <White/>, the second was <Split/>, the third was <White/>, and the fourth was <Split/>. In second iteration that we just finished, the instructions were <Sequence instrs={"sbsbssww"}/>.
 
+A third iteration: as you go through the pixels remaining in the above image, the shape indicates that the next instructions are <Sequence instrs={"sbsbsbsswssbwwss"} small={true}/>.
 
+<Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 3.svg" alt=""/>
 
-And another iteration:
-S, I, S, I, S, I, S, S, O, S, S, I, O, O, S, S.
-And so on. We could do this indefinitely. It produces an ever-lengthening sequence:
-...
-If you got this sequence, you could use it to reconstruct the shape in as much detail as you’d like.
+We can keep doing this indefinitely, describing the shape in ever-increasing detail and producing an ever-growing sequence:
+
+<div id="extending-sequence">
+  <Sequence instrs={"wswssbsbsswwsbsbsbsswssbwwsssbsbsbsbsswswssbwwsbssbbwssbsssbwwss"} small={true}/>
+</div>
+
+With only this sequence, you could reconstruct the shape in as much detail as you’d like.
 
 So at the moment we have a system that inputs a sequence of B/W/S instructions and outputs a shape. To represent text, we just have to assign each character to a different sequence of Black, White, and Split instructions
 space BBB
