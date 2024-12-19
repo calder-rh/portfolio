@@ -43,9 +43,10 @@ My goal was to create a process with the following properties:
 
 In other words, a [bijection](https://en.wikipedia.org/wiki/Bijection) between texts and shapes.
 
+
 ### Background concepts and exploration
 
-The basic idea is to break the text down into characters, then interpret these characters as a description of a shape. But “a description of a shape” is rather vague. There are many ways to describe shapes. For example, consider this shape:
+The basic idea is to break the text down into characters, then use some system to interpret these characters as a description of a shape. But “a description of a shape” is rather vague. There are many ways to describe shapes. For example, consider this shape:
 
 <Img src="resolution-code/diagrams/shape.svg" alt=""/>
 
@@ -63,7 +64,7 @@ Recall that the goal is to be able to describe *any* shape, including complicate
 
 Some types of description are better for this than others. Constructing it from simple geometric shapes (1) wouldn’t really work, since it’s not composed of such shapes. Describing how to draw the outline (2) also wouldn’t work very well — the outline is so rough that it would take a huge number of very fine-grained steps to even start to approximate it, and there’s no good way to decide on one approximation over another. Giving a mathematical definition (3) isn’t good because the shape doesn’t conform to any simple mathematical function.
 
-Using pixels (4), however, works great. So let’s say that this encoding process will describe a shape as a grid of pixels, each of which can either be black or white. (Of course shapes don’t have to be black and white — more generally I could be saying figure/ground or inside/outside, but I’ll say black/white for simplicity.) Therefore our goal is to create a process that inputs some text and outputs a list of black/white pixels that can be put together into an image.
+Using pixels (4), however, works great. (That’s how this webpage does it!) So let’s say that our encoding process will describe a shape as a grid of pixels, each of which can either be black or white. (Of course shapes don’t have to be black and white — it would be more accurate to say figure/ground or inside/outside, but throughout this description I’ll say black/white for simplicity.) Therefore our goal is to create a process that inputs some text and outputs a list of black/white pixels that can be put together into an image.
 
 One way to do this is to convert the text to Morse code, and then say that a dot becomes a white pixel while a dash becomes a black pixel. For example, “word” in Morse code is
 
@@ -92,9 +93,9 @@ To address these issues, let’s do two things:
 
 (1) **Define the width of the image beforehand.** This way, as we’re setting down the black and white pixels into rows, we always know where to go back to start a new row, rather than having to guess at the image dimensions. Let’s go with 300 pixels wide for now.
 
-(2) **Use an unambigous encoding system.** Any binary encoding will be designed to have this proprty, since computers need to be able to tell what text is represented from just the zeros and ones without relying on gaps between them. Usually they do this by making each character the same length — if every character is represented by 8 digits, then you always know where one ends and the next begins.
+(2) **Use an unambiguous encoding system.** Binary is a good choice here, because any binary encoding system used by a computer has to be unambiguous: computers need to be able to tell what text is represented from just the zeros and ones without relying on gaps between them. Usually they do this by making each character the same length — if every character is represented by a sequence of 8 digits, then you always know where one ends and the next begins.
 
-We could use an existing encoding, like <span class="sc">ASCII</span> or Unicode, but these have some digit sequences that don’t represent actual characters. If you use this system to interpret an arbitrary image, you don’t want a quarter of the resulting characters to be invisible instructions for a nonexistent [teletype machine](https://en.wikipedia.org/wiki/ASCII#Control_code_table). So let’s use a custom encoding that doesn’t include those things:
+However, the most common encodings in use — <span class="sc">ASCII</span> and Unicode — have some digit sequences that don’t represent actual characters. If we based our image↔︎text system on one of these encodings, then used it to interpret an arbitrary shape, a quarter of the resulting characters would be invisible instructions for a nonexistent [teletype machine](https://en.wikipedia.org/wiki/ASCII#Control_code_table). So let’s use a custom encoding that only includes characters we want:
 
 <div id="crh-encoding">
   <div class="encoding-col" id="encoding-1">
@@ -201,9 +202,9 @@ We could use an existing encoding, like <span class="sc">ASCII</span> or Unicode
   </div>
 </div>
 
-Here, some of the characters are 6 bits long, while others are 7, but it’s still unambiguous — if you look at the first bit and it’s <span class="encoding prefix">1</span>, that tells you the encoding is 6 bits long, while if the first bit is <span class="encoding prefix">0</span>, that tells you it’s 7 bits long. So you can always tell when one character ends and the next begins.
+Here, some of the characters are 6 bits long, while others are 7, which might make it seem ambiguous — if you’re given a long string of bits, how do you know whether to look at the first 6 bits or the first 7 to determine the first character? However, I designed this encoding so that all the 6-bit characters start with <span class="bits">1</span>, while all the 7-bit characters start with <span class="bits">0</span>. So you can look at the first bit and it tells you how many to read off. That way you can always tell when one character ends and the next begins.
 
-To convert an encoding to an image, let’s say that 0 is white and 1 is black. (If you’re a designer I know this might be the opposite of what you’re used to, but remember that “black” is really just shorthand for “a point inside the shape” while “white” means “outside the shape.” In is 1, out is 0.) 
+To convert an encoding to an image, let’s say that <span class="bits">0</span> is white and <span class="bits">1</span> is black. (If you’ve worked with colors on computers, this is the opposite of what you’re used to, but remember that “black” is really just shorthand for “a point inside the shape” while “white” means “outside the shape.” In is <span class="bits">1</span>, out is <span class="bits">0</span>.) 
 
 
 Now that we have this system, let’s encode some longer text. Here’s the [<span class="sc">UDHR</span>](https://www.ohchr.org/en/universal-declaration-of-human-rights) again:
@@ -222,15 +223,18 @@ Let’s also try going the other way, and convert a shape into text. Here’s wh
 </div>
 </Box>
 
-The white region of the image has long stretches of white pixels, which become a bunch of zeros, and since the sequence <span class="encoding">0000000</span> encodes the *character* zero we have long stretches of zeros. Similarly, the black region becomes a bunch of ones, which results in long stretches of hyphens.
+The white region of the image has long stretches of white pixels, which become a bunch of zeros, and since the sequence <span class="bits">0000000</span> encodes the *character* zero the output text has long stretches of zeros. Similarly, the black region becomes a bunch of ones, which results in long stretches of hyphens.
 
-What these examples show is that, while it is possible to represent any shape by listing its pixels row by row, this type of description misses a core fact about how shapes work — the fact that shapes are contiguous blocks of space that are fully black, surrounded by a contiguous block of white space. Because the system so far doesn’t understand this fact about shapes, it uses a lot of redundant characters to spell out all these contiguous blocks when we decode an image. And because it doesn’t understand how shapes work, it doesn’t produce real shapes when we give it arbitrary text.
+What these examples show is that, while it is possible to represent any shape by listing its pixels row by row, this type of description misses a core fact about how shapes work — the fact that shapes are contiguous blocks of space that are fully black, surrounded by a contiguous block of white space. Because the system so far doesn’t understand this fact about shapes, it uses a lot of redundant characters to spell out all these contiguous blocks when we decode an image. And because it doesn’t understand how shapes work, it doesn’t produce contiguous blocks of space when we give it arbitrary text.
 
-### Designing a new process for describing shapes
 
-Resolution Code uses a different way of describing shapes that better understands how they work. It starts by representing an image at a very low resolution, and then adds more and more detail, but only in the places that need detail.
+### A better process for describing shapes
 
-Let’s look at how it describes this shape/image (contrived to be a good example):
+Resolution Code uses a different way of describing shapes that better respects this principle. It starts by representing an image at a very low resolution, and then adds more and more detail, but only in the places that need detail.
+
+(For the rest of this explanation I’ll be using the word “shape” somewhat loosely — the system we will land on really generates *images* or *compositions*, which can be made of many shapes. But the point is that the compositions are in fact made of *shapes*, rather than a noisy texture of pixels.)
+
+Let’s look at how the system describes this shape/image:
 
 <Img classes={["shape-building"]} src="resolution-code/diagrams/sample shape.svg" alt=""/>
 
@@ -250,7 +254,7 @@ We proceed to the next row: the bottom left pixel is fully white, while the bott
 
 <Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 1 3.svg" alt=""/>
 
-Now we’ve reached the bottom of the image. At this point we’ve already defined half of the image. But there is the other half that needs more detail. So we go back and start a second iteration, doing the same thing at a smaller scale. As before, we read from left to right, then top to bottom. The first one needs to be split:
+Now we’ve reached the end of the image. At this point we’ve already defined the left half of this image. But there is the other half that needs more detail. So we go back and start a second iteration, doing the same thing at a smaller scale. As before, we read from left to right, then top to bottom. The first one needs to be split:
 
 <Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 2 1.svg" alt=""/>
 
@@ -264,7 +268,7 @@ And so on:
 
 As we go, we keep track of what we did with each pixel. In the first iteration earlier, the first pixel was <White/>, the second was <Split/>, the third was <White/>, and the fourth was <Split/>. In second iteration that we just finished, the instructions were <Sequence instrs={"sbsbssww"}/>.
 
-A third iteration: as you go through the pixels remaining in the above image, the shape indicates that the next instructions are <Sequence instrs={"sbsbsbsswssbwwss"} small={true}/>.
+A third iteration: as we go through the remaining blue undefined pixels in the above image, the shape indicates that the next instructions are <Sequence instrs={"sbsbsbsswssbwwss"} small={true}/>.
 
 <Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 3.svg" alt=""/>
 
@@ -276,86 +280,151 @@ We can keep doing this indefinitely, describing the shape in ever-increasing det
 
 With only this sequence, you could reconstruct the shape in as much detail as you’d like.
 
-So at the moment we have a system that inputs a sequence of B/W/S instructions and outputs a shape. To represent text, we just have to assign each character to a different sequence of Black, White, and Split instructions
-space BBB
-a BBW
-b 
-...
-z SSS
-Let’s test it! Here’s (text):
+So we have a system for converting back and forth between shapes and sequences of <span class="sc">B/W/S</span> instructions. To convert between shapes and *text*, we could come up with another encoding that represents text as sequences of <span class="sc">B/W/S</span> instructions, like how binary represents text as sequences of <span class="bits">0</span>/<span class="bits">1</span> bits. To convert a shape to text, we’d describe the shape using a <span class="sc">B/W/S</span> sequence like we just did, and then use the encoding to interpret the sequence as text. To convert text to a shape, we’d first encode the text as a <span class="sc">B/W/S</span> sequence, and then use that <span class="sc">B/W/S</span> sequence as instructions to produce a shape.
+
+Before we go ahead and define this encoding, let’s test whether such a system would actually produce good-looking shapes. We can assume that whatever encoding we make would have about an even mix of <Black s={true}/>, <White s={true}/>, and <Split s={true}/>, so we can just use a randomly generated sequence of instructions to get a sense of what shapes would result:
+
+<Img src="resolution-code/tests/1 no neighbor algorithm.png" alt=""/>
+
+This is better than the noise-like image we had earlier, as there are clearly defined clumps of black surrounded by an expanse of white — but it’s too blocky. We don’t want the output of the system to look like a bunch of squares stuck together; we want it to look like a more organic shape. So we need to tweak things a bit.
 
 
-This is better than the noise we had earlier, but it’s not great. We don’t want it to look like a bunch of squares stuck together; we want it to look like one shape.
+### Generating better shapes
 
-So how can we prevent it from getting so blocky? Notice that all these hard edges come about when a black pixel and a white pixel touch:
+We have built a system that “understands” one fact about shapes — that they include contiguous black regions surrounded by contiguous white regions — but the fact that the output is so blocky indicates that there is something else it needs to understand. To figure out what, let’s look at the first four iterations that resulted in the above image:
 
-So let’s see what happens if we don’t allow black and white pixels to touch.
-For the next bit let’s forget about trying to represent text: let’s just say that for each pixel, we randomly choose what to do with it. So far, for any pixel, we’ve been selecting from three options: black, white, and split. But this new rule, that black and white can’t touch, complicates things a bit.
-Let’s say we’re selecting what to do with this pixel. Because it is touching a pixel that we’ve already chosen to be white, this one can’t be black — it can only be white or split. So we only have two options to choose from.
-Similarly, this one can’t be white: it can only be Black or Split:
-This one is touching both black and white, so it can only be Split:
-And this one is only touching split, so all three options are possible:
+<Box classes={["iterations"]} factor={1.4}>
+  <Img src="resolution-code/diagrams/blocks 1.svg" alt=""/>
+  <Img src="resolution-code/diagrams/blocks 2.svg" alt=""/>
+  <Img src="resolution-code/diagrams/blocks 3.svg" alt=""/>
+  <Img src="resolution-code/diagrams/blocks 4.svg" alt=""/>
+</Box>
 
-Now let’s generate a shape using these rules. For each pixel, we look at the four others it’s touching to figure out which of the three options is allowed. Then we select one of those allowed options at random.
+For comparison, here are the first four iterations of the earlier shape:
+
+<Box classes={["iterations"]} factor={1.4}>
+  <Img src="resolution-code/diagrams/shape 1.svg" alt=""/>
+  <Img src="resolution-code/diagrams/shape 2.svg" alt=""/>
+  <Img src="resolution-code/diagrams/shape 3.svg" alt=""/>
+  <Img src="resolution-code/diagrams/shape 4.svg" alt=""/>
+</Box>
+
+Notice a key difference here: in the latter sequence, the one that describes a normal-looking shape, *black and white never touch*. There is always a buffer of undefined, split pixels between the black region and the white region. In the the image we just generated, however, black and white pixels are touching all over the place, resulting in the many hard edges and right angles.
+
+So let’s see what happens if we impose a rule that black and white pixels are not allowed to touch each other. To test how this would look, we can still randomly select what to do with each pixel, but we now have to restrict what options are possible based on what a pixel is touching. For example, let’s say we’re selecting what to do with this pixel:
+
+<Img classes={["shape-building"]} src="resolution-code/diagrams/neighbor white.svg" alt=""/>
+
+Because it is touching white, this one can’t be filled in black — it can only be <White/> or <Split/>. So we randomly select between those two options.
+
+Similarly, this one is touching black, so it can only be <Black/> or <Split/>:
+
+<Img classes={["shape-building"]} src="resolution-code/diagrams/neighbor black.svg" alt=""/>
+
+This one is touching both black and white, so it can only be <Split/>:
+
+<Img classes={["shape-building"]} src="resolution-code/diagrams/neighbor both.svg" alt=""/>
+
+And this one is touching neither black nor white (the corners don’t count), so all three options are possible:
+
+<Img classes={["shape-building"]} src="resolution-code/diagrams/neighbor neither.svg" alt=""/>
+
+Now let’s generate a shape using these rules. For each pixel, we look at its neighbors to figure out which of the three options is allowed. Then we select one of those allowed options at random. Here’s what we get:
+
+<Img src="resolution-code/tests/2 neighbor but not edge.png" alt=""/>
 
 Now we’re getting somewhere! This looks much more like a shape you’d find in nature.
-However, the places where this shape touches the edge of the frame are still hard edges. It almost appears to be going out of the frame. To fix this, we will disallow any pixel on the edge from being black, as though the image were framed with a strip of white. Here’s what this produces:
 
+However, this looks like it’s only part of a larger shape that is cut off by the edge of the frame. I’d rather have shapes that are completely enclosed by the frame, with a similar level of roughness all the way around. To achieve this, we will disallow any pixel on the edge from being black. (You could imagine that the image is surrounded by a white frame, and since black can’t touch white, none of the pixels on the edge can be black.)
+
+Here’s what this produces:
+
+<Img src="resolution-code/tests/3 unweighted.png" alt=""/>
 
 While these shapes do lack the hard line from before, they’re way too small. Why is that?
-Consider how this is generated. We start with four pixels, none of which can be black because they’re touching the edge. So each of them has an equal chance of being white or split. So after the first iteration, we’ve already colored in half of the image white on average, severely limiting how big the black shape can be. In the remaining split pixels, the same thing takes place at a smaller scale. Black pixels can only show up in places that are entirely surrounded by split pixels, which requires an unlikely coincidence to happen.
-To fix this, let’s weight the random generator so that split and black are generated much more often than white:
 
-This does create a bigger shapes — but it’s back to looking more blocky. It seems that a weighted generator is better for making bigger shapes, but an unweighted generator is better for making more natural shapes. So as a compromise, let’s start by using a weighted generator for the first 20-30 instructions, but then switch to unweighted afterward. The weighted generator carves out a lot of space that black can go in, and then the unweighted generator takes over to make better-looking details.
+Consider how this is generated. We start with four pixels, none of which can be black because they’re all touching the edge. So each of them has an equal chance of being <White/> or <Split/>. That means that, on average, two out of four of them will end up filled white — and so, after just one iteration, half of the image is set to be white, which severely limits how big any eventual black shapes can be.
 
+Then, in the split pixels of the next iteration, the same thing takes place at a smaller scale. Most of these pixels will still be touching white on at least one side, so each of them has a ~50/50 chance of being filled white — and so now after two iterations, on average, only a quarter of the space is left open to ever have a black shape. Black pixels can only show up in the unlikely places where all four neighbors happen to be split, which often doesn’t happen until many iterations in when the pixels are small.
 
+To fix this, let’s try weighting the random generator so that <Split/> and <Black/> are chosen much more often than <White/>:
 
-Now let’s figure out how to make these shapes represent text. There are two parts to this: 
-Choosing the text encoding: what sequence of digits represents each character.
-Determining how to use these digits as instructions for selecting black / white / split pixels.
-(2) is the hard part. Previously we had this encoding:
-(base 3 thing)
-This gives a sequence of white/black/split instructions. However, we can’t really use a sequence like that anymore, since we’ve imposed rules that disallow certain instructions. For example, we can’t write ___: the encoding for _ (first letter) wants us to color a pixel in black, but we can’t do that because a black pixel can’t touch the edge. Indeed we can’t write anything starting with ____, because those all have black in their encodings.
-Because it is so common to only have two options, a binary encoding works better. We can use this one from earlier, and interpret the string of bits according to these rules:
+<Img src="resolution-code/tests/4 fully weighted.png" alt=""/>
 
+This does create bigger shapes — but it’s back to looking more blocky. There is still a buffer of undefined pixels along the edges between black and white, but a lot of those edges are straight.
 
-If a pixel is touching white:Look at the next bit in the sequence. If that bit is 0, color the pixel white; if it’s 1, split the pixel.
-If a pixel is touching black:Look at the next bit in the sequence. If that bit is 0, split the pixel; if it’s 1, color the pixel black.
-If a pixel is touching both white and black:Split the pixel. You don’t need to use any bits to determine what to do since there’s only one option.
-If a pixel is touching neither black nor white:Look at the next bit in the sequence. If it’s 1, color the pixel black. If it’s 0, then look at the bit after the 0. If that bit is 1, split the pixel. If it’s 0, color the pixel white.
-(diagram)
+So it seems that a weighted generator is better for making bigger shapes, but an unweighted generator is better for making more natural shapes. As a compromise, let’s start by using a weighted generator for the first 20 instructions, but then switch to unweighted afterward. The weighted generator carves out a lot of space that black can go in, and then the unweighted generator takes over to make better-looking details. Here’s what this produces:
 
+<Img src="resolution-code/tests/5 weight first 20.png" alt=""/>
 
-These rules let us turn text into shapes. They can also be applied the other way round, to decode a shape into text. As you break down a shape, you still get a sequence of black/white/split, like before. But now, rather than jsut writing a pixel as black/white/split, consider the context of that pixel and what previously-decoded pixels it’s touching, and use that context to represent the instruction using digits. (etc)
+This feels satisfactory to me. So now we go back to the original goal:
 
+### Using the shapes to encode text
 
-If we use the system as it is now, we’d still run into this issue where all the shapes are very small. When we were randomly choosing the instructions, we dealt with this by weighting the random generator for the first few iterations. How can we have a similar effect now?
-What we want is for the digits at the beginning to have more 1’s than 0’s. I designed the encoding so that a 1 creates the most opportunities for black pixels — if it’s possible to make a pixel black, 1 will do that; otherwise it will split the pixel, so at least part of it might be black.
-We could just add in more 1’s in at the beginning — interleave 1’s between the first 30 digits, or something like that. That does work to turn a text into a better shape:
+What we have so far is a way to describe an image using a sequence of <span class="sc">B/W/S</span> instructions, with some limitations on which instructions are allowed in each place. Now we need a way to use text to produce such a sequence of instructions.
 
-However, recall that part of the goal is that if we take a shape and decode it as text, and then encode that text into a shape, it will be the same shape we started with. This solution violates that goal. If the encoding process involves adding extra bits in, the shape that comes out will be different than what we started with.
-Instead, what we can do is to use a different encoding for the first characters: one that uses more 1’s than 0’s, but can still be used to interpret any sequence of bits. For example, something like this:
-0
-10
-110
-1110
-11110
-...
-space: 1111111
-(or come up with a different one if this is too many 1’s)
+Earlier we had considered encoding each character as an instruction sequence — say “A” is <Sequence instrs="wwww"/>, “B” is <Sequence instrs="wwws"/>, and so on — and then read off these instructions to produce a shape. But as we saw, that sequence will put black and white pixels next to each other, producing blocky shapes. That’s why we added the rule that black and white can’t touch.
 
-While every letter is made of a different number of digits, this encoding is still unambigous — given any sequence of digits, you can always tell what the next character is supposed to be. For example, 1100101110 can only be divided up as 110 0 10 1110.
-Not every sequence of bits can be divided up according to this encoding: for example, with 11011, we can say it starts with 110 (C), but then we have a dangling 11 that doesn’t correspond to any letter. This might feel like a problem, but it’s unavoidable — any encoding will encounter situations like this. In our other binary encoding, the one we use after the first ___ characters, every letter is 5 bits long, so it can’t fully interpret a sequence whose length isn’t a multiple of 5 — there will be dangling digits at the end.
-Does this mean that there are some shapes that can’t be decoded? No: recall that the process of decoding a shape produces an unending sequence of black/white/split instructions describing the shape in more and more detail, and thus we get an unending sequence of bits. So if we’re decoding a shape and we get a sequence starting with 11011 — that sequence that left the dangling 1’s — then we can just keep decoding and those dangling 1’s will end up becoming part of some larger sequence representing a letter. There will always be more bits.
+So perhaps we could just skip over any instruction that isn’t allowed. For example, if we had a sequence starting with <Sequence instrs="wsbws"/>:
+- The first instruction is <White/>, so color the top left pixel white.
+- The next instruction is <Split/>, so split the top right pixel.
+- The next instruction is <Black/>. But we can’t color the bottom left pixel black, because it’s touching a white pixel (and the edge). So ignore that instruction and use the next one instead, which tells us we should fill it <White/>.
+- The next instruction is <Split/>, so split the bottom right pixel.
 
-(So how, then, do we deal with the fact that any text we’d want to encode is finite? My solution is simply to repeat the text indefinitely, as many times as you need to create a sufficiently detailed shape.)
+The result:
 
-There are a few remaining details to figure out. Let’s say we wanted to encode the text “aaaah“. Using the weighted encoding gives
-000011111110
-The first 0 tells us what to do with the upper left pixel: out of the two options of white vs split, it chooses white. The next three 0’s choose white in all the other pixels. And now what do we do with the 1? There are no more undefined pixels that could be split or colored in. So in the current rules, it’s impossible to represent any sequence starting with four A’s.
-To deal with this, I’ll add a rule that if there is only one undefined pixel left, it can only be split, not colored in. This ensures that there will always be places to encode the next digit. So here, the first three 0’s do the same thing as before:
-Then the next pixel is automatically split. And then we encode the next 0, and the 1’s, etc.
+<Img classes={["shape-building"]} src="resolution-code/diagrams/wsws.svg" alt=""/>
 
-(heading)
-(something about not replacing all four of a split with the same color)
-(something about framing, get to this later if I have time)
+This method — encode characters using instruction sequences, and then just skip the instructions that aren’t allowed — works for generating shapes based on text. But it doesn’t *encode* shapes into text, because we can’t recover the text that was used to generate a shape. In the above example, if you were just looking at the shape and reading off the instructions from it, you’d get a sequence starting with <Sequence instrs="wsws"/>, and you’d have no way of knowing there was a skipped <Black/> instruction in there. In fact there could be any number of skipped instructions that you have no way of recovering, and so this image could represent any number of possible texts. There’s no way of knowing what it was supposed to represent.
+
+So it seems that going directly from letters to instructions won’t work. Instead we will go back to representing letters using binary digits, and then interpret those binary digits as instructions — but interpret them differently depending on the context. Here’s how this will work:
+
+<div class="inset">
+  **If a pixel is touching white,** there are two options for what instruction to use: <White/> or <Split/>. So we will look at the next bit in the binary sequence and use it to select the instruction: <span class="bits">0</span> for <White/>, and <span class="bits">1</span> for <Split/>.
+
+  Similarly, **if a pixel is touching black,** we’ll say that <span class="bits">0</span> is <Split/> and <span class="bits">1</span> is <Black/>.
+
+  **If a pixel is touching both white and black,** then the only allowed instruction is <Split/>. So there’s no need to use any bits to tell us what to do — just split the pixel.
+
+  **If a pixel is touching neither white nor black,** then all three instructions are possible. There’s no way to choose between three items using a single bit, since a bit only comes in two states. So we need to do something more complicated:
+  - If the next bit is <span class="bits">1</span>: <Black/>
+  - If the next bit is <span class="bits">0</span>, then look at the bit after that one as well:
+    - If these next two bits are <span class="bits">00</span>: <White/>
+    - If they are <span class="bits">01</span>: <Split/>
+</div>
+
+*(For these purposes, if a pixel is touching the edge, that counts as touching white.)*
+
+Unlike the previous idea of skipping over disallowed instructions, this system allows the text to be preserved unambiguously in a shape. If you are decoding a shape, then for every pixel, consider the context of the pixels it’s touching to determine what bits (if any) will be used to represent it. For example, if you encounter a pixel that you need to <Split/>, then
+- If it is touching a white pixel (or the edge), write down <span class="bits">1</span> as the next bit.
+- If it is touching a black pixel, write down <span class="bits">0</span>.
+- If it is touching both white and black, don’t write any bits.
+- If it is touching neither white nor black, write <span class="bits">01</span>.
+
+Earlier we saw that we needed a lot more ones than zeros at the beginning of the sequence for the system to produce large enough shapes. To achieve this, we can create an alternate text encoding that uses many more ones than zeros, and use this weighted encoding for the first few characters. I am still figuring out the best design for weighted encoding that does everything I want it to — produce large enough shapes while still creating good variety, and still allow any text or any shape to be interpreted.
+
+### Further adjustments
+
+There are a few more details to fill in to make sure the system works as we want.
+
+---
+
+Consider the following two situations:
+- A pixel gets set to <Black/>.
+- A pixel gets <Split/> into four subpixels, and then in the next iteration, all four of those are set to <Black/>.
+
+Both of these situations produce the same result: a black square. There’s no way of knowing which was the case just by looking at it. So if you’re decoding an image, any pixel that you interpret as <Black/> could also be this other thing (and the same is true for white.) Therefore every image produced by this system is ambiguous: any image could stand for many possible texts.
+
+To address this issue, we will add an additional rule: the four subpixels of a split pixel cannot all be all black or all white. This means that if three out of four of them have been set to the same color, the last one *must* be <Split/>. This is similar to the situation where a pixel is touching both black and white: there’s only one possible thing to do with this pixel, so you don’t need to use any bits to determine it.
+
+---
+
+Let’s say you’re encoding some text whose binary string starts with <span class="bits">00001</span>. The first <span class="bits">0</span> tells us what to do with the upper left pixel: out of the two options of <White/> and <Split/>, it chooses <White/>. Similarly, the next three zeros choose white in all the other pixels. And now what do we do with the <span class="bits">1</span>? There are no more undefined pixels that could be split or colored in. So in the current rules, it’s impossible to represent this text.
+
+To address this issue, we add another rule: if there is only one undefined pixel left, it can only be <Split/>, not colored in. This ensures that there will always be places to encode the next digit.
+
+---
+
+At the moment, this system does not usually produce a *single shape*, but rather a composition or cluster of shapes. I am fine with this,
+
+ as I think it’s nice to have the flexibility to be able to inteirpret the shape of thing with multiple parts — 
