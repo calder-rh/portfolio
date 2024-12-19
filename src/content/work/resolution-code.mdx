@@ -24,7 +24,7 @@ This question first prompted me to design [Contour Code](/work/contour-code). My
 <Img src='resolution-code/udhr.png' uses='ftpb' alt=''/>
 <Caption>The Universal Declaration of Human Rights, encoded in a recent version of Resolution Code</Caption>
 
-Resolution Code represents a shape using a sequence of images at higher and higher resolutions: first 2×2, then 4×4, then 8×8, and so on to infinity, doubling each time. The system represents each of these images as binary digits and appends the digits to an ever-growing string, which can be interpreted as text using a binary text encoding. However, rather than appending the bits for the whole image, it only records the parts that have gained detail since the last iteration: the pixels at the edge of the shape, which are divided into four smaller pixels that represent the edge with more detail. All the other pixels give no new information since last time and don’t need to be written down. The resulting string of binary digits can be used to reconstruct the shape at an arbitrarily high level of detail.
+Resolution Code represents a shape using a sequence of images at higher and higher resolutions: first 2×2, then 4×4, then 8×8, and so on to infinity, doubling each time. The system represents each of these images as binary digits and appends the digits to an ever-growing string, which can be interpreted as text using a binary text encoding. However, rather than appending the bits for the whole image, it only records the parts that have gained detail since the last iteration: the pixels at the edge of the shape, which are divided into four smaller pixels that represent the edge with more detail. All the other pixels give no new information since the last iteration and don’t need to be written down. The resulting string of binary digits can be used to reconstruct the shape at an arbitrarily high level of detail.
 
 To this core idea I have been adding refinements:
 - The system also works the other way, to input text and output a shape. To ensure that the output actually looks like a shape, and not just a set of squares stuck to each other, I imposed some conditions on how each pixel is allowed to be subdivided depending on the pixels touching it.
@@ -84,7 +84,7 @@ That worked fine, but there are some issues with this approach. First, why arran
 
 <Img src="resolution-code/diagrams/morse word 3×4.svg" alt=""/>
 
-In this system for converting from text to images (I won’t really call this a “shape” yet) we have to make an arbitrary choice for what image dimensions to use. But part of the goal is to create a system that has exactly one way to encode any text into an image. If there are multiple ways to convert from text to image — as there are when the dimensions aren’t set — then it isn’t possible to unambiguously convert from image to text and back. If you convert an image to text, you give someone else the text, and they convert that text into an image, they might get the wrong image because they have no way of knowing what dimensions they were supposed to use.
+In this system for converting from text to images (I wouldn’t really call this a “shape” yet) we have to make an arbitrary choice for what image dimensions to use. But part of the goal is to create a system that has exactly one way to encode any text into an image. If there are multiple ways to convert from text to image — as there are when the dimensions aren’t set — then it isn’t possible to unambiguously convert from image to text and back. If you convert an image to text, you give someone else the text, and they convert that text into an image, they might get the wrong image because they have no way of knowing what dimensions they were supposed to use.
 
 Also, the way we’re using the code is ambiguous. Morse Code relies on pauses or spaces to indicate when one letter ends and the next begins, but those aren’t represented here. If you read the image, all you get is this:
 <pre class="morse centered konsole">.-----.-.-..</pre>
@@ -206,7 +206,7 @@ However, the most common encodings in use — <span class="sc">ASCII</span> and 
 
 Here, some of the characters are 6 bits (digits) long, while others are 7, which might make it seem ambiguous — if you’re given a long string of bits, how do you know whether to look at the first 6 bits or the first 7 to determine the first character? However, I designed this encoding so all the 6-bit characters start with <span class="bits">1</span>, while all the 7-bit characters start with <span class="bits">0</span>, so you can look at the first bit and it tells you how many to read off. That way you can always tell when one character ends and the next begins.
 
-To convert an encoding to an image, let’s say that <span class="bits">0</span> is white and <span class="bits">1</span> is black. (If you’ve worked with colors on computers, this is the opposite of what you’re used to, but remember that “black” is really just shorthand for “a point inside the shape” while “white” means “outside the shape.” In is <span class="bits">1</span>, out is <span class="bits">0</span>.) 
+To convert an encoding to an image, let’s say that <span class="bits">0</span> is white and <span class="bits">1</span> is black. (If you’ve worked with colors on computers, this is the opposite of what you’re used to, but remember that “black” is really just short for “a point inside the shape” while “white” means “outside the shape.” In is <span class="bits">1</span>, out is <span class="bits">0</span>.) 
 
 
 Now that we have this system, let’s encode some longer text. Here’s the [<span class="sc">UDHR</span>](https://www.ohchr.org/en/universal-declaration-of-human-rights):
@@ -508,7 +508,7 @@ For example, a process like the following might be able to input an arbitrary bi
 - Before generating each character, use an [<span class="sc">LLM</span>](https://en.wikipedia.org/wiki/Large_language_model) to predict the probability of every possible character’s being the one that comes next.
 - Use those probabilities to construct a [Huffman code](https://en.wikipedia.org/wiki/Huffman_coding).
 - Interpret the prefix of the binary string using that code, so that more meaningful characters tend to be selected more often, but all characters could be produced.
-- Repeat, generating a new encoding for every character.
+- Repeat, using a new Huffman code to interpret each character.
 
 This might not be doable, though, as it would require the <span class="sc">LLM</span> to be tokenized by character, which usually isn’t the case.
 

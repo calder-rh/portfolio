@@ -10,7 +10,7 @@ import Img from 'src/components/Img.astro';
 
 Contour Code is a system that encodes text in compositions of 2<span class='sc'>D</span> geometric shapes. For example, this says “sleep”:
 
-<Box factor={1.5} offset={0.5} top={2} bottom={1.5}>
+<Box factor={1.5} top={2} bottom={1.5}>
   <Img src='contour-code/sleep.png' uses='ftpb' alt=''/>
 </Box>
 
@@ -33,6 +33,8 @@ When reading a shape, you can use this diagram to convert from encodings back to
 <Box factor={1.5} top={1} bottom={1}>
 <Img src='contour-code/encoding to letter.svg' uses='f' alt=''/>
 </Box>
+
+[This document](</public/work/contour-code/Contour Code shape reading order.pdf>) describes how to order the shapes and sides when reading them.
 
 Contour Code was included in the juried exhibition [Quasi: Experimental Writing Systems](https://hmctartcenter.org/exhibitions/quasi-experimental-writing-systems/) at ArtCenter College of Design.
 
