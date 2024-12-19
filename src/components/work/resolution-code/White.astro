@@ -1,0 +1,7 @@
+---
+const {s} = Astro.props
+const classes = "instruction white" + (s ? " short" : "")
+const content = s ? "w" : "white"
+---
+
+<span class={classes}>{content}</span>

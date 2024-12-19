@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 304 304">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: rgba(155, 185, 196, .5);
+        stroke: #9bb9c4;
+      }
+
+      .cls-1, .cls-2 {
+        stroke-miterlimit: 10;
+        stroke-width: 4px;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #ebebeb;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="Layer_3" data-name="Layer 3">
+    <rect class="cls-3" x="0" width="304" height="304"/>
+  </g>
+  <g id="pixels">
+    <rect class="cls-2" x="2" y="2" width="150" height="150"/>
+    <rect class="cls-2" x="2" y="152" width="150" height="150"/>
+    <rect class="cls-1" x="227" y="2" width="75" height="75"/>
+    <rect class="cls-1" x="152" y="2" width="75" height="75"/>
+    <rect class="cls-1" x="227" y="77" width="75" height="75"/>
+    <rect class="cls-1" x="152" y="77" width="75" height="75"/>
+    <rect class="cls-1" x="227" y="152" width="75" height="75"/>
+    <rect class="cls-1" x="152" y="152" width="75" height="75"/>
+    <rect class="cls-1" x="227" y="227" width="75" height="75"/>
+    <rect class="cls-1" x="152" y="227" width="75" height="75"/>
+  </g>
+</svg>

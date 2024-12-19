@@ -1,13 +1,17 @@
 ---
-const {factor=1, offset=0, top=0, bottom=0, space=2} = Astro.props;
+const {factor=1, offset=0, top=0, bottom=0, space=2, classes=[]} = Astro.props;
 const style = `--offset: ${-50 + offset}%; --top: ${top}rem; --bottom: ${bottom}rem; --space: ${space}rem; ` 
 + (factor > 1 ? 
   `--max-width: ${factor * 100}%;`
   :
   `--max-width: ${factor * 45}rem;`
 )
+
+const classList = ["box"]
+if (classes) classList.push(...classes);
+const classesUsed = classList.join(" ");
 ---
 
-<div class="box" style={style}>
+<div class={classesUsed} style={style}>
   <slot></slot>
 </div>
