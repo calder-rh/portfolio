@@ -96,6 +96,14 @@
   z-index: 2;
 }
 
+.cap, .work-content-wrapper {
+  transition: background-color var(--short-transition);
+}
+
+.hovered .cap, .hovered .work-content-wrapper {
+  background-color: var(--ofwhite-hover);
+}
+
 .work-content *:last-child {
   margin-bottom: 0;
 }
