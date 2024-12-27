@@ -62,6 +62,9 @@ html {
   color: var(--brown);
 
   scroll-behavior: smooth;
+
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .content * {
@@ -75,7 +78,6 @@ p, li {
 body {
   padding: 0 1.25rem;
   margin: 11.25rem auto 100px auto;
-  overflow-x: hidden;
 }
 
 .content {
@@ -93,11 +95,11 @@ body {
   margin-bottom: var(--space);
 } */
 
-.content .img:not(:first-child), .content .media:not(:first-child), .content .box:not(:first-child)  {
+.content .img:not(:first-child), .content .media:not(:first-child), .content .box-space:not(:first-child)  {
   margin-top: var(--space);
 }
 
-.content .img:not(:last-child), .content .media:not(:last-child), .content .box:not(:last-child) {
+.content .img:not(:last-child), .content .media:not(:last-child), .content .box-space:not(:last-child) {
   margin-bottom: var(--space);
 }
 
@@ -250,7 +252,7 @@ p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, li a {
 
 
 .box {
-  width: calc(100vw - 2.5rem);
+  width: var(--width);
   max-width: var(--max-width);
   position: relative;
   left: 50%;
@@ -260,9 +262,14 @@ p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, li a {
   padding-bottom: var(--bottom);
 }
 
-.box.extend {
-  width: var(--max-width);
+.box-extend-wrapper {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translate(-50vw);
+  overflow: hidden;
 }
+
 
 @media screen and (max-width: 48.75rem) {
   .box {

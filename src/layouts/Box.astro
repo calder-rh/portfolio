@@ -1,18 +1,32 @@
 ---
 const {factor=1, extend=false, offset=0, top=0, bottom=0, space=2, classes=[]} = Astro.props;
 const style = `--offset: ${-50 + offset}%; --top: ${top}rem; --bottom: ${bottom}rem; --space: ${space}rem; ` 
-+ (factor > 1 ? 
-  `--max-width: ${factor * 100}%;`
++ (extend ?
+  `--width: calc(${factor} * (100vw - 2.5rem)); --max-width: ${factor * 47.5}rem;`
   :
-  `--max-width: ${factor * 45}rem;`
+  (factor > 1 ? 
+    `--width: calc(100vw - 2.5rem); --max-width: ${factor * 100}%;`
+    :
+    `--width: calc(100vw - 2.5rem); --max-width: ${factor * 45}rem;`
+  )
 )
 
-const classList = ["box"]
-if (extend) classList.push("extend")
+const classList = ["box box-space"]
 if (classes) classList.push(...classes)
 const classesUsed = classList.join(" ")
 ---
 
-<div class={classesUsed} style={style}>
-  <slot></slot>
-</div>
+{
+  (() => {
+    let mainBox =
+      <div class={classesUsed} style={style}>
+        <slot/>
+      </div>
+    
+    if (extend) {
+      return <div class="box-extend-wrapper box-space">{mainBox}</div>
+    } else {
+      return mainBox;
+    }
+  })()
+}
