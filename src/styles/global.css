@@ -260,6 +260,10 @@ p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, li a {
   padding-bottom: var(--bottom);
 }
 
+.box.extend {
+  width: var(--max-width);
+}
+
 @media screen and (max-width: 48.75rem) {
   .box {
     transform: translate(-50%);

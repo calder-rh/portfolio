@@ -1,8 +1,111 @@
 ---
 title: Network Writing System
+description: A system that represents text as a network of dots and lines
 tags: [writing-systems]
 date: 2015-01-01
 priority: 3
-draft: true
+draft: false
 ---
+import Box from 'src/layouts/Box.astro';
+import Img from 'src/components/Img.astro';
+import Connections from 'src/components/work/nws/Connections.astro';
+import Pair from 'src/components/work/nws/Pair.astro';
+import 'src/styles/work/nws.css';
 
+<Box factor={3} extend={true} top={2} bottom={2}>
+<Img src="nws/intro.svg" uses="fp" alt="" />
+</Box>
+
+This is a system that represents text as a network of dots and lines. Each dot represents one letter (or a space):
+
+<Box factor={1.4}>
+<Img src="nws/Sample.svg" alt="" />
+</Box>
+
+As in regular English writing, these dots are arranged from left to right. Their vertical positions do not signify anything.
+
+The connections between the dots determine what letters the dots represent. In particular, each dot is connected with lines to some combination of the five dots to its left, and the particular combination determines the letter. For example, if a dot is connected to the dot that is <Connections nums="2"/> to its left, but not any of the others, the dot represents the letter T:
+
+<Box factor={0.6}>
+<Img src="nws/T.svg" alt="" />
+</Box>
+
+(Notice that this dot also has a line going out to the right, but that is irrelevant for determining what this letter is — only the connections to the left matter.)
+
+If a dot is connected to the dot <Connections nums="3"/> to its left and the dot <Connections nums="5"/> to its left, it’s an M:
+
+<Box factor={0.6}>
+<Img src="nws/M.svg" alt="" />
+</Box>
+
+If a dot is connected to the dots <Connections nums="1"/>, <Connections nums="2"/>, and <Connections nums="5"/> to its left, it’s a Y:
+
+<Box factor={0.6}>
+<Img src="nws/Y.svg" alt="" />
+</Box>
+
+In general, each letter is encoded by some set of connections. We just saw that T is encoded by <Connections nums="2"/>, M by <Connections nums="35"/>, and Y by <Connections nums="125"/>. This table shows the connections for every letter:
+
+<div id="encoding">
+  <div class="encoding-col">
+    <Pair char="A" nums="3"/>
+    <Pair char="B" nums="135"/>
+    <Pair char="C" nums="25"/>
+    <Pair char="D" nums="23"/>
+    <Pair char="E" nums="1"/>
+    <Pair char="F" nums="123"/>
+    <Pair char="G" nums="124"/>
+    <Pair char="H" nums="14"/>
+    <Pair char="I" nums="5"/>
+  </div>
+    <div class="encoding-col">
+    <Pair char="J" nums="235"/>
+    <Pair char="K" nums="234"/>
+    <Pair char="L" nums="24"/>
+    <Pair char="M" nums="35"/>
+    <Pair char="N" nums="12"/>
+    <Pair char="O" nums="4"/>
+    <Pair char="P" nums="134"/>
+    <Pair char="Q" nums="345"/>
+    <Pair char="R" nums="15"/>
+  </div>
+    <div class="encoding-col">
+    <Pair char="S" nums="13"/>
+    <Pair char="T" nums="2"/>
+    <Pair char="U" nums="34"/>
+    <Pair char="V" nums="145"/>
+    <Pair char="W" nums="45"/>
+    <Pair char="X" nums="245"/>
+    <Pair char="Y" nums="125"/>
+    <Pair char="Z" nums="1234"/>
+    <span id="space"><Pair char="space" nums="none"/></span>
+  </div>
+</div>
+
+To avoid thick tangles of lines, I chose the connections so that more common letters, like E, are connected to fewer dots.
+
+When you first start writing, there won’t be any previous letters to connect to. So, to start out, draw five dots in a vertical stack. These dots don’t have any meaning; they’re just there for the first few dots to connect to. Usually, when you count back to determine what connections to make, you count from right to left; however, once you reach the initial circles, finish counting from top to bottom.
+
+<Box factor={0.8}>
+<Img src="nws/Numbering.svg" alt="" />
+</Box>
+
+To write something with this system, start with the five circles, and then, for each letter, add a dot to the right and connect it back based on the table. You can choose any vertical positions you want; move the dots up or down to make it easy to see the connections and create the nicest composition.
+
+Network Writing System does not have to follow a straight line. If you write in a ring, then the first letters can connect back to the last ones, and there is no need for an initial stack of dots:
+
+<Box factor={1.4}>
+<Img src="nws/ring.svg" alt="" />
+</Box>
+
+## Background and context
+
+This is the first artistic writing system I designed, back in 2015. I was inspired by the visual appeal of networks of dots and lines, and I wished to give such shapes a deeper meaning by making networks that represent text.
+
+I realized that the system would work best if it did not dictate every aspect of the visual: it leaves some parts up to the writer and their taste. While the dots have to be ordered from left to right, and lines have to be drawn between certain pairs of dots, the vertical positions of the dots can be varied to spread out the lines more evenly and ensure the design is unambiguous. Most of my writing systems since then follow a similar pattern of prescribing some but not all aspects of the shape, so the user has room to explore and find the most pleasing way to represent the text. The balance between prescription and freedom allows the shapes to be both beautiful and infused with meaning.
+
+(Really, all writing systems have this balance in some form or another: the writing systems we use daily prescribe the “skeletons” of the shapes, while the user has the freedom to stretch these skeletons around and apply differently shaped “bodies” to them — i.e., different fonts and lettering styles.)
+
+As described above, the system works by assigning each letter to a set of numbers, and those sets of numbers determine how the dots connect. This is the first time I came up with the notion of using abstract encodings that mediate between letters and shapes, a strategy that I used in a more complex form in [Contour Code](/work/contour-code) and [Resolution Code](/work/resolution-code).
+
+To keep the shapes as simple as possible, I designed the system so that more common letters require drawing fewer lines, reserving the more visually complex representations for rarer letters. I have applied similar principles in other projects since then, such as [CRH Shorthand](/work/shorthand).

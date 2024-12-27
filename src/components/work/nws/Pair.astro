@@ -1,0 +1,8 @@
+---
+import Connections from "./Connections.astro";
+
+let { char, nums } = Astro.props
+---
+
+<div class="encoding-pair"><span class="character-container konsole"><span class="character">{char}</span></span><Connections nums={nums}/></div>
+
