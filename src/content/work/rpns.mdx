@@ -5,20 +5,93 @@ tags: [encoding-systems]
 start_date: 2019-08-01
 priority: 1
 date: 2020-07-26
-draft: true
 ---
 import Img from 'src/components/Img.astro';
+import Box from 'src/layouts/Box.astro';
+import Equation from 'src/layouts/work/rpns/Equation.astro';
+import Group from 'src/layouts/work/rpns/Group.astro';
+import 'src/styles/work/rpns.css';
 
-Our base-10 numeral system represents numbers by taking powers of 10, multiplying them by various factors, and adding the results together: 936 = __9__ × 10² + __3__ × 10¹ + __6__ × 10⁰. This is good for practical calculations, but any number theorist will tell you that this is a rather arbitrary way to represent numbers. A more natural way to represent an integer is its prime factorization, a set of prime numbers raised to various exponents and multiplied together: 936 = 2³ × 3² × 13¹. This gives more information on how the number behaves in various mathematical contexts.
-
+<Box factor={1.4}>
 <Img src='rpns/colors.svg' uses='ftpb' id="test" alt=""/>
+</Box>
 
-Any prime factorization written this way still relies on base 10: in that example, “13” means __1__ × 10¹ + __3__ × 10⁰, and even the other single-digit primes and exponents are ultimately written in base 10. I thought it could be nice, for purely aesthetic reasons, to create a numeral system that only uses primes, with no hint of base 10 (or any other base).
+Our base-ten numeral system represents numbers by taking powers of ten, multiplying them by various factors, and adding the results together: for example, <span style="white-space: nowrap">936 = __9__ × 10² + __3__ × 10¹ + __6__ × 10⁰.</span> This is good for practical calculations, but mathematically, it’s a rather arbitrary way to represent numbers. There’s nothing inherently special about ten; it’s just the number of fingers most people happen to have.
 
-My first thought was that all the numbers making up the prime factorization could themselves broken down into factors: for example, if you have 13⁴, the 4 can be written as 2². However, you can’t do this with the 13, since it’s prime. But if you represent 13 using its index — 6, as it’s the 6th prime number — then you get something that can be factored: 6 = 2¹ × 3¹. If you continue breaking numbers into prime indices and exponents and factoring those, you eventually get to an expression involving only ones combined in different ways. Using “A ◊ B” to mean “the A-th prime to the power of B,” we can write something like
+A more natural way to represent an integer is its prime factorization, a set of prime numbers raised to various powers and multiplied together: <span style="white-space: nowrap">936 = 2³ × 3² × 13¹.</span> This is like breaking a number down into its atomic parts: for every number, there is exactly one way to break it down into primes, and this factorization gives some fundamental information about how the number behaves in various mathematical contexts.
 
-936 = (1 ◊ ((1 ◊ 1) ◊ 1)) × ((1 ◊ 1) ◊ (1 ◊ 1)) × (((1 ◊ 1) × ((1 ◊ 1) ◊ 1)) ◊ 1).
+When we write a number’s prime factorization as we did above, we are still using base ten. In that previous example, <span style="white-space: nowrap">2³ × 3² × 13¹</span>, the “13” means <span style="white-space: nowrap">__1__ × 10¹ + __3__ × 10⁰</span>, and even the other single-digit primes and exponents are ultimately written in base 10. Recursive Prime Numeral System is a way of writing a prime factorization without any hint of base ten or any other base: everything is written using primes.
 
-This result met my original goal — representing numbers in a way that only uses primes — but visually, it’s not very clear, since you have to keep track of all those parentheses. I realized that this type of structure, with nested expressions of different types, could be represented more clearly by using a specially designed notation in two dimensions.
+My first thought in designing this system was that all the numbers making up the prime factorization could themselves broken down into factors: for example, if a factorization contains 13⁴, the power 4 can be written as 2². However, the 13 can’t be broken down any further into factors — that’s what it means to be prime.
+
+But if we represent 13 using its *index* — 6, as it’s the 6th prime number — then we get something that can be broken down further: 6 = 2¹ × 3¹. We can continue this process by representing 2 and 3 using their indices as well:
+
+<Equation align="25%">
+  <div class="row">
+    <div class="lhs">6</div>
+    <div class="rel">=</div>
+    <div class="rhs"><span class="blue">2¹</span> × <span class="blue">3¹</span></div>
+  </div>
+  <div class="row">
+    <div class="lhs"></div>
+    <div class="rel">=</div>
+    <div class="rhs"><span class="blue"><Group>(the 1st prime ^ 1)</Group></span> <Group>× <span class="blue">(the 2nd prime ^ 1)</span></Group></div>
+  </div>
+</Equation>
+
+The 2 in that expression can be broken down in the same way:
+
+<Equation align="25%">
+  <div class="row">
+    <div class="lhs">6</div>
+    <div class="rel">=</div>
+    <div class="rhs"><Group>(the 1st prime ^ 1)</Group> <Group>× (the <span class="blue">(the 1st prime ^ 1)</span>th prime ^ 1)</Group></div>
+  </div>
+</Equation>
+
+Now that we have this expression for 6, we can use it to write 13:
+
+<Equation align="10%">
+  <div class="row">
+    <div class="lhs">13</div>
+    <div class="rel">=</div>
+    <div class="rhs">(the <span class="blue">6</span>th prime ^ 1)</div>
+  </div>
+  <div class="row">
+    <div class="lhs"></div>
+    <div class="rel">=</div>
+    <div class="rhs">(the <span class="blue">((the 1st prime ^ 1) × (the (the 1st prime ^ 1)th prime ^ 1))</span>th prime ^ 1)</div>
+  </div>
+</Equation>
+
+This cannot be broken down any further, as the only numbers remaining are 1’s.
+
+
+
+Write the prime factorization:
+
+<p class="center">45 = 3² × 5¹</p>
+
+3 is the second prime, and 5 is the third prime, so we can refer to these primes using their indices:
+
+<p class="center">45 = (the 2nd prime ^ 2) × (the 3rd prime ^ 1)</p>
+
+This expression contains four numbers: 2, 2, 3, and 1. We can’t do anything more with the 1, but the others we can break down further. Let’s start with the 3. The prime factorization of 3 is simply 3¹, but we break that into smaller numbers by writing 3 using its index:
+
+<p class="center">45 = (the 2nd prime ^ 2) × (the <span style="color: var(--dark-blue);">(the 2nd prime ^ 1)</span>st prime ^ 1)</p>
+
+Now we have three 2’s left. 2 is (the 1st prime ^ 1), so:
+
+45 = (the <span style="color: var(--dark-blue);">(the 1st prime ^ 1)</span>st prime ^ <span style="color: var(--dark-blue);">(the 1st prime ^ 1)</span>) × (the (the <span style="color: var(--dark-blue);">(the 1st prime ^ 1)</span>st prime ^ 1)st prime ^ 1)
+
+This becomes unreadable pretty quickly. Let’s make it simpler by using “A ◊ B” to mean “the A-th prime to the power of B”:
+
+<p class="center">45 = ((1 ◊ 1) ◊ (1 ◊ 1)) × (((1 ◊ 1) ◊ 1) ◊ 1)</p>
+
+If you continue breaking numbers into prime indices and exponents and factoring those, you eventually get to an expression involving only ones combined in different ways. Using “A ◊ B” to mean “the A-th prime to the power of B,” we can write something like
+
+<p class="center">936 = (1 ◊ ((1 ◊ 1) ◊ 1)) × ((1 ◊ 1) ◊ (1 ◊ 1)) × (((1 ◊ 1) × ((1 ◊ 1) ◊ 1)) ◊ 1).</p>
+
+This result met my original goal — representing numbers in a way that only uses primes — but visually, it’s not very clear, since you have to keep track of all those parentheses. I realized that this type of structure, with nested expressions of different types, could be represented more clearly by using a specially designed notation in two dimensions.
 
 Creating such a notation involves two decisions: how to visually represent A × B, and how to represent A ◊ B. I have tried a number of ideas for each of these operations, producing a variety of visual results. Some of these designs have more mathematical value (clearly representing the operations involved), while others have more artistic value (producing beautiful shapes). “Dots & Lines” is one of the more mathematically-oriented designs (drawing horizontal and vertical lines to indicate the different operations), while “Colored Rectangles” is one of the more artistically-oriented ones (placing shapes near each other, touching each other, or inside each other to represent the operations, and coloring them however I please).

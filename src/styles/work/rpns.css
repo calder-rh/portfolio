@@ -1,0 +1,46 @@
+p {
+  font-variant-numeric: lining-nums;
+}
+
+p.center {
+  text-align: center;
+}
+
+span.blue {
+  color: var(--dark-blue);
+}
+
+.equation {
+  display: flex;
+  flex-flow: column nowrap;
+  font-size: 1.2rem;
+  font-variant-numeric: lining-nums;
+  margin: 1rem 0;
+}
+
+.row {
+  display: flex;
+  flex-flow: row nowrap;
+  text-align: center;
+  height: fit-content;
+}
+
+.rel {
+  width: 1em;
+  flex-shrink: 0;
+}
+
+.lhs {
+  text-align: right;
+  width: var(--align);
+  flex-shrink: 1;
+}
+
+.rhs {
+  text-align: left;
+  flex-shrink: 1;
+}
+
+.group {
+  white-space: nowrap;
+}

@@ -1,6 +1,6 @@
 .connections {
   font-size: 1.1rem;
-  color: #426c7f;
+  color: var(--dark-blue);
   --k-wght: 580;
   --k-wdth: 115;
   letter-spacing: 0.2em;
