@@ -8,8 +8,14 @@ date: 2020-07-26
 ---
 import Img from 'src/components/Img.astro';
 import Box from 'src/layouts/Box.astro';
-import Equation from 'src/layouts/work/rpns/Equation.astro';
+import Number from 'src/components/Number.astro';
 import Group from 'src/layouts/work/rpns/Group.astro';
+import Times from 'src/layouts/work/rpns/Times.astro';
+import Prime from 'src/layouts/work/rpns/Prime.astro';
+import One from 'src/components/work/rpns/One.astro';
+import Dot from 'src/components/work/rpns/Dot.astro';
+import Text from 'src/components/work/rpns/Text.astro';
+import Blank from 'src/components/work/rpns/Blank.astro';
 import 'src/styles/work/rpns.css';
 
 <Box factor={1.4}>
@@ -26,72 +32,345 @@ My first thought in designing this system was that all the numbers making up the
 
 But if we represent 13 using its *index* — 6, as it’s the 6th prime number — then we get something that can be broken down further: 6 = 2¹ × 3¹. We can continue this process by representing 2 and 3 using their indices as well:
 
-<Equation align="25%">
-  <div class="row">
-    <div class="lhs">6</div>
-    <div class="rel">=</div>
-    <div class="rhs"><span class="blue">2¹</span> × <span class="blue">3¹</span></div>
-  </div>
-  <div class="row">
-    <div class="lhs"></div>
-    <div class="rel">=</div>
-    <div class="rhs"><span class="blue"><Group>(the 1st prime ^ 1)</Group></span> <Group>× <span class="blue">(the 2nd prime ^ 1)</span></Group></div>
-  </div>
-</Equation>
+<div class="equation">
+  <div class="lhs">6</div>
+  <div class="rel">=</div>
+  <div class="rhs"><span class="blue">2¹</span> × <span class="blue">3¹</span></div>
+
+  <div class="lhs"></div>
+  <div class="rel">=</div>
+  <div class="rhs"><span class="blue"><Group>(the 1st prime ^ 1)</Group></span> <Group>× <span class="blue">(the 2nd prime ^ 1)</span></Group></div>
+</div>
 
 The 2 in that expression can be broken down in the same way:
 
-<Equation align="25%">
-  <div class="row">
-    <div class="lhs">6</div>
-    <div class="rel">=</div>
-    <div class="rhs"><Group>(the 1st prime ^ 1)</Group> <Group>× (the <span class="blue">(the 1st prime ^ 1)</span>th prime ^ 1)</Group></div>
-  </div>
-</Equation>
+<div class="equation">
+  <div class="lhs">6</div>
+  <div class="rel">=</div>
+  <div class="rhs"><Group>(the 1st prime ^ 1)</Group> <Group>× (the <span class="blue">(the 1st prime ^ 1)</span>th prime ^ 1)</Group></div>
+</div>
+
+This cannot be broken down any further, as the only numbers remaining are ones.
 
 Now that we have this expression for 6, we can use it to write 13:
 
-<Equation align="10%">
-  <div class="row">
-    <div class="lhs">13</div>
-    <div class="rel">=</div>
-    <div class="rhs">(the <span class="blue">6</span>th prime ^ 1)</div>
+<div class="equation">
+  <div class="lhs">13</div>
+  <div class="rel">=</div>
+  <div class="rhs">(the <span class="blue">6</span>th prime ^ 1)</div>
+
+  <div class="lhs"></div>
+  <div class="rel">=</div>
+  <div class="rhs">(the <span class="blue">((the 1st prime ^ 1) × (the (the 1st prime ^ 1)th prime ^ 1))</span>th prime ^ 1)</div>
+</div>
+
+This becomes ungainly pretty quickly, so it would be nice to have a better way to represent this information: a form of visual notation that clarifies the structure of this kind of expression. This notation will need to represent a few things:
+
+- The number 1
+- The multiplication operation: *A × B*
+- Another operation: *the A-th prime to the power of B*
+- Some way of indicating grouping, like parentheses
+
+I have come up with several ways of doing this.
+
+## Dots & Lines
+
+One possibility is to use horizontal and vertical lines to represent the two types of operations. Let’s write A × B as <span class="rpns text-rpns inline align" style="--gap: 0;"><Times><Text content="A"/><Text content="B"/></Times></span>, and “the A-th prime to the power of B” as <span class="rpns text-rpns inline" style="--gap: 5px;"><Prime><Text content="A"/><Text content="B"/></Prime></span>. (Of course this looks like division, but in this context it represents something else.) Using this notation, we can write 13 in a much more concise way:
+
+<div class="equation rpns-equation" id="thirteen">
+  <div class="lhs">13</div>
+  <div class="rel">=</div>
+  <div class="rhs">(the 6th prime ^ 1)</div>
+
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Text content="6"/>
+        <One/>
+      </Prime>
+    </div>
   </div>
-  <div class="row">
-    <div class="lhs"></div>
-    <div class="rel">=</div>
-    <div class="rhs">(the <span class="blue">((the 1st prime ^ 1) × (the (the 1st prime ^ 1)th prime ^ 1))</span>th prime ^ 1)</div>
+
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Text content="2¹ × 3¹"/>
+        <One/>
+      </Prime>
+    </div>
   </div>
-</Equation>
 
-This cannot be broken down any further, as the only numbers remaining are 1’s.
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Text content="(the 1st prime ^ 1) × (the 2nd prime ^ 1)"/>
+        <One/>
+      </Prime>
+    </div>
+  </div>
+
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Times>
+          <Text content="(the 1st prime ^ 1)"/>
+          <Text content="(the 2nd prime ^ 1)"/>
+        </Times>
+        <One/>
+      </Prime>
+    </div>
+  </div>
+
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Times>
+          <Prime>
+            <One/>
+            <One/>
+          </Prime>
+          <Prime>
+            <Text content="2"/>
+            <One/>
+          </Prime>
+        </Times>
+        <One/>
+      </Prime>
+    </div>
+  </div>
+
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Times>
+          <Prime>
+            <One/>
+            <One/>
+          </Prime>
+          <Prime>
+            <Text content="(the 1st prime ^ 1)"/>
+            <One/>
+          </Prime>
+        </Times>
+        <One/>
+      </Prime>
+    </div>
+  </div>
+
+<div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Times>
+          <Prime>
+            <One/>
+            <One/>
+          </Prime>
+          <Prime>
+            <Prime>
+              <One/>
+              <One/>
+            </Prime>
+            <One/>
+          </Prime>
+        </Times>
+        <One/>
+      </Prime>
+    </div>
+  </div>
+</div>
+
+This kind of representation makes it easier to see the expression’s structure than when we were writing it all on one line.
+
+It is possible to make this even more concise by not writing the ones at all. This works because the ones always appear in predictable places in these representations. For example, consider this more complex representation, of the number <Number num="1246208"/>:
+
+<div class="rpns text-rpns">
+<Times>
+  <Prime>
+    <One/>
+    <Times>
+      <Prime>
+        <One/>
+        <One/>
+      </Prime>
+      <Prime>
+        <Prime>
+          <Prime>
+            <One/>
+            <One/>
+          </Prime>
+          <One/>
+        </Prime>
+        <One/>
+      </Prime>
+    </Times>
+  </Prime>
+  <Prime>
+    <Prime>
+      <Times>
+        <Prime>
+          <One/>
+          <One/>
+        </Prime>
+        <Prime>
+          <Prime>
+            <Prime>
+              <One/>
+              <One/>
+            </Prime>
+            <Prime>
+              <One/>
+              <One/>
+            </Prime>
+          </Prime>
+          <One/>
+        </Prime>
+      </Times>
+      <One/>
+    </Prime>
+    <One/>
+  </Prime>
+</Times>
+</div>
+
+Here’s how it looks without the ones:
+
+<div class="rpns text-rpns" id="no-one">
+<Times>
+  <Prime>
+    <One/>
+    <Times>
+      <Prime>
+        <One/>
+        <One/>
+      </Prime>
+      <Prime>
+        <Prime>
+          <Prime>
+            <One/>
+            <One/>
+          </Prime>
+          <One/>
+        </Prime>
+        <One/>
+      </Prime>
+    </Times>
+  </Prime>
+  <Prime>
+    <Prime>
+      <Times>
+        <Prime>
+          <One/>
+          <One/>
+        </Prime>
+        <Prime>
+          <Prime>
+            <Prime>
+              <One/>
+              <One/>
+            </Prime>
+            <Prime>
+              <One/>
+              <One/>
+            </Prime>
+          </Prime>
+          <One/>
+        </Prime>
+      </Times>
+      <One/>
+    </Prime>
+    <One/>
+  </Prime>
+</Times>
+</div>
+
+If you add ones above/below/between all the horizontal lines (except in the places where there is a multiplication <span style="display: inline-block; vertical-align: middle; width: 0.24em; height: 1.5em; position: relative; bottom: 0.05em; margin: 0 0.2em; background-color: var(--brown)"/> bar), that will put them all in the right places. This is true for any number. So we can leave out the ones, which allows us to write this more compactly:
+
+<div class="rpns">
+<Times>
+  <Prime>
+    <Blank/>
+    <Times>
+      <Prime><Blank/><Blank/></Prime>
+      <Prime>
+        <Prime>
+          <Prime><Blank/><Blank/></Prime>
+          <Blank/>
+        </Prime>
+        <Blank/>
+      </Prime>
+    </Times>
+  </Prime>
+  <Prime>
+    <Prime>
+      <Times>
+        <Prime><Blank/><Blank/></Prime>
+        <Prime>
+          <Prime>
+            <Prime><Blank/><Blank/></Prime>
+            <Prime><Blank/><Blank/></Prime>
+          </Prime>
+          <Blank/>
+        </Prime>
+      </Times>
+      <Blank/>
+    </Prime>
+    <Blank/>
+  </Prime>
+</Times>
+</div>
+
+Just for aesthetic purposes, I’ll replace the shortest horizontal lines with dots:
+
+<div class="rpns">
+<Times>
+  <Prime>
+    <Blank/>
+    <Times>
+      <Dot/>
+      <Prime>
+        <Prime>
+          <Dot/>
+          <Blank/>
+        </Prime>
+        <Blank/>
+      </Prime>
+    </Times>
+  </Prime>
+  <Prime>
+    <Prime>
+      <Times>
+        <Dot/>
+        <Prime>
+          <Prime>
+            <Dot/>
+            <Dot/>
+          </Prime>
+          <Blank/>
+        </Prime>
+      </Times>
+      <Blank/>
+    </Prime>
+    <Blank/>
+  </Prime>
+</Times>
+</div>
+
+If you wanted to compact this even more, you could remove the vertical multiplication bars as they aren’t actually necessary to interpret the number — but I’ll keep them, since they make things clearer.
 
 
 
-Write the prime factorization:
+<div class="rpns" id="monster">
+<Times><Prime><Blank/><Times><Dot/><Prime><Prime><Dot/><Dot/></Prime><Blank/></Prime></Times></Prime><Prime><Dot/><Times><Prime><Blank/><Dot/></Prime><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime></Times></Prime><Prime><Prime><Dot/><Blank/></Prime><Prime><Dot/><Dot/></Prime></Prime><Prime><Prime><Blank/><Dot/></Prime><Times><Dot/><Prime><Dot/><Blank/></Prime></Times></Prime><Prime><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime><Dot/></Prime><Prime><Times><Dot/><Prime><Dot/><Blank/></Prime></Times><Prime><Dot/><Blank/></Prime></Prime><Prime><Prime><Prime><Blank/><Dot/></Prime><Blank/></Prime><Blank/></Prime><Prime><Prime><Blank/><Prime><Dot/><Blank/></Prime></Prime><Blank/></Prime><Prime><Prime><Dot/><Dot/></Prime><Blank/></Prime><Prime><Times><Dot/><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime></Times><Blank/></Prime><Prime><Prime><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime><Blank/></Prime><Blank/></Prime><Prime><Prime><Times><Dot/><Prime><Dot/><Blank/></Prime></Times><Blank/></Prime><Blank/></Prime><Prime><Times><Prime><Dot/><Blank/></Prime><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime></Times><Blank/></Prime><Prime><Prime><Prime><Prime><Blank/><Dot/></Prime><Blank/></Prime><Blank/></Prime><Blank/></Prime><Prime><Times><Prime><Blank/><Dot/></Prime><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime></Times><Blank/></Prime></Times>
+</div>
 
-<p class="center">45 = 3² × 5¹</p>
+{/* a much larger number, like <span id="monster-base10"><Number num="808017424794512875886459904961710757005754368000000000"/></span> */}
 
-3 is the second prime, and 5 is the third prime, so we can refer to these primes using their indices:
 
-<p class="center">45 = (the 2nd prime ^ 2) × (the 3rd prime ^ 1)</p>
-
-This expression contains four numbers: 2, 2, 3, and 1. We can’t do anything more with the 1, but the others we can break down further. Let’s start with the 3. The prime factorization of 3 is simply 3¹, but we break that into smaller numbers by writing 3 using its index:
-
-<p class="center">45 = (the 2nd prime ^ 2) × (the <span style="color: var(--dark-blue);">(the 2nd prime ^ 1)</span>st prime ^ 1)</p>
-
-Now we have three 2’s left. 2 is (the 1st prime ^ 1), so:
-
-45 = (the <span style="color: var(--dark-blue);">(the 1st prime ^ 1)</span>st prime ^ <span style="color: var(--dark-blue);">(the 1st prime ^ 1)</span>) × (the (the <span style="color: var(--dark-blue);">(the 1st prime ^ 1)</span>st prime ^ 1)st prime ^ 1)
-
-This becomes unreadable pretty quickly. Let’s make it simpler by using “A ◊ B” to mean “the A-th prime to the power of B”:
-
-<p class="center">45 = ((1 ◊ 1) ◊ (1 ◊ 1)) × (((1 ◊ 1) ◊ 1) ◊ 1)</p>
-
-If you continue breaking numbers into prime indices and exponents and factoring those, you eventually get to an expression involving only ones combined in different ways. Using “A ◊ B” to mean “the A-th prime to the power of B,” we can write something like
-
-<p class="center">936 = (1 ◊ ((1 ◊ 1) ◊ 1)) × ((1 ◊ 1) ◊ (1 ◊ 1)) × (((1 ◊ 1) × ((1 ◊ 1) ◊ 1)) ◊ 1).</p>
-
-This result met my original goal — representing numbers in a way that only uses primes — but visually, it’s not very clear, since you have to keep track of all those parentheses. I realized that this type of structure, with nested expressions of different types, could be represented more clearly by using a specially designed notation in two dimensions.
-
-Creating such a notation involves two decisions: how to visually represent A × B, and how to represent A ◊ B. I have tried a number of ideas for each of these operations, producing a variety of visual results. Some of these designs have more mathematical value (clearly representing the operations involved), while others have more artistic value (producing beautiful shapes). “Dots & Lines” is one of the more mathematically-oriented designs (drawing horizontal and vertical lines to indicate the different operations), while “Colored Rectangles” is one of the more artistically-oriented ones (placing shapes near each other, touching each other, or inside each other to represent the operations, and coloring them however I please).
+## Rectangles

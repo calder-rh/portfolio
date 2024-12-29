@@ -1,0 +1,9 @@
+---
+const { color="var(--brown)" } = Astro.props
+---
+
+<span class="expr-container">
+  <span class="times" style=`--line-color: ${color}`>
+    <slot/>
+  </span>
+</span>

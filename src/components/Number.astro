@@ -1,0 +1,45 @@
+---
+const { num } = Astro.props;
+
+// from chatgpt
+function addSeparators(number, groupSize = 3) {
+    /**
+     * Adds thin spaces as digit groupings to a numeric string.
+     *
+     * @param {string} number - The number as a string, possibly with a decimal or negative sign.
+     * @param {number} groupSize - The size of the groups for digit separation (default is 3).
+     * @returns {string} - The formatted number with thin spaces as group separators.
+     */
+    if (typeof number !== "string") {
+        throw new TypeError("Input must be a string.");
+    }
+    
+    const separator = "\xa0";
+
+    // Split into integer and fractional parts
+    const [integerPart, fractionalPart] = number.split(".");
+
+    // Handle the integer part (add grouping)
+    const sign = integerPart.startsWith("-") ? "-" : "";
+    const digits = sign ? integerPart.slice(1) : integerPart;
+    const groupedInteger = digits
+        .split("")
+        .reverse()
+        .reduce((acc, digit, index) => {
+            if (index > 0 && index % groupSize === 0) {
+                acc.push(separator);
+            }
+            acc.push(digit);
+            return acc;
+        }, [])
+        .reverse()
+        .join("");
+
+    // Reconstruct the number with fractional part, if any
+    return fractionalPart
+        ? `${sign}${groupedInteger}.${fractionalPart}`
+        : `${sign}${groupedInteger}`;
+}
+---
+
+<span>{addSeparators(num)}</span>
