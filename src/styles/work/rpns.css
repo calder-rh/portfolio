@@ -27,6 +27,7 @@ p.center {
 .lhs {
   grid-column: 1;
   justify-self: end;
+  align-self: center;
 }
 
 .rel {
@@ -39,6 +40,7 @@ p.center {
   grid-column: 3;
   justify-self: start;
   width: fit-content;
+  align-self: center;
 }
 
 
@@ -51,6 +53,10 @@ p.center {
   --t-gap: 0.1em;
   --group: 0.6em;
   --line: 0.4em;
+  --prime-color: var(--brown);
+  --times-color: var(--brown);
+  --text-color: var(--brown);
+  --dot-color: var(--brown);
   margin: 2rem 0;
 }
 
@@ -77,9 +83,16 @@ p.center {
 .times {
   display: flex;
   flex-flow: row nowrap;
-  margin-top: var(--t-gap);
-  margin-bottom: var(--t-gap);
-  --line-color: var(--brown);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.prime > .expr-container:first-child > .times {
+  margin-top: 0;
+}
+
+.prime > .expr-container:last-child > .times {
+  margin-bottom: 0;
 }
 
 .times > .expr-container > .times {
@@ -88,8 +101,8 @@ p.center {
 }
 
 .times > * {
-  border-left: var(--line) solid var(--line-color);
-  border-right: var(--line) solid var(--line-color);
+  border-left: var(--line) solid var(--times-color);
+  border-right: var(--line) solid var(--times-color);
   padding-left: var(--gap);
   padding-right: var(--gap);
   margin-left: calc(-0.5 * var(--line));
@@ -117,7 +130,14 @@ p.center {
   flex-flow: column nowrap;
   margin-left: var(--t-gap);
   margin-right: var(--t-gap);
-  --line-color: var(--brown);
+}
+
+.times > .expr-container:first-child > .prime {
+  margin-left: var(--group);
+}
+
+.times > .expr-container:last-child > .prime {
+  margin-right: var(--group);
 }
 
 .prime > .expr-container > .prime {
@@ -126,8 +146,8 @@ p.center {
 }
 
 .prime > * {
-  border-top: var(--line) solid var(--line-color);
-  border-bottom: var(--line) solid var(--line-color);
+  border-top: var(--line) solid var(--prime-color);
+  border-bottom: var(--line) solid var(--prime-color);
   padding-top: var(--gap);
   padding-bottom: var(--gap);
   margin-top: calc(-0.5 * var(--line));
@@ -156,7 +176,7 @@ p.center {
 
 .text {
   font-size: 1.6666em;
-  color: var(--brown);
+  color: var(--text-color);
   padding-left: 0.3em;
   padding-right: 0.3em;
   line-height: 0.8em;
@@ -182,13 +202,25 @@ p.center {
 .dot {
   width: 0.7em;
   height: 0.7em;
-  background-color: var(--brown);
+  background-color: var(--dot-color);
   border-radius: 0.35em;
-  margin: 0.1em 0.5em;
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
 
 .times > .expr-container > .dot {
-  margin: 0.1em 0.1em;
+  margin-left: 0.1em;
+  margin-right: 0.1em;
+}
+
+.times > .expr-container:first-child > .dot {
+  margin-left: 0.5em;
+}
+
+.times > .expr-container:last-child > .dot {
+  margin-right: 0.5em;
 }
 
 .rpns-equation {
@@ -207,6 +239,12 @@ p.center {
   }
 }
 
+#monster {
+  --dot-color: #bc1436;
+  --prime-color: rgb(81, 117, 145);
+  --times-color: rgb(188, 146, 55);
+}
+
 @media screen and (max-width: 61rem) {
   #monster {
     font-size: 1.18vw;
@@ -216,11 +254,3 @@ p.center {
 #no-one .text {
   opacity: 0;
 }
-
-
-
-/* @media screen and (max-width: 44.5rem) {
-  #monster-base10 {
-    font-size: 2.7vw;
-  }
-} */

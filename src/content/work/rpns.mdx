@@ -26,7 +26,7 @@ Our base-ten numeral system represents numbers by taking powers of ten, multiply
 
 A more natural way to represent an integer is its prime factorization, a set of prime numbers raised to various powers and multiplied together: <span style="white-space: nowrap">936 = 2³ × 3² × 13¹.</span> This is like breaking a number down into its atomic parts: for every number, there is exactly one way to break it down into primes, and this factorization gives some fundamental information about how the number behaves in various mathematical contexts.
 
-When we write a number’s prime factorization as we did above, we are still using base ten. In that previous example, <span style="white-space: nowrap">2³ × 3² × 13¹</span>, the “13” means <span style="white-space: nowrap">__1__ × 10¹ + __3__ × 10⁰</span>, and even the other single-digit primes and exponents are ultimately written in base 10. Recursive Prime Numeral System is a way of writing a prime factorization without any hint of base ten or any other base: everything is written using primes.
+When we write a number’s prime factorization as we did above, we still end up using base ten. In that previous example, <span style="white-space: nowrap">2³ × 3² × 13¹</span>, the “13” means <span style="white-space: nowrap">__1__ × 10¹ + __3__ × 10⁰</span>, and even the other single-digit primes and exponents are ultimately written in base 10. Recursive Prime Numeral System is a way of writing a prime factorization without any hint of base ten or any other base: everything is written using primes.
 
 My first thought in designing this system was that all the numbers making up the prime factorization could themselves broken down into factors: for example, if a factorization contains 13⁴, the power 4 can be written as 2². However, the 13 can’t be broken down any further into factors — that’s what it means to be prime.
 
@@ -69,13 +69,13 @@ This becomes ungainly pretty quickly, so it would be nice to have a better way t
 - The number 1
 - The multiplication operation: *A × B*
 - Another operation: *the A-th prime to the power of B*
-- Some way of indicating grouping, like parentheses
+- Some way of nesting operations, like parentheses
 
 I have come up with several ways of doing this.
 
 ## Dots & Lines
 
-One possibility is to use horizontal and vertical lines to represent the two types of operations. Let’s write A × B as <span class="rpns text-rpns inline align" style="--gap: 0;"><Times><Text content="A"/><Text content="B"/></Times></span>, and “the A-th prime to the power of B” as <span class="rpns text-rpns inline" style="--gap: 5px;"><Prime><Text content="A"/><Text content="B"/></Prime></span>. (Of course this looks like division, but in this context it represents something else.) Using this notation, we can write 13 in a much more concise way:
+One possibility is to use horizontal and vertical lines to represent the two types of operations. Let’s write A × B as <span class="rpns text-rpns inline align" style="--gap: 0;"><Times><Text content="A"/><Text content="B"/></Times></span>, and “the A-th prime to the power of B” as <span class="rpns text-rpns inline" style="--gap: 5px;"><Prime><Text content="A"/><Text content="B"/></Prime></span>. (Of course this looks like division, but in this context it represents something else.) Using this notation, we can write 13 in a much more concise way, which makes it easier to see the structure of the expression:
 
 <div class="equation rpns-equation" id="thirteen">
   <div class="lhs">13</div>
@@ -112,7 +112,7 @@ One possibility is to use horizontal and vertical lines to represent the two typ
     </div>
   </div>
 
-  <div class="rel">=</div>
+  {/* <div class="rel">=</div>
   <div class="rhs">
     <div class="rpns text-rpns inline">
       <Prime>
@@ -123,7 +123,7 @@ One possibility is to use horizontal and vertical lines to represent the two typ
         <One/>
       </Prime>
     </div>
-  </div>
+  </div> */}
 
   <div class="rel">=</div>
   <div class="rhs">
@@ -186,7 +186,94 @@ One possibility is to use horizontal and vertical lines to represent the two typ
   </div>
 </div>
 
-This kind of representation makes it easier to see the expression’s structure than when we were writing it all on one line.
+The sizes of horizontal bars indicates how the parts are nested:
+
+<div class="equation rpns-equation">
+  <div class="lhs">the 1st prime ^ (the 1st prime ^ 1)</div>
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Text content="1"/>
+        <Prime>
+          <Text content="1"/>
+          <Text content="1"/>
+        </Prime>
+      </Prime>
+    </div>
+  </div>
+
+  <div class="lhs">the (1st prime ^ 1)th prime ^ 1</div>
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Prime>
+          <Text content="1"/>
+          <Text content="1"/>
+        </Prime>
+        <Text content="1"/>
+      </Prime>
+    </div>
+  </div>
+</div>
+
+So you see a horizontal bar, its inputs come from the spaces above and below the bar, up until you hit any larger bars (if you do). For example, the bar highlighted in blue here has its inputs from the shaded region:
+
+<div class="rpns text-rpns">
+  <Prime>
+    <One/>
+    <Prime color="var(--dark-blue)">
+      <span class="expr-container" style="background-color: rgba(96, 136, 154, 0.3); --prime-color: var(--brown)">
+        <span class="prime">
+          <One/>
+          <One/>
+        </span>
+      </span>
+      <span class="expr-container" style="background-color: rgba(96, 136, 154, 0.3)">
+        <span class="text">1</span>
+      </span>
+    </Prime>
+  </Prime>
+</div>
+
+It is possible to make this system even more concise by not writing the ones at all. If a horizontal bar has nothing in the space above it, then the first input (prime index) is assumed to be 1; if it has nothing in the space below it, the second input (exponent) is assumed to be 1. So that above example becomes:
+
+<div class="equation rpns-equation">
+  <div class="lhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <One/>
+        <Prime>
+          <Prime>
+            <One/>
+            <One/>
+          </Prime>
+          <One/>
+        </Prime>
+      </Prime>
+    </div>
+  </div>
+  <div class="rel">→</div>
+  <div class="rhs">
+    <div class="rpns inline">
+      <Prime>
+        <Blank/>
+        <Prime>
+          <Prime>
+            <Blank/>
+            <Blank/>
+          </Prime>
+          <Blank/>
+        </Prime>
+      </Prime>
+    </div>
+  </div>
+</div>
+
+For aesthetic purposes, I’ll replace the shortest horizontal lines (which represent 2) with dots: <span class="rpns inline"><Prime><Blank/><Prime><Dot/><Blank/></Prime></Prime></span>.
+
+<span class="rpns text-rpns inline" style="--gap: 5px;"><Prime><Text content="A"/><Text content="B"/></Prime></span> line
 
 It is possible to make this even more concise by not writing the ones at all. This works because the ones always appear in predictable places in these representations. For example, consider this more complex representation, of the number <Number num="1246208"/>:
 
@@ -290,7 +377,7 @@ Here’s how it looks without the ones:
 </Times>
 </div>
 
-If you add ones above/below/between all the horizontal lines (except in the places where there is a multiplication <span style="display: inline-block; vertical-align: middle; width: 0.24em; height: 1.5em; position: relative; bottom: 0.05em; margin: 0 0.2em; background-color: var(--brown)"/> bar), that will put them all in the right places. This is true for any number. So we can leave out the ones, which allows us to write this more compactly:
+If you add ones above/below/between all the horizontal lines, except in the places where there is a multiplication <span style="display: inline-block; vertical-align: middle; width: 0.24em; height: 1.5em; position: relative; bottom: 0.05em; margin: 0 0.2em; background-color: var(--brown)"/> bar, that will put them in all the right places. This is true for any number. Therefore we can leave out the ones and everything is still clear. Removing the ones lets us write more compactly:
 
 <div class="rpns">
 <Times>
@@ -362,15 +449,17 @@ Just for aesthetic purposes, I’ll replace the shortest horizontal lines with d
 </Times>
 </div>
 
-If you wanted to compact this even more, you could remove the vertical multiplication bars as they aren’t actually necessary to interpret the number — but I’ll keep them, since they make things clearer.
+If you wanted to compact this even more, you could remove the vertical multiplication bars as they aren’t actually necessary to interpret the number — but I’ll keep them, since I think it looks nicer to have them.
 
-
+It can look fun to color the parts differently:
 
 <div class="rpns" id="monster">
 <Times><Prime><Blank/><Times><Dot/><Prime><Prime><Dot/><Dot/></Prime><Blank/></Prime></Times></Prime><Prime><Dot/><Times><Prime><Blank/><Dot/></Prime><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime></Times></Prime><Prime><Prime><Dot/><Blank/></Prime><Prime><Dot/><Dot/></Prime></Prime><Prime><Prime><Blank/><Dot/></Prime><Times><Dot/><Prime><Dot/><Blank/></Prime></Times></Prime><Prime><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime><Dot/></Prime><Prime><Times><Dot/><Prime><Dot/><Blank/></Prime></Times><Prime><Dot/><Blank/></Prime></Prime><Prime><Prime><Prime><Blank/><Dot/></Prime><Blank/></Prime><Blank/></Prime><Prime><Prime><Blank/><Prime><Dot/><Blank/></Prime></Prime><Blank/></Prime><Prime><Prime><Dot/><Dot/></Prime><Blank/></Prime><Prime><Times><Dot/><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime></Times><Blank/></Prime><Prime><Prime><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime><Blank/></Prime><Blank/></Prime><Prime><Prime><Times><Dot/><Prime><Dot/><Blank/></Prime></Times><Blank/></Prime><Blank/></Prime><Prime><Times><Prime><Dot/><Blank/></Prime><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime></Times><Blank/></Prime><Prime><Prime><Prime><Prime><Blank/><Dot/></Prime><Blank/></Prime><Blank/></Prime><Blank/></Prime><Prime><Times><Prime><Blank/><Dot/></Prime><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime></Times><Blank/></Prime></Times>
 </div>
 
-{/* a much larger number, like <span id="monster-base10"><Number num="808017424794512875886459904961710757005754368000000000"/></span> */}
-
 
 ## Rectangles
+
+The same structure can be represented in other ways.
+
+<span style="font-style: regular;"><span style="padding: 0 0.5em; border: 2px solid var(--brown); margin-right: -0.1em;">A</span>B</span>
