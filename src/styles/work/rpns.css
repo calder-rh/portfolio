@@ -245,9 +245,9 @@ p.center {
   --times-color: rgb(188, 146, 55);
 }
 
-@media screen and (max-width: 61rem) {
+@media screen and (max-width: 65rem) {
   #monster {
-    font-size: 1.18vw;
+    font-size: 1.1vw;
   }
 }
 

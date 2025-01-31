@@ -1,0 +1,88 @@
+---
+const {factor = 1, max=20} = Astro.props
+---
+
+<div class="zoom" data-factor={factor} data-max={max}>
+  <div class="zoom-content-container">
+    <div class="zoom-content">
+      <slot/>
+    </div>
+  </div>
+  <div class="zoom-slider-container">
+    <label>
+      Zoom
+      <input type="range" min="0" max="1" step="0.005" value="0" class="zoom-slider"/>
+    </label>
+  </div>
+</div>
+
+<script>
+  const zooms = document.querySelectorAll('.zoom')
+  const textWidth = document.querySelector('.content')?.clientWidth
+
+  for (let zoom of zooms) {
+    const content = zoom.querySelector('.zoom-content')
+    const container = zoom.querySelector('.zoom-content-container')
+    const slider = zoom.querySelector('.zoom-slider')
+
+    const sourceWidth = content?.clientWidth
+    const sourceHeight = content?.clientHeight
+    
+    const containerHeight = textWidth * sourceHeight / sourceWidth
+
+    content.style["width"] = `${textWidth}px`
+    container.style["width"] = `${textWidth}px`
+    container.style["height"] = `${containerHeight}px`
+
+    slider.oninput = function () {
+      const textWidth = document.querySelector('.content')?.clientWidth
+      
+      const scale0 = parseFloat(content.dataset.lastScale ?? "1")
+      const scale1 = Math.pow(zoom.dataset.max, this.value)
+
+      
+      const viewportWidth = document.documentElement.clientWidth
+      const containerWidth = (scale1 == 1) ? textWidth : Math.min(textWidth * scale1 + 12.1, viewportWidth - 12)
+      
+      const scrollX0 = container.scrollLeft
+      const scrollY0 = container.scrollTop
+      
+      const scrollX1 = (scale1 == 1) ? 0 : ((2 * scale1 * scrollX0 + containerWidth * (scale1 - scale0)) / (2 * scale0))
+      const scrollY1 = (scale1 == 1) ? 0 : ((2 * scale1 * scrollY0 + containerHeight * (scale1 - scale0)) / (2 * scale0))
+
+      console.log(scrollX1)
+
+      container.style['width'] = `${containerWidth}px`
+      content.dataset.lastScale = scale1
+      content.style['transform'] = `scale(${scale1})`
+      container.scrollLeft = scrollX1
+      container.scrollTop = scrollY1
+
+      container?.classList.toggle('zoomed', scale1 != 1)
+    }
+  }
+
+  window.addEventListener('resize', () => {
+    for (let zoom of zooms) {
+      const content = zoom.querySelector('.zoom-content')
+      const container = zoom.querySelector('.zoom-content-container')
+
+      const textWidth = document.querySelector('.content')?.clientWidth
+      console.log(textWidth)
+
+      const sourceWidth = content?.clientWidth
+      const sourceHeight = content?.clientHeight
+
+      const viewportWidth = document.documentElement.clientWidth
+      const scale = parseFloat(content.dataset.lastScale ?? "1")
+      const containerWidth = Math.min(textWidth * scale + 12.1, viewportWidth - 12)
+      
+      const containerHeight = textWidth * sourceHeight / sourceWidth
+
+      content.style["width"] = `${textWidth}px`
+      container.style['width'] = `${containerWidth}px`
+      container.style["height"] = `${containerHeight}px`
+
+    }
+  })
+</script>

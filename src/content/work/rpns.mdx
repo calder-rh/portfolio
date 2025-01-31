@@ -8,6 +8,7 @@ date: 2020-07-26
 ---
 import Img from 'src/components/Img.astro';
 import Box from 'src/layouts/Box.astro';
+import Zoom from 'src/layouts/Zoom.astro';
 import Number from 'src/components/Number.astro';
 import Group from 'src/layouts/work/rpns/Group.astro';
 import Times from 'src/layouts/work/rpns/Times.astro';
@@ -17,10 +18,6 @@ import Dot from 'src/components/work/rpns/Dot.astro';
 import Text from 'src/components/work/rpns/Text.astro';
 import Blank from 'src/components/work/rpns/Blank.astro';
 import 'src/styles/work/rpns.css';
-
-<Box factor={1.4}>
-<Img src='rpns/colors.svg' uses='ftpb' id="test" alt=""/>
-</Box>
 
 Our base-ten numeral system represents numbers by taking powers of ten, multiplying them by various factors, and adding the results together: for example, <span style="white-space: nowrap">936 = __9__ × 10² + __3__ × 10¹ + __6__ × 10⁰.</span> This is good for practical calculations, but mathematically, it’s a rather arbitrary way to represent numbers. There’s nothing inherently special about ten; it’s just the number of fingers most people happen to have.
 
@@ -273,183 +270,14 @@ It is possible to make this system even more concise by not writing the ones at 
 
 For aesthetic purposes, I’ll replace the shortest horizontal lines (which represent 2) with dots: <span class="rpns inline"><Prime><Blank/><Prime><Dot/><Blank/></Prime></Prime></span>.
 
-<span class="rpns text-rpns inline" style="--gap: 5px;"><Prime><Text content="A"/><Text content="B"/></Prime></span> line
+To write 1 on its own, you can write a multiplication bar with nothing on either side. As with horizontal bars, the blank spaces where inputs would be are assumed to be ones, so <span style="display: inline-block; vertical-align: middle; width: 0.24em; height: 1.5em; position: relative; bottom: 0.05em; margin: 0 0.2em; background-color: var(--brown)"/> represents 1 × 1, which is 1.
 
-It is possible to make this even more concise by not writing the ones at all. This works because the ones always appear in predictable places in these representations. For example, consider this more complex representation, of the number <Number num="1246208"/>:
+Here’s all the numbers from 1 through 1024:
 
-<div class="rpns text-rpns">
-<Times>
-  <Prime>
-    <One/>
-    <Times>
-      <Prime>
-        <One/>
-        <One/>
-      </Prime>
-      <Prime>
-        <Prime>
-          <Prime>
-            <One/>
-            <One/>
-          </Prime>
-          <One/>
-        </Prime>
-        <One/>
-      </Prime>
-    </Times>
-  </Prime>
-  <Prime>
-    <Prime>
-      <Times>
-        <Prime>
-          <One/>
-          <One/>
-        </Prime>
-        <Prime>
-          <Prime>
-            <Prime>
-              <One/>
-              <One/>
-            </Prime>
-            <Prime>
-              <One/>
-              <One/>
-            </Prime>
-          </Prime>
-          <One/>
-        </Prime>
-      </Times>
-      <One/>
-    </Prime>
-    <One/>
-  </Prime>
-</Times>
-</div>
+<Zoom start={1}>
+  <Img src="rpns/1-1024.svg" alt=""/>
+</Zoom>
 
-Here’s how it looks without the ones:
-
-<div class="rpns text-rpns" id="no-one">
-<Times>
-  <Prime>
-    <One/>
-    <Times>
-      <Prime>
-        <One/>
-        <One/>
-      </Prime>
-      <Prime>
-        <Prime>
-          <Prime>
-            <One/>
-            <One/>
-          </Prime>
-          <One/>
-        </Prime>
-        <One/>
-      </Prime>
-    </Times>
-  </Prime>
-  <Prime>
-    <Prime>
-      <Times>
-        <Prime>
-          <One/>
-          <One/>
-        </Prime>
-        <Prime>
-          <Prime>
-            <Prime>
-              <One/>
-              <One/>
-            </Prime>
-            <Prime>
-              <One/>
-              <One/>
-            </Prime>
-          </Prime>
-          <One/>
-        </Prime>
-      </Times>
-      <One/>
-    </Prime>
-    <One/>
-  </Prime>
-</Times>
-</div>
-
-If you add ones above/below/between all the horizontal lines, except in the places where there is a multiplication <span style="display: inline-block; vertical-align: middle; width: 0.24em; height: 1.5em; position: relative; bottom: 0.05em; margin: 0 0.2em; background-color: var(--brown)"/> bar, that will put them in all the right places. This is true for any number. Therefore we can leave out the ones and everything is still clear. Removing the ones lets us write more compactly:
-
-<div class="rpns">
-<Times>
-  <Prime>
-    <Blank/>
-    <Times>
-      <Prime><Blank/><Blank/></Prime>
-      <Prime>
-        <Prime>
-          <Prime><Blank/><Blank/></Prime>
-          <Blank/>
-        </Prime>
-        <Blank/>
-      </Prime>
-    </Times>
-  </Prime>
-  <Prime>
-    <Prime>
-      <Times>
-        <Prime><Blank/><Blank/></Prime>
-        <Prime>
-          <Prime>
-            <Prime><Blank/><Blank/></Prime>
-            <Prime><Blank/><Blank/></Prime>
-          </Prime>
-          <Blank/>
-        </Prime>
-      </Times>
-      <Blank/>
-    </Prime>
-    <Blank/>
-  </Prime>
-</Times>
-</div>
-
-Just for aesthetic purposes, I’ll replace the shortest horizontal lines with dots:
-
-<div class="rpns">
-<Times>
-  <Prime>
-    <Blank/>
-    <Times>
-      <Dot/>
-      <Prime>
-        <Prime>
-          <Dot/>
-          <Blank/>
-        </Prime>
-        <Blank/>
-      </Prime>
-    </Times>
-  </Prime>
-  <Prime>
-    <Prime>
-      <Times>
-        <Dot/>
-        <Prime>
-          <Prime>
-            <Dot/>
-            <Dot/>
-          </Prime>
-          <Blank/>
-        </Prime>
-      </Times>
-      <Blank/>
-    </Prime>
-    <Blank/>
-  </Prime>
-</Times>
-</div>
-
-If you wanted to compact this even more, you could remove the vertical multiplication bars as they aren’t actually necessary to interpret the number — but I’ll keep them, since I think it looks nicer to have them.
 
 It can look fun to color the parts differently:
 
@@ -460,6 +288,8 @@ It can look fun to color the parts differently:
 
 ## Rectangles
 
-The same structure can be represented in other ways.
+*(Explanation coming soon)*
 
-<span style="font-style: regular;"><span style="padding: 0 0.5em; border: 2px solid var(--brown); margin-right: -0.1em;">A</span>B</span>
+<Box factor={1.4}>
+<Img src='rpns/colors.svg' uses='ftpb' id="test" alt=""/>
+</Box>
