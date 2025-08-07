@@ -45,6 +45,14 @@ p.center {
 
 
 
+.ord {
+  position: relative;
+  bottom: 0.3em;
+  font-size: 0.9em;
+}
+
+
+
 
 .rpns {
   display: block;

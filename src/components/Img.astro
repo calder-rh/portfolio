@@ -8,6 +8,7 @@ const {
   alt,
   uses='ftpb',
   width,
+  scale,
   id,
   classes=[],
   format='png'
@@ -32,3 +33,4 @@ if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: 
 <div class={classesUsed} id={id}>
   {(uses === undefined || uses.includes('f')) && <Image src={images[imagePath]()} width={width} alt={alt} format={format} loading="lazy"></Image>}
 </div>
+
