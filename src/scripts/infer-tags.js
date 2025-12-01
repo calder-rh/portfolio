@@ -1,6 +1,6 @@
 import { getEntry } from 'astro:content'
 
-export async function inferTags(tags) {
+export async function inferTags(tags, unlisted) {
   const allTags = tags.slice()
   for (let i = 0; i < allTags.length; i++) {
     const tag = allTags[i]
@@ -12,6 +12,8 @@ export async function inferTags(tags) {
       allTags.push(parent.slug)
     }
   }
-  allTags.push('all')
+  if (!unlisted){
+    allTags.push('all')
+  }
   return allTags
 }

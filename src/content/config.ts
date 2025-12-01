@@ -10,7 +10,8 @@ const workCollection = defineCollection({
     date: z.union([z.date(), z.literal('present')]),
     priority: z.onumber(),
     draft: z.oboolean(),
-    show_toc: z.oboolean()
+    show_toc: z.oboolean(),
+    unlisted: z.boolean().default(false),
   })
 });
 

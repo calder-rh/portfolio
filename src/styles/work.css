@@ -159,6 +159,10 @@
   height: 0;
 }
 
+.work-item.unlisted.closed:not(.ish) .cap-container {
+  height: 0;
+}
+
 .work-item.closable.closed.ish {
   scale: calc(var(--min-width) * 3) 1;
 }

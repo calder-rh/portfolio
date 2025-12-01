@@ -20,7 +20,8 @@ for (let content of allWork) {
   const workItem = {
     title: content.data.title,
     description: content.data.description,
-    tags: await inferTags(content.data.tags.map(item => item.slug)),
+    tags: await inferTags(content.data.tags.map(item => item.slug), content.data.unlisted),
+    unlisted: content.data.unlisted,
     date: content.data.date,
     priority: content.data.priority,
     draft: content.data.draft === true,
