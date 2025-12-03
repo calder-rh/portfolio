@@ -15,8 +15,9 @@ const {
 } = Astro.props;
 
 const classList = ["img"]
-if (classes) classList.push(...classes);
-const classesUsed = classList.join(" ");
+if (scale) classList.push("scaled")
+if (classes) classList.push(...classes)
+const classesUsed = classList.join(" ")
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif,svg}')
 
@@ -30,7 +31,24 @@ const imagePath = (() => {
 if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif,svg}"`);
 ---
 
-<div class={classesUsed} id={id}>
+<div class={classesUsed} id={id} data-scale={scale}>
   {(uses === undefined || uses.includes('f')) && <Image src={images[imagePath]()} width={width} alt={alt} format={format} loading="lazy"></Image>}
 </div>
 
+<script>
+  document.querySelectorAll(".img.scaled").forEach(img_container => {
+    const img = img_container.querySelector("img")
+    fetch(img.src)
+      .then(r => r.text())
+      .then(text => {
+        const m = text.match(/viewBox\s*=\s*"([^"]+)"/i);
+        if (!m) return;
+
+        const [minX, minY, w, h] = m[1].split(/\s+/).map(Number);
+        const scale = img_container.dataset.scale * 0.01;
+
+        img.style.width = (w * scale) + "rem";
+        img.style.height = "auto";
+      });
+    });
+</script>

@@ -287,10 +287,15 @@ p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, li a {
   transform: translate(-50%);
 }
 
+.img {
+  display: flex;
+  justify-content: center;
+}
+
 .img img {
   width: 100%;
   height: auto;
-  display: block;
+  /* display: block; */
 }
 
 
@@ -354,13 +359,17 @@ p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, li a {
   margin-bottom: 1rem;
 }
 
-.content ul {
+.content ul, .content ol {
   padding-left: 1.8em;
   /* padding-left: 0; */
 }
 
-.content ol {
-  padding-left: 1.8em;
+.glue + * {
+  margin-top: 0 !important;
+}
+
+*:has(+ .glue) {
+  margin-bottom: 0 !important;
 }
 
 
