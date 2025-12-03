@@ -10,8 +10,8 @@
       }
     </style>
   </defs>
-  <rect class="cls-1" x="260" y="5" width="120" height="120" transform="translate(640 130) rotate(180)"/>
-  <rect class="cls-1" x="300" y="45" width="40" height="40" transform="translate(640 130) rotate(180)"/>
-  <rect class="cls-1" x="170" y="5" width="90" height="120" transform="translate(430 130) rotate(180)"/>
-  <rect class="cls-1" x="5" y="5" width="165" height="120"/>
+  <rect class="cls-1" x="5" y="5" width="120" height="120"/>
+  <rect class="cls-1" x="45" y="45" width="40" height="40"/>
+  <rect class="cls-1" x="125" y="5" width="90" height="120"/>
+  <rect class="cls-1" x="215" y="5" width="165" height="120" transform="translate(595 130) rotate(180)"/>
 </svg>

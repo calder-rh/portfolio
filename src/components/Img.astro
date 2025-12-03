@@ -15,7 +15,7 @@ const {
 } = Astro.props;
 
 const classList = ["img"]
-if (scale) classList.push("scaled")
+if (scale) classList.push("scaled unsized")
 if (classes) classList.push(...classes)
 const classesUsed = classList.join(" ")
 
@@ -50,5 +50,6 @@ if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: 
         img.style.width = (w * scale) + "rem";
         img.style.height = "auto";
       });
+      img_container.classList.toggle("unsized", false);
     });
 </script>
