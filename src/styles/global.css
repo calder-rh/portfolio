@@ -304,7 +304,7 @@ p a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, li a {
 
 
 .shadow {
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  filter: drop-shadow(0 0.5rem 1rem rgba(0, 0, 0, 0.1));
 }
 
 .sc {
