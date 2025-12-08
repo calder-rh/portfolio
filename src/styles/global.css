@@ -65,8 +65,8 @@ html {
 
   scroll-behavior: smooth;
 
-  overflow-x: hidden;
-  overflow-y: auto;
+  /* overflow-x: hidden;
+  overflow-y: auto; */
 }
 
 .content * {
@@ -80,6 +80,7 @@ p, li {
 body {
   padding: 0 1.25rem;
   margin: 11.25rem auto 100px auto;
+
 }
 
 .content {
@@ -519,4 +520,14 @@ body.no-transitions * {
 .zoom-slider-container input {
   position: relative;
   bottom: 0.15rem;
+}
+
+mux-player {
+  --seek-backward-button: none;
+  --seek-forward-button: none;
+  --media-font-family: "Konsole", sans-serif;
+}
+
+.lining {
+  font-variant-numeric: lining-nums;
 }

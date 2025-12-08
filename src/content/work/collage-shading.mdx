@@ -1,8 +1,41 @@
 ---
 title: Collage-inspired shading & rendering system
-tags: [3d, code]
+tags: [itp-portfolio]
 start_date: 2023-09-15
 date: 2024-05-17
 priority: 1
-draft: true
+unlisted: true
 ---
+import Box from 'src/layouts/Box.astro';
+import { MuxPlayer } from "@mux/mux-player-astro";
+import Img from 'src/components/Img.astro';
+
+For the last few years I have been working alongside [Barb Meier](https://cs.brown.edu/people/bjm/) and my peers from her computer animation courses to make a short film, which partly takes place in an alternate world inspired by a child's drawings. To create an effect of being inside a drawing, I designed and implemented a non-photorealistic shading system in Maya that renders <span class="lining">3D</span> objects as a collage of flat textures. The film is still in production, but here are a few early tests I made while working out the kinks:
+
+<Img src='collage-shading/flower set.png' uses='p' alt=''/>
+
+<Box factor={2}>
+  <MuxPlayer
+    playbackId="Pg6hTFwPw802fDAhgQX5bHzFzBvTToN92wzgtsgHOiOM"
+    metadata={{ video_title: 'Flower set' }}
+    preferPlayback="mse"
+    primaryColor="#e5e7eb"
+    accentColor="#60889a"
+  />
+</Box>
+
+<Box factor={2}>
+  <MuxPlayer
+    playbackId="5qd28rEfTNPf53B00obRUDWIzm4Jo1jzLya9yqT4gD8I"
+    metadata={{ video_title: 'Bird' }}
+    preferPlayback="mse"
+    primaryColor="#e5e7eb"
+    accentColor="#60889a"
+  />
+</Box>
+
+For complicated cases like the bird, with many texture regions, the parameters of the shader are specified by an image. I create this image by painting unique colors on the model’s UV map to specify the boundaries of the regions. Within each region, I add patterns of specially-colored pixels that specify which texture files to use, how these flat textures should be oriented and scaled to follow the <span class="lining">3D</span> surface, and how much to blur between regions. This image is then interpreted by my software, which generates a complex shading network based on it.
+
+<Img src='collage-shading/bird explanation.png' uses='f' alt=""/>
+
+Models, animation, and most of the textures are by my friends in Advanced Animation Production at Brown.
