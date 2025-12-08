@@ -1,5 +1,5 @@
 ---
-title: Collage-inspired shading & rendering system
+title: Collage shading system
 tags: [itp-portfolio]
 start_date: 2023-09-15
 date: 2024-05-17
@@ -10,7 +10,7 @@ import Box from 'src/layouts/Box.astro';
 import { MuxPlayer } from "@mux/mux-player-astro";
 import Img from 'src/components/Img.astro';
 
-For the last few years I have been working alongside [Barb Meier](https://cs.brown.edu/people/bjm/) and my peers from her computer animation courses to make a short film, which partly takes place in an alternate world inspired by a child's drawings. To create an effect of being inside a drawing, I designed and implemented a non-photorealistic shading system in Maya that renders <span class="lining">3D</span> objects as a collage of flat textures. The film is still in production, but here are a few early tests I made while working out the kinks:
+For the last few years I have been working alongside [Barb Meier](https://cs.brown.edu/people/bjm/) and my peers from her computer animation courses to make a short film, which partly takes place in an alternate world inspired by a child’s drawings. To create an effect of being inside a drawing, I designed and implemented a non-photorealistic shading system in Maya that renders <span class="lining">3D</span> objects as a collage of flat textures. The film is still in production, but here are a few early tests I made while working out the kinks:
 
 <Img src='collage-shading/flower set.png' uses='p' alt=''/>
 
@@ -34,8 +34,40 @@ For the last few years I have been working alongside [Barb Meier](https://cs.bro
   />
 </Box>
 
-For complicated cases like the bird, with many texture regions, the parameters of the shader are specified by an image. I create this image by painting unique colors on the model’s UV map to specify the boundaries of the regions. Within each region, I add patterns of specially-colored pixels that specify which texture files to use, how these flat textures should be oriented and scaled to follow the <span class="lining">3D</span> surface, and how much to blur between regions. This image is then interpreted by my software, which generates a complex shading network based on it.
+## Behind the scenes
+
+In normal <span class="lining">3D</span> rendering, textures wrap around objects and follow the rules of perspective:
+
+<Box factor={.4}>
+  <Img src='collage-shading/regular cylinder.png' uses='f' alt=""/>
+</Box>
+
+My collage shading system does not do this; rather, textures stay flat on the screen, regardless of how the surface is shaped or how you’re looking at it:
+
+<Box factor={.4}>
+  <Img src='collage-shading/collage cylinder.png' uses='f' alt=""/>
+</Box>
+
+These flat textures move, rotate, and scale to follow the surface as it moves across the screen:
+
+<Box>
+  <MuxPlayer
+    playbackId="9SxUWslZVnYSaV5wp6M66Jd9dUG8ol3Qk2xeMmIVHjs"
+    metadata={{ video_title: 'Cylinder movement' }}
+    preferPlayback="mse"
+    primaryColor="#e5e7eb"
+    accentColor="#60889a"
+  />
+</Box>
+
+Some more technical details:
+
+Each of the three sides of the cylinder is filled with its own flat texture image (a camera projection). I call each of these surface regions a *facet*. Each texture moves across the screen to track a particular point in its facet, and orients itself to (the projection of) a vector in the facet’s transformation space.
+
+<Img src='collage-shading/placement.png' uses='f' alt=""/>
+
+The shading network is generated based on an input image, which specifies all the parameters of the shader. To create this image, I start by painting unique colors on the model’s UV map to specify the boundaries of the facets. Then within each facet, I add patterns of specially-colored pixels that specify which texture files to use, how the projections should be oriented to follow the <span class="lining">3D</span> surface, and how much to blur between facets. My software then interprets that image to generate the shading network. Here’s the image that generated the bird’s shader:
 
 <Img src='collage-shading/bird explanation.png' uses='f' alt=""/>
 
-Models, animation, and most of the textures are by my friends in Advanced Animation Production at Brown.
+*Models, animation, and most of the textures are by my friends in Advanced Animation Production at Brown.*
