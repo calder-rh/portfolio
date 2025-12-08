@@ -34,6 +34,8 @@ For the last few years I have been working alongside [Barb Meier](https://cs.bro
   />
 </Box>
 
+*Models, animation, and most of the textures are by my friends in Advanced Animation Production at Brown.*
+
 ## Behind the scenes
 
 In normal <span class="lining">3D</span> rendering, textures wrap around objects and follow the rules of perspective:
@@ -69,5 +71,3 @@ Each of the three sides of the cylinder is filled with its own flat texture imag
 The shading network is generated based on an input image, which specifies all the parameters of the shader. To create this image, I start by painting unique colors on the model’s UV map to specify the boundaries of the facets. Then within each facet, I add patterns of specially-colored pixels that specify which texture files to use, how the projections should be oriented to follow the <span class="lining">3D</span> surface, and how much to blur between facets. My software then interprets that image to generate the shading network. Here’s the image that generated the bird’s shader:
 
 <Img src='collage-shading/bird explanation.png' uses='f' alt=""/>
-
-*Models, animation, and most of the textures are by my friends in Advanced Animation Production at Brown.*
