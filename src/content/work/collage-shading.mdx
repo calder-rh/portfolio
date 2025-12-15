@@ -1,6 +1,6 @@
 ---
 title: Collage shading system
-tags: [itp-portfolio]
+tags: [itp-portfolio, mas-portfolio, 3d]
 start_date: 2023-09-15
 date: 2024-05-17
 priority: 1
@@ -61,8 +61,6 @@ These flat textures move, rotate, and scale to follow the surface as it moves ac
   />
 </Box>
 
-Some more technical details:
-
 Each of the three sides of the cylinder is filled with its own flat texture image (a camera projection). I call each of these surface regions a *facet*. Each texture moves across the screen to track a particular point in its facet, and orients itself to (the projection of) a vector in the facet’s transformation space.
 
 <Img src='collage-shading/placement.png' uses='f' alt=""/>
@@ -70,3 +68,12 @@ Each of the three sides of the cylinder is filled with its own flat texture imag
 The shading network is generated based on an input image, which specifies all the parameters of the shader. To create this image, I start by painting unique colors on the model’s UV map to specify the boundaries of the facets. Then within each facet, I add patterns of specially-colored pixels that specify which texture files to use, how the projections should be oriented to follow the <span class="lining">3D</span> surface, and how much to blur between facets. My software then interprets that image to generate the shading network. Here’s the image that generated the bird’s shader:
 
 <Img src='collage-shading/bird explanation.png' uses='f' alt=""/>
+
+## Process
+
+I developed this system over months of testing and critique, and it ended up growing to several thousand lines of code. Some major parts of the process included:
+- Creating an interface on top of [PyMEL](https://help.autodesk.com/cloudhelp/2022/JPN/Maya-Tech-Docs/PyMel/) that allows me to deal with shading networks in an object-oriented fashion: a superclass whose subclasses represent different types of shading networks, with functionality to ensure sub-networks are reused whenever possible and to avoid proliferating unused or duplicate nodes
+- Doing tests to determine how all the inputs to the <span class="lining">place2dTexture</span> node interact with each other, which is not documented anywhere I could find, and deriving equations to translate the coordinate system I needed for texture placement into the one used by the node
+- Writing code to sample nearby points on a surface and translate between  <span class="lining">3D</span> space and UV space, in order to blur a texture image across a surface
+- Designing and implementing a user interface for creating and editing these collage shaders: folders and texture files with particular naming conventions, map images as shown above, text files giving more fine-grained control, Maya nodes allowing many controls to be changed and animated in the scene, and scripts for generating and updating all these elements
+- Creating a video tutorial and specification document showing others how to use these things

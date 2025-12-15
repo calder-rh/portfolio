@@ -375,6 +375,6 @@ body {
   margin-bottom: 0;
 }
 
-.tag-intro h1 ~ p {
+.tag-intro h1 ~ p:last-child {
   margin-top: .3rem;
 }

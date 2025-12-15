@@ -485,8 +485,8 @@ addEventListener('DOMContentLoaded', () => {
 
 function shouldShowTag(tag) {
   const currentUrl = new URL(window.location.href)
-  const unlistedTag = currentUrl.searchParams.get('unlisted-tag')
-  return !(JSON.parse(tag.dataset.unlisted)) || (tag.dataset.slug === unlistedTag)
+  const unlistedTags = currentUrl.searchParams.get('unlisted-tag').split(',')
+  return !(JSON.parse(tag.dataset.unlisted)) || (unlistedTags.includes(tag.dataset.slug))
 }
 
 for (let element of document.querySelectorAll('.work-tag')) {
