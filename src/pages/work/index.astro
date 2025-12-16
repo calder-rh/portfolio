@@ -99,7 +99,7 @@ const renderedIntros =  await Promise.all(allTags.map(async (tag) => {
 
 <BaseLayout title="Work">
   <div id="tags">
-    {sortedTags.map(tag => <WorkTag listName={tag.data['listed as'] ?? tag.data.title} titleName={tag.data.title} slug={tag.slug} unlisted={tag.data.unlisted} hideOthers={tag.data['hide others']}></WorkTag>)}
+    {sortedTags.map(tag => <WorkTag listName={tag.data['listed as'] ?? tag.data.title} titleName={tag.data.title} slug={tag.slug} unlisted={tag.data.unlisted} hideOthers={tag.data['hide others']} prioritizeBalance={tag.data['prioritize balance']}></WorkTag>)}
   </div>
   <div id="tag-separator">
     <div id="tag-intro-container">

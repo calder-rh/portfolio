@@ -196,6 +196,7 @@ function resizeWorkItems() {
       else return contentHeight
     })()
     
+    item.style.setProperty('--item-height', `${item.clientHeight}px`)
     item.style.setProperty('--content-height', `${contentHeight}px`)
     const openIshContentHeight = item.querySelector('.work-content-wrapper').clientHeight * 0.8
     item.style.setProperty('--open-ish-content-height', `${openIshContentHeight}px`)
@@ -213,91 +214,117 @@ async function fillColumns() {
   const numColumns = columns.length
   setHideOthers()
 
-  function initialTagInfo() {
-    return {
-      waitTime: 1,
-      columnHeights: new Array(numColumns).fill(0)
-    }
+  function initialColumnHeights() {
+    return new Array(numColumns).fill(0)
   }
 
-  const tagInfo = {
-    all: initialTagInfo()
+  const columnHeights = {
+    all: initialColumnHeights()
   }
   for (let tag of tags) {
-    tagInfo[tag] = initialTagInfo()
+    columnHeights[tag] = initialColumnHeights()
   }
 
-  const prioritizedItemsMap = new Map()
-  for (let workItem of workItems) {
-    const data = JSON.parse(workItem.dataset.data)
-    const priority = data.priority || Infinity
-    const priorityKey = JSON.stringify({draft: data.draft, priority})
-    if (!prioritizedItemsMap.has(priorityKey)) prioritizedItemsMap.set(priorityKey, [])
-    prioritizedItemsMap.get(priorityKey).push(workItem)
-  }
-  const prioritizedItems = []
+  const sortedWorkItems = Array.from(workItems).map(workItem => ({workItem, data: JSON.parse(workItem.dataset.data)})).sort((a, b) => {
+    const {data: aData} = a
+    const aDraft = aData.draft
+    const aPriority = aData.priority
+    const aDate = new Date(aData.date)
 
-  // const currentUrl = new URL(window.location.href)
-  // const unlistedTag = currentUrl.searchParams.get('unlisted-tag')
-  for (let priority of Array.from(prioritizedItemsMap.keys()).sort((a, b) => {
-    const aKey = JSON.parse(a)
-    const bKey = JSON.parse(b)
-    // const aUnlisted = unlistedTag && aKey.tags && aKey.tags.contains(unlistedTag)
-    // const bUnlisted = unlistedTag && bKey.tags && bKey.tags.contains(unlistedTag)
-    // if (aUnlisted !== bUnlisted) return aUnlisted - bUnlisted
-    if (aKey.draft !== bKey.draft) return aKey.draft - bKey.draft
-    else return aKey.priority - bKey.priority
-  })) {
-    const datedPriorityPool = prioritizedItemsMap.get(priority).map(element => ({element: element, date: new Date (JSON.parse(element.dataset.data).date)}))
-    datedPriorityPool.sort((a, b) => b.date - a.date)
-    const priorityPool = datedPriorityPool.map(item => item.element)
-    prioritizedItems.push(priorityPool)
-  }
+    const {data: bData} = b
+    const bDraft = bData.draft
+    const bPriority = bData.priority
+    const bDate = new Date(bData.date)
 
-  for (let i = 0; i < workItemArray.length; i++) {
-    const priorityPool = prioritizedItems[0]
-    const tagWeights = {}
-    for (let [tag, {waitTime, columnHeights}] of Object.entries(tagInfo)) {
-      // tagWeights[tag] = waitTime * (Math.max(...columnHeights) - Math.min(...columnHeights))
-      tagWeights[tag] = {used: waitTime < i + 1, waitTime, unbalancedness: Math.max(...columnHeights) - Math.min(...columnHeights)}
-      // tagWeights[tag] = waitTime
-    }
-    tags.sort((a, b) => {
-      const aWeights = tagWeights[a]
-      const bWeights = tagWeights[b]
-      // return bWeights.waitTime - aWeights.waitTime
-      if (!aWeights.used || !bWeights.used) return bWeights.waitTime - aWeights.waitTime
-      return bWeights.waitTime * bWeights.unbalancedness - aWeights.waitTime * aWeights.unbalancedness
-    })
+    if (aDraft != bDraft) return aDraft - bDraft
+    if (aPriority != bPriority) return aPriority - bPriority
+    else return bDate - aDate
+  })
 
-    let { chosenTag, chosenItem } = (() => {
-      for (let tag of tags) {
-        const foundIndex = priorityPool.findIndex(workItem => JSON.parse(workItem.dataset.data).tags.includes(tag))
-        if (foundIndex !== -1) {
-          const foundItem = priorityPool[foundIndex]
-          priorityPool.splice(foundIndex, 1)
-          if (priorityPool.length === 0) prioritizedItems.shift()
-          return { chosenTag: tag, chosenItem: foundItem }
-        }
+  for (let {workItem, data} of sortedWorkItems) {
+    const tags = data.tags
+    let relevantTags = []
+    let prioritizedTag = false
+    for (let tag of tags) {
+      const tagItem = tagDict[tag]
+      const prioritizeBalance = JSON.parse(tagItem.dataset.prioritizeBalance)
+      if (prioritizeBalance) {
+        if (!prioritizedTag) relevantTags.emp
+        prioritizedTag = true
       }
-    })()
+      if (!prioritizedTag || prioritizeBalance) {
+        relevantTags.push({tag, tagItem})
+      }
+    }
 
-    const columnHeights = tagInfo[chosenTag].columnHeights
-    const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights))
-    const fullHeight = Number(chosenItem.dataset.fullHeight)
-    const minHeight = remToPx(Number(chosenItem.dataset.minheight))
-    const allItemTags = JSON.parse(chosenItem.dataset.data).tags
-        
-    columns[shortestColumnIndex].appendChild(chosenItem)
-    for (let [tag, info] of Object.entries(tagInfo)) {
-      const hasTag = allItemTags.includes(tag)
-      info.columnHeights[shortestColumnIndex] += hasTag ? fullHeight : minHeight
-      if (hasTag) info.waitTime = 1
-      else tagInfo[tag].waitTime++
+    let greatestImbalance = 0
+    let greatestImbalanceTag = 'all'
+    for (let {tag} of relevantTags) {
+      const imbalance = Math.max(...columnHeights[tag]) - Math.min(...columnHeights[tag])
+      if (imbalance > greatestImbalance) {
+        greatestImbalance = imbalance
+        greatestImbalanceTag = tag
+      }
+    }
+    const greatestImbalanceColumnHeights = columnHeights[greatestImbalanceTag]
+    const shortestColumnIndex = greatestImbalanceColumnHeights.indexOf(Math.min(...greatestImbalanceColumnHeights))
+
+    const fullHeight = Number(workItem.dataset.fullHeight)
+    const minHeight = remToPx(Number(workItem.dataset.minheight))
+      
+    columns[shortestColumnIndex].appendChild(workItem)
+    for (let [tag, heights] of Object.entries(columnHeights)) {
+      const hasTag = tags.includes(tag)
+      heights[shortestColumnIndex] += hasTag ? fullHeight : minHeight
     }
   }
 
   cols.dispatchEvent(new Event('columns-filled'))
+
+
+
+
+  // for (let i = 0; i < workItemArray.length; i++) {
+  //   const priorityPool = prioritizedItems[0]
+  //   const tagWeights = {}
+  //   for (let [tag, {waitTime, columnHeights}] of Object.entries(tagInfo)) {
+  //     tagWeights[tag] = {used: waitTime < i + 1, waitTime, unbalancedness: Math.max(...columnHeights) - Math.min(...columnHeights)}
+  //   }
+  //   tags.sort((a, b) => {
+  //     const aWeights = tagWeights[a]
+  //     const bWeights = tagWeights[b]
+  //     if (!aWeights.used || !bWeights.used) return bWeights.waitTime - aWeights.waitTime
+  //     return bWeights.waitTime * bWeights.unbalancedness - aWeights.waitTime * aWeights.unbalancedness
+  //   })
+
+  //   let { chosenTag, chosenItem } = (() => {
+  //     for (let tag of tags) {
+  //       const foundIndex = priorityPool.findIndex(workItem => JSON.parse(workItem.dataset.data).tags.includes(tag))
+  //       if (foundIndex !== -1) {
+  //         const foundItem = priorityPool[foundIndex]
+  //         priorityPool.splice(foundIndex, 1)
+  //         if (priorityPool.length === 0) prioritizedItems.shift()
+  //         return { chosenTag: tag, chosenItem: foundItem }
+  //       }
+  //     }
+  //   })()
+
+  //   const columnHeights = tagInfo[chosenTag].columnHeights
+  //   const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights))
+  //   const fullHeight = Number(chosenItem.dataset.fullHeight)
+  //   const minHeight = remToPx(Number(chosenItem.dataset.minheight))
+  //   const allItemTags = JSON.parse(chosenItem.dataset.data).tags
+        
+  //   columns[shortestColumnIndex].appendChild(chosenItem)
+  //   for (let [tag, info] of Object.entries(tagInfo)) {
+  //     const hasTag = allItemTags.includes(tag)
+  //     info.columnHeights[shortestColumnIndex] += hasTag ? fullHeight : minHeight
+  //     if (hasTag) info.waitTime = 1
+  //     else tagInfo[tag].waitTime++
+  //   }
+  // }
+
+  // cols.dispatchEvent(new Event('columns-filled'))
 }
 
 function resize() {
@@ -471,8 +498,8 @@ addEventListener('DOMContentLoaded', () => {
     // })
 
     const scaler = item.querySelector('.work-item-scaler')
-    function expand() {scaler.classList.add('hovered')}
-    function contract() {scaler.classList.remove('hovered')}
+    function expand() {item.classList.add('hovered')}
+    function contract() {item.classList.remove('hovered')}
 
     for (let cap of item.querySelectorAll('.cap')) {
       cap.addEventListener('mouseenter', expand)

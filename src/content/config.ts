@@ -8,7 +8,7 @@ const workCollection = defineCollection({
     tags: z.array(reference('tags')),
     start_date: z.date().optional(),
     date: z.union([z.date(), z.literal('present')]),
-    priority: z.onumber(),
+    priority: z.number().default(Infinity),
     draft: z.oboolean(),
     show_toc: z.oboolean(),
     unlisted: z.boolean().default(false),
@@ -21,7 +21,7 @@ const tagCollection = defineCollection({
     title: z.string(),
     'listed as': z.ostring(),
     unlisted: z.boolean().default(false),
-    prioritize: z.boolean().default(false),
+    'prioritize balance': z.boolean().default(false),
     'hide others': z.boolean().default(false),
     parents: z.array(reference('tags')).optional()
   })

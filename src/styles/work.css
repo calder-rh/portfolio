@@ -85,23 +85,16 @@
 }
 
 .work-item-scaler {
+  transform-origin: top;
   position: relative;
-  transition: scale 0.08s ease-out;
-  z-index: 1;
+  transition: 0.08s ease-out;
+  margin-bottom: 0;
 }
 
-.work-item-scaler.hovered {
+.hovered .work-item-scaler {
   scale: 1.05;
-  transition: scale 0.08s ease-in;
-  z-index: 2;
-}
-
-.cap, .work-content-wrapper {
-  transition: background-color var(--short-transition);
-}
-
-.hovered .cap, .hovered .work-content-wrapper {
-  background-color: var(--ofwhite-hover);
+  transition: 0.08s ease-in;
+  margin-bottom: calc(var(--item-height) * 0.05 - 2px);
 }
 
 .work-content *:last-child {
@@ -205,6 +198,10 @@
 .work-item.closable.short, .work-item.closable.short *:not(.work-item-scaler) {
   transition-duration: var(--short-transition);
 }
+
+
+
+
 
 
 
