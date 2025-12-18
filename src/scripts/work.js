@@ -497,7 +497,6 @@ addEventListener('DOMContentLoaded', () => {
     //   workLink.classList.remove('dragging')
     // })
 
-    const scaler = item.querySelector('.work-item-scaler')
     function expand() {item.classList.add('hovered')}
     function contract() {item.classList.remove('hovered')}
 
@@ -512,7 +511,7 @@ addEventListener('DOMContentLoaded', () => {
 
 function shouldShowTag(tag) {
   const currentUrl = new URL(window.location.href)
-  const unlistedTags = currentUrl.searchParams.get('unlisted-tag').split(',')
+  const unlistedTags = currentUrl.searchParams.get('unlisted-tag')?.split(',') ?? []
   return !(JSON.parse(tag.dataset.unlisted)) || (unlistedTags.includes(tag.dataset.slug))
 }
 
