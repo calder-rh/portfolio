@@ -19,6 +19,9 @@ export default defineConfig({
     remarkPlugins: [collector]
   },
   
+  experimental: {
+    preserveScriptOrder: true
+  },
 
   integrations: [mdx({
     smartypants: false,

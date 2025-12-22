@@ -10,10 +10,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.7.0",
-    "@astrojs/mdx": "^3.1.7",
+    "@astrojs/check": "^0.9.6",
+    "@astrojs/mdx": "^4.3.13",
     "@mux/mux-player-astro": "^3.10.0",
-    "astro": "^4.10.1",
+    "astro": "^5.16.6",
     "jquery": "^3.7.1",
     "marked": "^15.0.3",
     "marked-plaintify": "^1.1.1",

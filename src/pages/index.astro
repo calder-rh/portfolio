@@ -1,6 +1,6 @@
 ---
-import '@src/styles/home.css';
 import '@src/styles/global.css';
+import '@src/styles/home.css';
 import BaseLayout from 'src/layouts/BaseLayout.astro';
 import TextOval from '@src/layouts/TextOval.astro';
 
@@ -23,7 +23,7 @@ for (let content of allWork) {
   const workItem = {
     title: content.data.title,
     description: content.data.description,
-    tags: await inferTags(content.data.tags.map(item => item.slug), content.data.unlisted),
+    tags: await inferTags(content.data.tags.map(item => item.id), content.data.unlisted),
     unlisted: content.data.unlisted,
     date: content.data.date,
     priority: content.data.priority,
