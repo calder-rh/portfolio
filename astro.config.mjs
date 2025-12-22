@@ -18,10 +18,6 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [collector]
   },
-  
-  experimental: {
-    preserveScriptOrder: true
-  },
 
   integrations: [mdx({
     smartypants: false,
