@@ -3,81 +3,109 @@ import '@src/styles/global.css';
 import '@src/styles/home.css';
 import BaseLayout from 'src/layouts/BaseLayout.astro';
 import TextOval from '@src/layouts/TextOval.astro';
-import Oval from '@src/layouts/Oval.astro';
-import Squish from 'src/layouts/Squish.astro';
-import Columns from '@src/layouts/Columns.astro';
 
-import random from "../scripts/random";
-import { adjustColor, cssString } from '@src/scripts/color-utils';
+import WorkItem from "@src/components/WorkItem.astro"
+import Columns from "@src/layouts/Columns.astro"
 
-function color() {
-	return cssString(adjustColor({r: 168, g: 178, b: 190}, random(0.7, 1.2), random(0.9, 1.05)))
-}
 
-import { getCollection } from 'astro:content';
 
-const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif,svg}');
+import { getCollection, render } from 'astro:content'
+import WorkTag from "@src/components/WorkTag.astro"
+import { inferTags } from '@src/scripts/infer-tags.js'
 
-const allWork = await getCollection('work');
-const images = [];
+const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif,svg}')
+const allWork = await getCollection('work')
+const allTags = await getCollection('tags')
+
+const workItems = []
 
 for (let content of allWork) {
-	const { remarkPluginFrontmatter } = await content.render();
-	for (let item of remarkPluginFrontmatter.toc) {
-		if (item.type === 'image') {
-			const bubblePath = item.image.bubble
-			if (bubblePath) {
-				images.push({
-					id: item.id,
-					url: `/work/${content.slug}#${item.id}`,
-					img: imageImporters[bubblePath](),
-				})
-			}
-		}
-	}
+  const workItem = {
+    title: content.data.title,
+    description: content.data.description,
+    tags: await inferTags(content.data.tags.map(item => item.slug), content.data.unlisted),
+    unlisted: content.data.unlisted,
+    date: content.data.date,
+    priority: content.data.priority,
+    draft: content.data.draft === true,
+    slug: content.slug,
+    images: []
+  }
+  const { remarkPluginFrontmatter } = await content.render()
+  for (let item of remarkPluginFrontmatter.toc) {
+    if (item.type === 'image') {
+      const previewPath = item.image.preview
+      if (previewPath) {
+        workItem.images.push({
+          url: `/work${content.slug}#${item.id}`,
+					img: imageImporters[previewPath](),
+          alt: item.alt
+        })
+      }
+    }
+  }
+  workItems.push(workItem)
 }
 
+const orderedTags = [
+  'all',
+  'art',
+  'design',
+  'code',
+  'writing-systems',
+  'encoding-systems',
+  'lettering',
+  'type',
+  '3d',
+  'music-visualization',
+  'generative-art',
+  'photography',
+]
+
+
+const sortedTags = Array.from(allTags).sort((a, b) => {
+  if (a.data.unlisted != b.data.unlisted) return b.data.unlisted - a.data.unlisted
+  return orderedTags.indexOf(a.slug) - orderedTags.indexOf(b.slug)
+})
+
+const renderedIntros =  await Promise.all(allTags.map(async (tag) => {
+  const { Content } = await render(tag);
+  return { slug: tag.slug, content: Content }
+}))
 ---
 
 <BaseLayout title="Calder Ruhl Hansen" name={false}>
-	<TextOval squareness={38} id="intro">
-		<!-- <p>
-			Hi! I am an <a href="/work?tag=art">artist</a>, <a href="/work?tag=design">designer</a>, and <a href="/work?tag=code">programmer</a> with a background in <a href="/work?tag=type">type design</a> and <a href="/work?tag=3d">3D animation</a>. I enjoy developing systems to solve complex visual problems, and I’m happiest when this process gets me working with interesting math, algorithms, and&nbsp;shapes.
-		</p> -->
-		<!-- <p>
-			Hi! This website is under construction, so if you’d like to see some of my work, you should go to my <a href="https://instagram.com/calder.rh">Instagram</a> for now. Or you can go <a href="/work">here</a> for a categorized list of things I’ve made, as long as you’re willing to imagine most of the things yourself. Or you can scroll down to enjoy some squishy ovals.
-		</p> -->
-		<!-- <p>
-			Hi! This website is under construction, so if you’d like to see some of my work, you should go to my <a href="https://instagram.com/calder.rh">Instagram</a> for now.
-		</p> -->
-		<p>
-			Hi! I’m a person who makes systems of meaningful shapes. Some of the things I’ve made are on this website, and you can explore them <a href="/work">here</a>. Other things are just on <a href="https://instagram.com/calder.rh">Instagram</a> for now.
-		</p>
-	</TextOval>
+	<div id="intro-container" class="no-transition closed">
+		<TextOval squareness={38} id="intro">
+			<p>
+				Hi! I’m a person who makes systems of meaningful forms. Or sometimes just systems, or forms, or things that feel meaningful. You can see some of this below.
+			</p>
+		</TextOval>
+	</div>
 
-	<Columns id="oval-cols" columnWidth={300} columnGap={0} paddingFunction="frown" prepareItems={false}>
-		{
-			(() => {
-				let arr = Array(50).fill(null).concat(images);
-				let currentIndex = arr.length
-				while (currentIndex != 0)  {
-					let randomIndex = Math.floor(Math.random() * currentIndex)
-					currentIndex--
-					;[arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]]
-				}
-				return arr
-			})().map((e, i) => {
-				if (e) {
-					const {id, url, img} = e
-					return <Squish><Oval squareness={32} id={id} image={img} imageWidth={400} link={url} style={`--oval-color: ${color()}`}/></Squish>
-				} else {
-					return <Squish><TextOval squareness={32} id={i} style={`--oval-color: ${color()}`}></TextOval></Squish>
-				}
-			})
-		}
-	</Columns>
+	<div id="top-tag-separator"></div>
+	<div id="tags">
+    {sortedTags.map(tag => <WorkTag listName={tag.data['listed as'] ?? tag.data.title} titleName={tag.data.title} slug={tag.slug} unlisted={tag.data.unlisted} hideOthers={tag.data['hide others']} prioritizeBalance={tag.data['prioritize balance']}></WorkTag>)}
+  </div>
+  <div id="tag-separator">
+    <div id="tag-intro-container">
+      <div id="tag-intro-current" />
+      <div id="tag-intro-incoming" />
+      <div id="tag-intro-waiting-room">
+        {renderedIntros.map((item) => 
+          <div class="tag-intro " data-slug={item.slug}>
+            <item.content />
+          </div>
+        )}
+      </div>
+    </div>
+    <!-- <p>Hi!</p> -->
+  </div>
+  <Columns id="work-cols" columnWidth={600} columnGap={20} prepareItems={false} fillColumns={false}>
+    {workItems.map((data) => <WorkItem data={data}/>)}
+  </Columns>
 </BaseLayout>
 
 <script>
-	import '../scripts/squish-ovals.js';
+  import '@src/scripts/work.js'
 </script>

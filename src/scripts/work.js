@@ -42,9 +42,9 @@ window.addEventListener('popstate', (event) => {
   setupTags(false)
 });
 
-
-
-
+const intro = document.getElementById('intro')
+const introContainer = document.getElementById('intro-container')
+const topTagSeparator = document.getElementById('top-tag-separator')
 const cols = document.getElementById('work-cols')
 const workTagContainer = document.querySelector('#tags')
 const workTags = document.querySelectorAll('.work-tag')
@@ -280,54 +280,14 @@ async function fillColumns() {
   }
 
   cols.dispatchEvent(new Event('columns-filled'))
+}
 
-
-
-
-  // for (let i = 0; i < workItemArray.length; i++) {
-  //   const priorityPool = prioritizedItems[0]
-  //   const tagWeights = {}
-  //   for (let [tag, {waitTime, columnHeights}] of Object.entries(tagInfo)) {
-  //     tagWeights[tag] = {used: waitTime < i + 1, waitTime, unbalancedness: Math.max(...columnHeights) - Math.min(...columnHeights)}
-  //   }
-  //   tags.sort((a, b) => {
-  //     const aWeights = tagWeights[a]
-  //     const bWeights = tagWeights[b]
-  //     if (!aWeights.used || !bWeights.used) return bWeights.waitTime - aWeights.waitTime
-  //     return bWeights.waitTime * bWeights.unbalancedness - aWeights.waitTime * aWeights.unbalancedness
-  //   })
-
-  //   let { chosenTag, chosenItem } = (() => {
-  //     for (let tag of tags) {
-  //       const foundIndex = priorityPool.findIndex(workItem => JSON.parse(workItem.dataset.data).tags.includes(tag))
-  //       if (foundIndex !== -1) {
-  //         const foundItem = priorityPool[foundIndex]
-  //         priorityPool.splice(foundIndex, 1)
-  //         if (priorityPool.length === 0) prioritizedItems.shift()
-  //         return { chosenTag: tag, chosenItem: foundItem }
-  //       }
-  //     }
-  //   })()
-
-  //   const columnHeights = tagInfo[chosenTag].columnHeights
-  //   const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights))
-  //   const fullHeight = Number(chosenItem.dataset.fullHeight)
-  //   const minHeight = remToPx(Number(chosenItem.dataset.minheight))
-  //   const allItemTags = JSON.parse(chosenItem.dataset.data).tags
-        
-  //   columns[shortestColumnIndex].appendChild(chosenItem)
-  //   for (let [tag, info] of Object.entries(tagInfo)) {
-  //     const hasTag = allItemTags.includes(tag)
-  //     info.columnHeights[shortestColumnIndex] += hasTag ? fullHeight : minHeight
-  //     if (hasTag) info.waitTime = 1
-  //     else tagInfo[tag].waitTime++
-  //   }
-  // }
-
-  // cols.dispatchEvent(new Event('columns-filled'))
+function resizeIntroContainer() {
+  introContainer.style.setProperty('--intro-container-height', `${intro.clientHeight}px`)
 }
 
 function resize() {
+  resizeIntroContainer()
   workItemsWidth()
   for (let item of document.querySelectorAll('.work-images')) {
     layoutImages(item)
@@ -338,7 +298,6 @@ function resize() {
 function setupItems() {
   imageLoad()
 }
-
 
 
 
@@ -471,32 +430,23 @@ function mouseLeaveTag(element, tag) {
 }
 
 
+function setIntroContainer() {
+  const closed = getURLTag() != 'all'
+  introContainer.classList.toggle('closed', closed)
+  topTagSeparator.classList.toggle('closed', closed)
+}
+
+
 let isClicked = false
 
 addEventListener('DOMContentLoaded', () => {
   setupTags(true)
-  
+
+  resizeIntroContainer()
+  setIntroContainer()
+  introContainer.classList.toggle('no-transition', false)
 
   for (let item of nonDraftWorkItems) {
-    // const url = item.querySelector('.work-url').href
-
-    // const workLink = item.querySelector('.work-link')
-
-    // workLink.addEventListener('mousedown', () => {
-    //   console.log('clik')
-    //   isClicked = true
-    // })
-
-    // workLink.addEventListener('mousemove', () => {
-    //   if (isClicked) workLink.classList.add('dragging')
-    // })
-
-    // workLink.addEventListener('mouseup', () => {
-    //   console.log('uhasdf')
-    //   isClicked = false
-    //   workLink.classList.remove('dragging')
-    // })
-
     function expand() {item.classList.add('hovered')}
     function contract() {item.classList.remove('hovered')}
 
@@ -521,6 +471,7 @@ for (let element of document.querySelectorAll('.work-tag')) {
     const currentTag = getURLTag();
     selectTag(tag, currentTag)
     setURLTag(element.dataset.titleName, tag, true)
+    setIntroContainer()
   })
   element.addEventListener('mouseenter', () => mouseEnterTag(element, tag))
   element.addEventListener('mouseleave', () => mouseLeaveTag(element, tag))
