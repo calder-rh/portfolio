@@ -473,11 +473,12 @@ function shouldShowTag(tag) {
 
 for (let element of document.querySelectorAll('.work-tag')) {
   const tag = element.dataset.slug
-  element.addEventListener('mousedown', () => {
+  element.addEventListener('click', () => {
     const currentTag = getURLTag();
     selectTag(tag, currentTag)
     setURLTag(element.dataset.titleName, tag, true)
     setIntroContainer()
+    window.scrollTo({top: 0, left: 0, behavior: "smooth"});
   })
   element.addEventListener('mouseenter', () => mouseEnterTag(element, tag))
   element.addEventListener('mouseleave', () => mouseLeaveTag(element, tag))
