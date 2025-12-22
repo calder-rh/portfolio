@@ -26,10 +26,15 @@ function setupTags(updateHistory) {
 function setURLTag(titleName, tag, updateHistory) {
   const hyphenTag = tag.replace(' ', '-')
   const url = new URL(window.location.href)
-  url.searchParams.set('tag', hyphenTag)
+  if (tag == 'all') url.searchParams.delete('tag')
+  else url.searchParams.set('tag', hyphenTag)
   if (updateHistory) window.history.pushState({titleName, tag}, '', url)
-  let pageTitle = titleName
-  document.title = `${pageTitle} – Calder Ruhl Hansen`
+  if (tag == 'all') {
+    document.title = 'Calder Ruhl Hansen'
+  } else {
+    let pageTitle = titleName
+    document.title = `${pageTitle} – Calder Ruhl Hansen`
+  }
 }
 
 function getURLTag() {
@@ -40,6 +45,7 @@ function getURLTag() {
 window.addEventListener('popstate', (event) => {
   const {titleName, tag} = event.state
   setupTags(false)
+  setIntroContainer()
 });
 
 const intro = document.getElementById('intro')

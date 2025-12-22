@@ -10,8 +10,8 @@ export default defineConfig({
   site: 'https://calder-rh.github.io/portfolio',
 
   redirects: {
-    '/mas-portfolio': '/work/?unlisted-tag=mas-portfolio&tag=mas-portfolio',
-    '/itp-portfolio': '/work/?unlisted-tag=itp-portfolio&tag=itp-portfolio'
+    '/mas-portfolio': '/?unlisted-tag=mas-portfolio&tag=mas-portfolio',
+    '/itp-portfolio': '/?unlisted-tag=itp-portfolio&tag=itp-portfolio'
   },
 
   // integrations: [mdx(), ],
