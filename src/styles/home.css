@@ -44,7 +44,7 @@
 
 
   @media screen and (min-width: 48.75rem) {
-    #menu-work .oval-text {
+    #menu-work.underline .oval-text {
       text-decoration: underline;
       text-underline-offset: 0.3em;
       text-decoration-color: #463f3c;

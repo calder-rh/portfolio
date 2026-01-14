@@ -7,7 +7,7 @@ function setupTags(updateHistory) {
     }
   }
 
-  const tag = getURLTag()
+  const {tag, implicitAll} = getURLTag()
   let tagElement
   for (let element of workTagContainer.querySelectorAll('.work-tag')) {
     const slug = element.dataset.slug
@@ -20,34 +20,48 @@ function setupTags(updateHistory) {
     }
   }
   selectTag(tag, tag)
-  setURLTag(tagElement.dataset.titleName, tag, updateHistory)
+  setURLTag(tagElement.dataset.titleName, tag, {updateHistory, implicitAll})
 }
 
-function setURLTag(titleName, tag, updateHistory) {
+function setURLTag(titleName, tag, { updateHistory = true, implicitAll = true } = {}) {
   const hyphenTag = tag.replace(' ', '-')
   const url = new URL(window.location.href)
-  if (tag == 'all') url.searchParams.delete('tag')
+  if (implicitAll && tag == 'all') url.searchParams.delete('tag')
   else url.searchParams.set('tag', hyphenTag)
   if (updateHistory) window.history.pushState({titleName, tag}, '', url)
-  if (tag == 'all') {
+  if (implicitAll && tag == 'all') {
     document.title = 'Calder Ruhl Hansen'
   } else {
     let pageTitle = titleName
     document.title = `${pageTitle} – Calder Ruhl Hansen`
   }
+  document.getElementById('menu-work').classList.toggle('underline', !implicitAll)
 }
 
 function getURLTag() {
   const url = new URL(window.location.href)
-  return (url.searchParams.get('tag') || 'all')
+  const tag = url.searchParams.get('tag')
+  if (tag === null) {
+    return {
+      tag: 'all',
+      implicitAll: true
+    }
+  } else {
+    return {
+      tag,
+      implicitAll: false
+    }
+  }
 }
 
 window.addEventListener('popstate', (event) => {
-  const {titleName, tag} = event.state
+  // const {titleName, tag} = event.state
   setupTags(false)
   setIntroContainer()
 });
 
+const lockup = document.getElementById('lockup')
+const workLink = document.getElementById('menu-work')
 const intro = document.getElementById('intro')
 const introContainer = document.getElementById('intro-container')
 const topTagSeparator = document.getElementById('top-tag-separator')
@@ -360,6 +374,7 @@ function selectTag(tag, oldTag) {
   const oldIncomingIntro = alreadyTransitioning ? incomingIntroContainer.querySelector('.tag-intro') : null
   const reverseTransition = currentIntro == incomingIntro
 
+  // const currentOffsetHeight = currentIntro?.offsetHeight || 0
   const currentHeight = currentIntro.offsetHeight + (currentIntro.offsetHeight === 0 ? 0 : remToPx(2.45))
   const incomingHeight = incomingIntro.offsetHeight + (incomingIntro.offsetHeight === 0 ? 0 : remToPx(2.45))
 
@@ -437,9 +452,9 @@ function mouseLeaveTag(element, tag) {
 
 
 function setIntroContainer() {
-  const closed = getURLTag() != 'all'
-  introContainer.classList.toggle('closed', closed)
-  topTagSeparator.classList.toggle('closed', closed)
+  const {tag, implicitAll} = getURLTag()
+  introContainer.classList.toggle('closed', !implicitAll)
+  topTagSeparator.classList.toggle('closed', !implicitAll)
 }
 
 
@@ -474,12 +489,30 @@ function shouldShowTag(tag) {
 for (let element of document.querySelectorAll('.work-tag')) {
   const tag = element.dataset.slug
   element.addEventListener('click', () => {
-    const currentTag = getURLTag();
+    const {currentTag} = getURLTag();
     selectTag(tag, currentTag)
-    setURLTag(element.dataset.titleName, tag, true)
+    setURLTag(element.dataset.titleName, tag, {updateHistory: true, implicitAll: false})
     setIntroContainer()
     window.scrollTo({top: 0, left: 0, behavior: "smooth"});
   })
   element.addEventListener('mouseenter', () => mouseEnterTag(element, tag))
   element.addEventListener('mouseleave', () => mouseLeaveTag(element, tag))
 }
+
+lockup.addEventListener('click', (event) => {
+  event.preventDefault()
+  const {tag: currentTag} = getURLTag();
+  selectTag('all', currentTag)
+  setURLTag(null, 'all', {updateHistory: true, implicitAll: true})
+  setIntroContainer()
+  window.scrollTo({top: 0, left: 0, behavior: "smooth"});
+})
+
+workLink.addEventListener('click', (event) => {
+  event.preventDefault()
+  const {tag: currentTag} = getURLTag();
+  selectTag('all', currentTag)
+  setURLTag('Work', 'all', {updateHistory: true, implicitAll: false})
+  setIntroContainer()
+  window.scrollTo({top: 0, left: 0, behavior: "smooth"});
+})

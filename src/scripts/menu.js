@@ -1,9 +1,7 @@
-import $ from 'jquery'
-
-const menu = $('#menu')
-const close = $('#close-menu')
-const nav = $('nav')
-const bg = $('#menu-bg-scaler')
+const menu = document.getElementById('menu')
+const close = document.getElementById('close-menu')
+const nav = document.querySelector('nav')
+const bg = document.getElementById('menu-bg-scaler')
 
 const headerContainer = document.querySelector('#header-container')
 const headerHeight = window.getComputedStyle(document.documentElement).getPropertyValue('--header-height');
@@ -12,49 +10,53 @@ const headerHeight = window.getComputedStyle(document.documentElement).getProper
 let shouldICareAboutMouseenter = true
 
 
-close.on('mouseenter', () => {
+close.addEventListener('mouseenter', () => {
   if (shouldICareAboutMouseenter) {
-    nav.addClass('ish')
+    nav.classList.toggle('ish', true)
   }
 })
 
-close.on('mouseleave', () => {
-  if (nav.hasClass('open')) {
-    nav.removeClass('ish')
+close.addEventListener('mouseleave', () => {
+  if (nav.classList.contains('open')) {
+    nav.classList.toggle('ish', false)
     shouldICareAboutMouseenter = true
   }
 })
 
 function doClose() {
-  nav.removeClass('open').addClass('closed')
+  nav.classList.toggle('open', false)
+  nav.classList.toggle('closed', true)
   shouldICareAboutMouseenter = false
-  nav.removeClass('ish reverse')
+  nav.classList.toggle('ish', false)
+  nav.classList.toggle('reverse', false)
 }
 
-close.on('click', doClose)
+close.addEventListener('click', doClose)
 
 
 
-menu.on('mouseenter', () => {
-  if (nav.hasClass('closed') && shouldICareAboutMouseenter) {
-    bg.addClass('show')
-    setTimeout(() => nav.addClass('ish'))
+menu.addEventListener('mouseenter', () => {
+  if (nav.classList.contains('closed') && shouldICareAboutMouseenter) {
+    bg.classList.toggle('show', true)
+    setTimeout(() => nav.classList.toggle('ish', true))
   }
 })
 
-menu.on('mouseleave', () => {
-  if (nav.hasClass('closed')) {
-    nav.removeClass('ish')
+menu.addEventListener('mouseleave', () => {
+  if (nav.classList.contains('closed')) {
+    nav.classList.toggle('ish', false)
     shouldICareAboutMouseenter = true
   }
 })
 
-menu.on('click', () => {
-  bg.addClass('show')
+menu.addEventListener('click', () => {
+  bg.classList.toggle('show', true)
   setTimeout(() => {
-    nav.removeClass('closed width-snap').addClass('open')
+    nav.classList.toggle('closed', false)
+    nav.classList.toggle('ewidth-snap', false)
+    nav.classList.toggle('open', true)
     shouldICareAboutMouseenter = false;
-    nav.removeClass('ish reverse')
+    nav.classList.toggle('ish', false)
   })
 })
 
@@ -62,27 +64,30 @@ menu.on('click', () => {
 let lastWidth = document.documentElement.clientWidth
 function handleResize() {
   const width = document.documentElement.clientWidth
-  nav.toggleClass('thin', width <= 780)
+  nav.classList.toggle('thin', width <= 780)
   if (lastWidth > 780 && width <= 780) {
-    nav.removeClass('open').addClass('closed')
-    nav.removeClass('ish reverse')  
+    nav.classList.toggle('open', false)
+    nav.classList.toggle('closed', true)
+    nav.classList.toggle('reverse', false)
   }
   lastWidth = width
 }
 
 
-$(document).ready(handleResize)
-$(window).on('resize', handleResize)
+document.addEventListener('ready', handleResize)
+window.addEventListener('resize', handleResize)
 
-menu.on('transitionstart', () => {
-  if (!nav.hasClass('closed') || nav.hasClass('ish')) {
+menu.addEventListener('transitionstart', (e) => {
+  if (e.target !== menu) return
+  if (!nav.classList.contains('closed') || nav.classList.contains('ish')) {
     headerContainer.style.height = `100vh`
   }
 })
 
-menu.on('transitionend', () => {
-  if (nav.hasClass('closed') && !nav.hasClass('ish')) { 
-    bg.removeClass('show')
+menu.addEventListener('transitionend', (e) => {
+  if (e.target !== menu) return
+  if (nav.classList.contains('closed') && !nav.classList.contains('ish')) { 
+    bg.classList.toggle('show', false)
     headerContainer.style.height = headerHeight
   }
 })
