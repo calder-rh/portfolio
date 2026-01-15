@@ -304,6 +304,7 @@ async function fillColumns() {
 
 function resizeIntroContainer() {
   introContainer.style.setProperty('--intro-container-height', `${intro.clientHeight}px`)
+  introContainer.classList.remove('loading')
 }
 
 function resize() {
@@ -463,7 +464,8 @@ let isClicked = false
 addEventListener('DOMContentLoaded', () => {
   setupTags(true)
 
-  setTimeout(resizeIntroContainer)
+  setTimeout(resizeIntroContainer, 150)
+
   setIntroContainer()
   introContainer.classList.toggle('no-transition', false)
 
