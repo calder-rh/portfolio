@@ -304,7 +304,6 @@ async function fillColumns() {
 
 function resizeIntroContainer() {
   introContainer.style.setProperty('--intro-container-height', `${intro.clientHeight}px`)
-  introContainer.classList.remove('loading');
 }
 
 function resize() {
@@ -464,6 +463,7 @@ let isClicked = false
 addEventListener('DOMContentLoaded', () => {
   setupTags(true)
 
+  setTimeout(resizeIntroContainer)
   setIntroContainer()
   introContainer.classList.toggle('no-transition', false)
 
@@ -478,8 +478,6 @@ addEventListener('DOMContentLoaded', () => {
     item.querySelector('.work-content-wrapper').addEventListener('mouseenter', expand)
     item.querySelector('.work-content-wrapper').addEventListener('mouseleave', contract)
   }
-
-  resizeIntroContainer()
 })
 
 function shouldShowTag(tag) {

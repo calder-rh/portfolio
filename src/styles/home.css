@@ -16,10 +16,6 @@
     transition: height var(--top-transition);
   }
 
-  #intro-container.loading {
-    height: auto;
-  }
-
   #intro-container.no-transition * {
     transition: none;
   }
