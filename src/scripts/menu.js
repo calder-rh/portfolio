@@ -23,7 +23,7 @@ close.addEventListener('mouseleave', () => {
   }
 })
 
-function doClose() {
+export function doClose() {
   nav.classList.toggle('open', false)
   nav.classList.toggle('closed', true)
   shouldICareAboutMouseenter = false
@@ -49,10 +49,11 @@ menu.addEventListener('mouseleave', () => {
 })
 
 menu.addEventListener('click', () => {
+  if (nav.classList.contains('open')) return
   bg.classList.toggle('show', true)
   setTimeout(() => {
     nav.classList.toggle('closed', false)
-    nav.classList.toggle('ewidth-snap', false)
+    nav.classList.toggle('width-snap', false)
     nav.classList.toggle('open', true)
     shouldICareAboutMouseenter = false;
     nav.classList.toggle('ish', false)

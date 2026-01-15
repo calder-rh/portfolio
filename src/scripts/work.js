@@ -501,6 +501,8 @@ for (let element of document.querySelectorAll('.work-tag')) {
   element.addEventListener('mouseleave', () => mouseLeaveTag(element, tag))
 }
 
+import { doClose } from "./menu.js";
+
 lockup.addEventListener('click', (event) => {
   event.preventDefault()
   const {tag: currentTag} = getURLTag();
@@ -508,6 +510,7 @@ lockup.addEventListener('click', (event) => {
   setURLTag(null, 'all', {updateHistory: true, implicitAll: true})
   setIntroContainer()
   window.scrollTo({top: 0, left: 0, behavior: "smooth"});
+  setTimeout(doClose)
 })
 
 workLink.addEventListener('click', (event) => {
@@ -517,4 +520,5 @@ workLink.addEventListener('click', (event) => {
   setURLTag('Work', 'all', {updateHistory: true, implicitAll: false})
   setIntroContainer()
   window.scrollTo({top: 0, left: 0, behavior: "smooth"});
+  setTimeout(doClose)
 })
