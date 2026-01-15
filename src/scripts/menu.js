@@ -28,7 +28,6 @@ function doClose() {
   nav.classList.toggle('closed', true)
   shouldICareAboutMouseenter = false
   nav.classList.toggle('ish', false)
-  nav.classList.toggle('reverse', false)
 }
 
 close.addEventListener('click', doClose)
@@ -68,7 +67,6 @@ function handleResize() {
   if (lastWidth > 780 && width <= 780) {
     nav.classList.toggle('open', false)
     nav.classList.toggle('closed', true)
-    nav.classList.toggle('reverse', false)
   }
   lastWidth = width
 }

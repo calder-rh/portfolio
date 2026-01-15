@@ -26,7 +26,10 @@ const plainTitle = new Marked()
 <script>
   const captions = document.querySelectorAll('.caption');
   captions.forEach(caption => {
-    const prevSibling = caption.previousElementSibling;
+    let prevSibling = caption.previousElementSibling;
+    while (prevSibling && (prevSibling instanceof HTMLScriptElement)) {
+      prevSibling = prevSibling.previousElementSibling;
+    }
     if (prevSibling) {
       prevSibling.classList.add('captioned');
     }

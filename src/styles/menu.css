@@ -309,7 +309,7 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
   
 
   nav {
-    --speed: 0.1s;
+    --speed: .1s;
   }
 
   @media (hover: none) {
@@ -338,12 +338,20 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
     scale: 0.3;
   }
 
-  nav.closed.ish:not(.reverse) .menu-transition {
+
+  nav:not(.ish) .menu-transition {
+    transition: var(--speed) ease-out;
+  }
+
+  nav.ish .menu-transition {
     transition: var(--speed) ease-in;
   }
 
-  nav.thin.closed .menu-transition, nav.closed.ish.reverse .menu-transition {
-    transition: var(--speed) ease-out;
+
+
+  nav.open.ish .menu-scale {
+    top: calc(var(--header-height) / 2 + 2.9375rem);
+    scale: 0.6;
   }
 
   nav.closed .menu-label {
@@ -362,19 +370,6 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
 
   nav.open .menu-scale {
     top: calc(var(--header-height) / 2 + 4.1875rem);
-  }
-
-  nav.open.ish .menu-scale {
-    top: calc(var(--header-height) / 2 + 2.9375rem);
-    scale: 0.6;
-  }
-
-  nav.open.ish:not(.reverse) .menu-transition {
-    transition: var(--speed) ease-in;
-  }
-
-  nav.open .menu-transition, nav.open.ish.reverse .menu-transition {
-    transition: var(--speed) ease-out;
   }
 }
 
