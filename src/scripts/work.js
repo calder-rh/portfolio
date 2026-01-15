@@ -304,6 +304,7 @@ async function fillColumns() {
 
 function resizeIntroContainer() {
   introContainer.style.setProperty('--intro-container-height', `${intro.clientHeight}px`)
+  introContainer.classList.remove('loading');
 }
 
 function resize() {

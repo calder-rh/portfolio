@@ -75,7 +75,7 @@ const renderedIntros =  await Promise.all(allTags.map(async (tag) => {
 ---
 
 <BaseLayout title="Calder Ruhl Hansen" name={false}>
-	<div id="intro-container" class="no-transition closed">
+	<div id="intro-container" class="no-transition closed loading">
 		<TextOval squareness={38} id="intro">
 			<p>
 				Hi! I’m a person who makes systems of meaningful forms. Or sometimes just systems, or forms, or things that feel meaningful.
@@ -99,7 +99,6 @@ const renderedIntros =  await Promise.all(allTags.map(async (tag) => {
         )}
       </div>
     </div>
-    <!-- <p>Hi!</p> -->
   </div>
   <Columns id="work-cols" columnWidth={600} columnGap={20} prepareItems={false} fillColumns={false}>
     {workItems.map((data) => <WorkItem data={data}/>)}
