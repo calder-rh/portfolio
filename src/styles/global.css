@@ -41,7 +41,8 @@
   }
 
   :root {
-    --orange: #ED4B00;
+    /* --orange: #ED4B00; */
+    --orange: #d74c00;
     --brown: #332019;
     --blue: #60889a;
     --light-blue: #aebfc8;

@@ -46,7 +46,8 @@
 }
 
 #logo {
-  height: 3.75rem;
+  /* height: 3.75rem; */
+  height: 3.25rem;
   width: auto;
   margin-right: 0.75rem;
 }
@@ -59,7 +60,6 @@
   line-height: 1.2;
   margin: 0;
   position: relative;
-  top: 0.15rem;
 }
 
 nav {
