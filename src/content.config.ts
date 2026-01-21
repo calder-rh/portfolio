@@ -1,7 +1,9 @@
-import { z, defineCollection, reference } from 'astro:content';
+import { defineCollection, reference } from 'astro:content';
+import { z } from 'astro/zod';
+import { glob } from 'astro/loaders';
 
 const workCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: "./src/content/work" }),
   schema: z.object({
     title: z.string(),
     description: z.ostring(),
@@ -16,16 +18,16 @@ const workCollection = defineCollection({
 });
 
 const tagCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: "./src/content/tags" }),
   schema: z.object({
     title: z.string(),
     'listed as': z.ostring(),
-    unlisted: z.boolean().default(false),
+    unlisted: z.boolean().optional().default(false),
     'prioritize balance': z.boolean().default(false),
     'hide others': z.boolean().default(false),
     parents: z.array(reference('tags')).optional()
   })
-})
+});
 
 export const collections = {
   'work': workCollection,

@@ -28,10 +28,10 @@ for (let content of allWork) {
     date: content.data.date,
     priority: content.data.priority,
     draft: content.data.draft === true,
-    slug: content.slug,
+    slug: content.id,
     images: []
   }
-  const { remarkPluginFrontmatter } = await content.render()
+  const { remarkPluginFrontmatter } = await render(content)
   for (let item of remarkPluginFrontmatter.toc) {
     if (item.type === 'image') {
       const previewPath = item.image.preview
@@ -65,12 +65,12 @@ const orderedTags = [
 
 const sortedTags = Array.from(allTags).sort((a, b) => {
   if (a.data.unlisted != b.data.unlisted) return b.data.unlisted - a.data.unlisted
-  return orderedTags.indexOf(a.slug) - orderedTags.indexOf(b.slug)
+  return orderedTags.indexOf(a.id) - orderedTags.indexOf(b.id)
 })
 
 const renderedIntros =  await Promise.all(allTags.map(async (tag) => {
   const { Content } = await render(tag);
-  return { slug: tag.slug, content: Content }
+  return { slug: tag.id, content: Content }
 }))
 ---
 
@@ -85,7 +85,7 @@ const renderedIntros =  await Promise.all(allTags.map(async (tag) => {
 
 	<div id="top-tag-separator"></div>
 	<div id="tags">
-    {sortedTags.map(tag => <WorkTag listName={tag.data['listed as'] ?? tag.data.title} titleName={tag.data.title} slug={tag.slug} unlisted={tag.data.unlisted} hideOthers={tag.data['hide others']} prioritizeBalance={tag.data['prioritize balance']}></WorkTag>)}
+    {sortedTags.map(tag => <WorkTag listName={tag.data['listed as'] ?? tag.data.title} titleName={tag.data.title} slug={tag.id} unlisted={tag.data.unlisted} hideOthers={tag.data['hide others']} prioritizeBalance={tag.data['prioritize balance']}></WorkTag>)}
   </div>
   <div id="tag-separator">
     <div id="tag-intro-container">
