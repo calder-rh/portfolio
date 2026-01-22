@@ -14,12 +14,15 @@ import WorkTag from "@src/components/WorkTag.astro"
 import { inferTags } from '@src/scripts/infer-tags.js'
 
 const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif,svg}')
-const allWork = await getCollection('work')
+const allProjects = await getCollection('projects')
 const allTags = await getCollection('tags')
+
+// const allWork = await getCollection('works')
+
 
 const workItems = []
 
-for (let content of allWork) {
+for (let content of allProjects) {
   const workItem = {
     title: content.data.title,
     description: content.data.description,

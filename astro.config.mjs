@@ -2,10 +2,10 @@ import { defineConfig } from 'astro/config';
 
 // import mdx from "@astrojs/mdx";
 import { collector } from './src/scripts/collector.js';
+import { workCollector } from './src/scripts/work-collector.js';
 
 import mdx from '@astrojs/mdx';
 
-// https://astro.build/config
 export default defineConfig({
   site: 'https://calder-rh.github.io/portfolio',
 
@@ -14,9 +14,8 @@ export default defineConfig({
     '/itp-portfolio': '/?unlisted-tag=itp-portfolio&tag=itp-portfolio'
   },
 
-  // integrations: [mdx(), ],
   markdown: {
-    remarkPlugins: [collector]
+    remarkPlugins: [collector, workCollector]
   },
 
   integrations: [mdx({
