@@ -1,7 +1,7 @@
 ---
 import Article from '@src/layouts/Article.astro';
 import { getCollection, render } from 'astro:content';
-import 'src/scripts/collector.js';
+// import 'src/scripts/collector.js';
 
 export async function getStaticPaths() {
   const workPages = await getCollection('projects');

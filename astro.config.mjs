@@ -2,7 +2,6 @@ import { defineConfig } from 'astro/config';
 
 // import mdx from "@astrojs/mdx";
 import { collector } from './src/scripts/collector.js';
-import { workCollector } from './src/scripts/work-collector.js';
 
 import mdx from '@astrojs/mdx';
 
@@ -15,7 +14,7 @@ export default defineConfig({
   },
 
   markdown: {
-    remarkPlugins: [collector, workCollector]
+    remarkPlugins: [collector]
   },
 
   integrations: [mdx({

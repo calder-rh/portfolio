@@ -1,11 +1,10 @@
 import { defineCollection, reference } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
-import { workLoader } from '@src/scripts/work-loader.js';
 
 
 const projects = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: "./src/content/work" }),
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: "./src/content/projects" }),
   schema: z.object({
     title: z.string(),
     description: z.ostring(),
@@ -20,9 +19,20 @@ const projects = defineCollection({
 });
 
 const works = defineCollection({
-  loader: workLoader,
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: "./src/content/works" }),
   schema: z.object({
     title: z.string(),
+    image: z.union([
+      z.string(),
+      z.array(z.object({
+        path: z.string(),
+        tags: z.array(reference('tags'))
+      }))
+    ]).optional(),
+    tags: z.array(reference('tags')),
+    start_date: z.date().optional(),
+    date: z.union([z.date(), z.literal('present')]),
+    unlisted: z.boolean().default(false),
   })
 })
 
@@ -41,5 +51,5 @@ const tags = defineCollection({
 export const collections = {
   projects,
   tags,
-  works
+  // works
 };
