@@ -19,7 +19,9 @@ const allTags = await getCollection('tags')
 
 const test = await getCollection('items')
 for (let thing of test) {
-	console.log(thing.data.name)
+	if (thing.data.name == 'CRH Shorthand') {
+		console.log(thing.data.date)
+	}
 }
 
 
