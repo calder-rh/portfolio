@@ -17,10 +17,10 @@ const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif,svg}
 const allProjects = await getCollection('projects')
 const allTags = await getCollection('tags')
 
-// const test = await getCollection('items')
-// for (let thing of test) {
-// 	console.log(thing.data.tags)
-// }
+const test = await getCollection('items')
+for (let thing of test) {
+	console.log(thing.data.name)
+}
 
 
 const workItems = []

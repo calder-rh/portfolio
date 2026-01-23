@@ -1,0 +1,90 @@
+---
+name: Irama visualization
+tags: [music-visualization]
+date: 2025-11-20
+home: work
+priority: 2
+---
+import Box from 'src/layouts/Box.astro';
+import Img from 'src/components/Img.astro';
+
+*Irama* is a central concept in Javanese gamelan music, describing the pace at which the core melodic structure of a piece unfolds, relative to the piece’s rhythmic textures. A piece is typically performed at several different iramas, each one twice as slow as the last. In a slower irama, the melody has more room to expand, and it often takes a more elaborate form: tracing the same overall melodic arcs, but taking more elaborate routes along the way.
+
+After playing in the Brown University gamelan ensemble for several years, and getting a feel for the relationship between iramas as a musician, I was curious how it would look to visualize this relationship. See below for an explanation.
+
+{/* After playing in the Brown University gamelan ensemble for several years, and getting a feel for the relationship between iramas as a musician, I was curious how it would look to visualize this relationship in a piece I’m familiar with. Here I’ll show a visualization of [Ladrang *Kembang Setaman*](https://youtu.be/mQjEjc9jhTY?t=799), which our instructor Harjito wrote for us.
+
+That piece is in the *pélog* scale, which has seven notes (numbered 1 through 7). I represent each note with a color:
+
+<>
+
+These can be put together into a melody. Here is the melody of Kembang Setaman, in the faster *irama tanggung*:
+
+<>
+
+Rather than continuing to write the numbers, I’ll just use the colors:
+
+<>
+
+Note that the wider bands of colors (or rather, multiple successive bands of the same color) could mean either that the same note is hit multiple times, or that the note is hit once and let hang for a beat or two, or some combination of the two. I’ll disambiguate this later.
+
+Here is how the the slower *irama dadi* melody looks next to it:
+
+<>
+
+The goal here is to visualize how the overall arc of the melody is similar between the two iramas. This is easier to see if I scale them to be the same length and add a few more copies:
+
+<>
+
+(While the color bands in dadi are half the size as those in tanggung, they still represent the same amount of time.)
+
+This makes it more apparent that the two iramas move through a similar progression of notes, visible here as a similar progression of color palettes. The dadi melody looks somewhat like a higher-resolution, more detailed version of the tanggung melody.
+
+There are certain places where the dadi melody uses an identical sequence of notes as the tanggung melody. This can be seen by drawing connections between the two:
+
+<>
+
+These sequences are played at the same rate in both tanggung and dadi, and thus last for the same duration. However, since the dadi melody is longer, this sequence takes up a smaller proportion of the dadi melody than in the tanggung melody, leading these connections to taper.
+
+In other parts of the irama dadi melody, the notes are still based on the tanggung melody, but in less direct ways. Often the notes of the tanggung melody show up in the same order in dadi, but with other notes added in between:
+
+<>
+
+In one or two places, a sequence of notes that is stated once in tanggung is repeated twice in dadi:
+
+<>
+
+Putting all these parts together gives this visualization:
+
+<>
+
+The visual alternates between places of compression, where the tanggung melody is used directly, and places of expansion, where extra notes or repetitions are added in.
+
+As mentioned above, in some beats (bands, here) a note is not played, but rather the previous note is allowed to ring longer. I’ll indicate this with a white circle:
+
+<>
+
+Finally I will add circles to the outside to indicate the time cycle of the piece: the large circle is the gong, and the small circle is the *kenong*.
+
+<> 
+
+
+<Box factor={1}>
+  <Img src="irama/two columns.png" classes={['shadow']} uses='f' alt=''/>
+</Box>
+
+<Box factor={1}>
+  <Img src="irama/kembang setaman.png" classes={['shadow']} uses='ftpb' alt=''/>
+</Box> */}
+
+<Box factor={1}>
+  <Img src="irama/kembang setaman.png" uses='ftpb' classes={['shadow']} alt=''/>
+</Box>
+
+This represents a piece, [Ladrang *Kembang Setaman*](https://youtu.be/mQjEjc9jhTY?t=799), which our instructor Harjito wrote for us. The image is read from top to bottom. The colors (in reverse rainbow order, purple through red) represent the notes of the *pélog* scale, 1 through 7. The wider bands represent the faster *irama tanggung*, and the thinner bands represent the slower *irama dadi*. When a note is held for a beat or two (notated as • below), that is shown by keeping the same hue but fading toward white, as the sound from the strike of the instruments fades.
+
+<Box factor={.5}>
+  <Img src="irama/diagram.svg" uses='f' alt=''/>
+</Box>
+
+In a performance, the piece is first played in irama tanggung; then it is played in irama dadi, which lasts twice as long. My visualization does not represent this structure: I scaled the two iramas to take the same amount of space (each band represents the same unit of time, even though the dadi bands are half the size), and I layered them on top of each other. This presentation makes it more apparent how the overall arc of the melody is the same across both iramas, as they move through the same progression of color palettes, and certain color progressions appear at both larger and smaller scales.

@@ -12,14 +12,14 @@ const parameters = defineCollection({
   })
 })
 
-function arr(x) {
+function toArr(x) {
   if (Array.isArray(x)) return x
   else if (x) return [x]
   else return []
 }
 
-function yarra(x) {
-  return z.union([x(), z.array(x())]).transform(arr)
+function oneOrMore(x) {
+  return z.union([x(), z.array(x())]).transform(toArr)
 }
 
 const a = z.union([z.string(), z.array(z.string())])
@@ -37,32 +37,32 @@ const items = defineCollection({
 
     description: z.ostring(),
     date: z.union([
-      z.date(),
+      z.union([z.date(), z.literal('present')]),
       z.object({
         start: z.date(),
-        end: z.date()
+        end: z.union([z.date(), z.literal('present')])
       })
     ]).optional(),
     image: z.union([
-      yarra(z.string),
+      oneOrMore(z.string),
       z.object({
-        page: yarra(z.string).optional(),
-        home: yarra(z.string).optional(),
+        page: oneOrMore(z.string).optional(),
+        home: oneOrMore(z.string).optional(),
         gallery: z.string().optional(),
         embed: z.string().optional()
       })
     ]).optional(),
     
-    home: yarra(() => z.enum(['work', 'tag'])).default([]),
-    gallery: z.enum(['work', 'tag']).optional().transform(arr),
+    home: oneOrMore(() => z.enum(['work', 'tag'])).default([]),
+    gallery: z.enum(['work', 'tag']).optional().transform(toArr),
     page: z.union([
-      z.enum(['manual', 'auto', 'contextual', 'none']),
+      z.enum(['manual', 'auto', 'none']),
       z.object({
         title: z.boolean().default(true),
         description: z.boolean().default(true),
         date: z.boolean().default(true),
       })
-    ]).default('contextual'),
+    ]).optional(),
 
     unlisted: z.boolean().default(false),
     draft: z.boolean().default(false),
@@ -70,8 +70,11 @@ const items = defineCollection({
 
     parameter: reference('parameters').optional(),
 
-    tags: yarra(() => reference('items')).optional(),
-  })
+    tags: oneOrMore(() => reference('items')).optional(),
+  }).transform((data) => ({
+    ...data,
+    name: 'haha it changed'
+  }))
 })
 
 
@@ -107,4 +110,5 @@ export const collections = {
   projects,
   tags,
   items,
+  parameters
 };

@@ -1,0 +1,493 @@
+---
+name: Recursive Prime Numeral System
+description: A system that uses prime factorizations to break a number down into a visual structure
+tags: [encoding-systems, itp-portfolio, mas-portfolio]
+date:
+  start: 2019-08-01
+  end: 2020-07-26
+home: work
+priority: 1
+---
+import Img from 'src/components/Img.astro';
+import Box from 'src/layouts/Box.astro';
+import Zoom from 'src/layouts/Zoom.astro';
+import Glue from 'src/components/Glue.astro';
+import Number from 'src/components/Number.astro';
+import Group from 'src/layouts/work/rpns/Group.astro';
+import Times from 'src/layouts/work/rpns/Times.astro';
+import Prime from 'src/layouts/work/rpns/Prime.astro';
+import One from 'src/components/work/rpns/One.astro';
+import Dot from 'src/components/work/rpns/Dot.astro';
+import Text from 'src/layouts/work/rpns/Text.astro';
+import Blank from 'src/components/work/rpns/Blank.astro';
+import 'src/styles/work/rpns.css';
+
+Recursive Prime Numeral System (<span class="sc">RPNS</span>) comprises several methods of writing numbers based entirely on prime factorizations. It can be used to encode numbers in artistic forms, like these:
+
+<Box factor={1.4}>
+<Img src='rpns/2-29 rect color.svg' uses='ftp' id="test" alt=""/>
+</Box>
+
+Below is an explanation of how it works.
+
+---
+
+Our base-ten numeral system represents numbers by taking powers of ten, multiplying them by various factors, and adding the results together: for example, <span style="white-space: nowrap">936 = __9__ × 10² + __3__ × 10¹ + __6__ × 10⁰.</span> This is good for practical calculations, but mathematically, it’s a rather arbitrary way to represent numbers. There’s nothing inherently special about ten; it’s just the number of fingers most people happen to have.
+
+A more natural way to represent an integer is its prime factorization, a set of prime numbers raised to various powers and multiplied together: <span style="white-space: nowrap">936 = 2³ × 3² × 13¹.</span> This is like breaking a number down into its atomic parts: for every number, there is exactly one way to break it down into primes, and this factorization gives some fundamental information about how the number behaves in various mathematical contexts.
+
+When we write a number’s prime factorization like I did above, we still end up using base ten: in that example, <span style="white-space: nowrap">2³ × 3² × 13¹</span>, the “13” means <span style="white-space: nowrap">__1__ × 10¹ + __3__ × 10⁰</span>, and even the other single-digit primes and exponents are ultimately written in base 10. <span class="sc">RPNS</span> is a way of writing a prime factorization without any hint of base ten or any other base: everything is written using primes.
+
+My first thought in designing this system was that all the numbers making up the prime factorization could themselves broken down into factors: for example, if a factorization contains 13⁴, the power 4 can be written as 2². However, the 13 can’t be broken down any further into factors — that’s what it means to be prime.
+
+But if we represent 13 using its *index* — 6, as it’s the 6<span class="ord">th</span> prime number — then we get something that can be broken down further: 6 = 2¹ × 3¹. We can continue this process by representing 2 and 3 using their indices as well:
+
+<div class="equation">
+  <div class="lhs">6</div>
+  <div class="rel">=</div>
+  <div class="rhs"><span class="blue">2¹</span> × <span class="blue">3¹</span></div>
+
+  <div class="lhs"></div>
+  <div class="rel">=</div>
+  <div class="rhs"><span class="blue"><Group>(the 1<span class="ord">st</span> prime ^ 1)</Group></span> <Group>× <span class="blue">(the 2<span class="ord">nd</span> prime ^ 1)</span></Group></div>
+</div>
+
+The 2 in that expression can be broken down in the same way:
+
+<div class="equation">
+  <div class="lhs">6</div>
+  <div class="rel">=</div>
+  <div class="rhs"><Group>(the 1<span class="ord">st</span> prime ^ 1)</Group> <Group>× (the <span class="blue">(the 1<span class="ord">st</span> prime ^ 1)</span><span class="ord">th</span> prime ^ 1)</Group></div>
+</div>
+
+This cannot be broken down any further, as the only numbers remaining are ones.
+
+For simplicity, I will use “<Group>A ◊ B</Group>” to represent “the A<span class="ord">th</span> prime to the power of B”:
+
+<div class="equation">
+  <div class="lhs">6</div>
+  <div class="rel">=</div>
+  <div class="rhs">(1 ◊ 1) × ((1 ◊ 1) ◊ 1)</div>
+</div>
+
+(In <Group>A ◊ B</Group>, A is the *index* and B is the *power*.)
+
+Now that we have this expression for 6, we can use it to write 13:
+
+<div class="equation">
+  <div class="lhs">13</div>
+  <div class="rel">=</div>
+  <div class="rhs">the <span class="blue">6</span><span class="ord">th</span> prime ^ 1</div>
+
+  <div class="lhs"></div>
+  <div class="rel">=</div>
+  <div class="rhs"><span class="blue">6</span> ◊ 1</div>
+
+  <div class="lhs"></div>
+  <div class="rel">=</div>
+  <div class="rhs"><span class="blue">((1 ◊ 1) × ((1 ◊ 1) ◊ 1))</span> ◊ 1</div>
+</div>
+
+A more complicated example:
+
+<div class="equation">
+  <div class="lhs">936</div>
+  <div class="rel">=</div>
+  <div class="rhs">(1 ◊ ((1 ◊ 1) ◊ 1)) × ((1 ◊ 1) ◊ (1 ◊ 1)) × (((1 ◊ 1) × ((1 ◊ 1) ◊ 1)) ◊ 1)</div>
+</div>
+
+It can be hard to keep track of all these parentheses, so it would be nice to have a better way to represent this information: a form of visual notation that clarifies the structure of this kind of expression. This notation will need to represent a few things:
+
+- The number **1**
+- Multiplication: **A × B**
+- The prime power operation: **A ◊ B**
+- Some way of nesting operations, like parentheses
+
+I have come up with several ways of doing this.
+
+## Dots & Lines
+
+One possibility is to use horizontal and vertical lines to represent the two types of operations. Let’s write A × B as <span class="rpns text-rpns inline align" style="--gap: 0;"><Times><Text>A</Text><Text>B</Text></Times></span>, and A ◊ B as <span class="rpns text-rpns inline" style="--gap: 5px;"><Prime><Text>A</Text><Text>B</Text></Prime></span>. (Of course this looks like division, but in this context it represents something else.) Using this notation, we can write 13 like this:
+
+<div class="equation rpns-equation" id="thirteen">
+  <div class="lhs">13</div>
+  <div class="rel">=</div>
+  <div class="rhs">6 ◊ 1</div>
+
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Text>6</Text>
+        <One/>
+      </Prime>
+    </div>
+  </div>
+
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Text>2¹ × 3¹</Text>
+        <One/>
+      </Prime>
+    </div>
+  </div>
+
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Text>(1 ◊ 1) × (2 ◊ 1)</Text>
+        <One/>
+      </Prime>
+    </div>
+  </div>
+
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Times>
+          <Prime>
+            <One/>
+            <One/>
+          </Prime>
+          <Prime>
+            <Text>2</Text>
+            <One/>
+          </Prime>
+        </Times>
+        <One/>
+      </Prime>
+    </div>
+  </div>
+
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Times>
+          <Prime>
+            <One/>
+            <One/>
+          </Prime>
+          <Prime>
+            <Text>(1 ◊ 1)</Text>
+            <One/>
+          </Prime>
+        </Times>
+        <One/>
+      </Prime>
+    </div>
+  </div>
+
+<div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Times>
+          <Prime>
+            <One/>
+            <One/>
+          </Prime>
+          <Prime>
+            <Prime>
+              <One/>
+              <One/>
+            </Prime>
+            <One/>
+          </Prime>
+        </Times>
+        <One/>
+      </Prime>
+    </div>
+  </div>
+</div>
+
+The sizes of horizontal bars indicate how the parts are nested:
+
+<div class="equation rpns-equation">
+  <div class="lhs">1 ◊ (1 ◊ 1)</div>
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Text>1</Text>
+        <Prime>
+          <Text>1</Text>
+          <Text>1</Text>
+        </Prime>
+      </Prime>
+    </div>
+  </div>
+
+  <div class="lhs">(1 ◊ 1) ◊ 1</div>
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Prime>
+          <Text>1</Text>
+          <Text>1</Text>
+        </Prime>
+        <Text>1</Text>
+      </Prime>
+    </div>
+  </div>
+</div>
+
+So if you see a horizontal bar, its inputs come from the spaces above and below the bar, up until you hit any larger bars (if you do). For example, the bar highlighted in blue here has its inputs from the shaded region:
+
+<div class="rpns text-rpns">
+  <Prime>
+    <One/>
+    <Prime color="var(--dark-blue)">
+      <span class="expr-container" style="background-color: rgba(96, 136, 154, 0.3); --prime-color: var(--brown)">
+        <span class="prime">
+          <One/>
+          <One/>
+        </span>
+      </span>
+      <span class="expr-container" style="background-color: rgba(96, 136, 154, 0.3)">
+        <span class="text">1</span>
+      </span>
+    </Prime>
+  </Prime>
+</div>
+
+The system can be made more concise by removing the ones and just writing the bars. This does not lead to any ambiguity: if a horizontal bar has nothing in the space above it, then the index is assumed to be 1; if it has nothing in the space below it, the power is assumed to be 1. So that above example becomes:
+
+<div class="equation rpns-equation">
+  <div class="lhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <One/>
+        <Prime>
+          <Prime>
+            <One/>
+            <One/>
+          </Prime>
+          <One/>
+        </Prime>
+      </Prime>
+    </div>
+  </div>
+  <div class="rel">→</div>
+  <div class="rhs">
+    <div class="rpns inline">
+      <Prime>
+        <Blank/>
+        <Prime>
+          <Prime>
+            <Blank/>
+            <Blank/>
+          </Prime>
+          <Blank/>
+        </Prime>
+      </Prime>
+    </div>
+  </div>
+</div>
+
+For aesthetic purposes, I’ll replace the shortest horizontal lines (which represent 2) with dots: <span class="rpns inline"><Prime><Blank/><Prime><Dot/><Blank/></Prime></Prime></span>. So,
+
+<div class="equation rpns-equation" id="thirteen">
+  <div class="lhs">13</div>
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns text-rpns inline">
+      <Prime>
+        <Times>
+          <Prime>
+            <One/>
+            <One/>
+          </Prime>
+          <Prime>
+            <Prime>
+              <One/>
+              <One/>
+            </Prime>
+            <One/>
+          </Prime>
+        </Times>
+        <One/>
+      </Prime>
+    </div>
+  </div>
+
+  <div class="lhs"></div>
+  <div class="rel">=</div>
+  <div class="rhs">
+    <div class="rpns inline">
+      <Prime>
+        <Times>
+          <Prime>
+            <Blank/>
+            <Blank/>
+          </Prime>
+          <Prime>
+            <Prime>
+              <Blank/>
+              <Blank/>
+            </Prime>
+            <Blank/>
+          </Prime>
+        </Times>
+        <Blank/>
+      </Prime>
+    </div>
+  </div>
+
+    <div class="rhs">
+    <div class="rpns inline">
+      <Prime>
+        <Times>
+          <Dot/>
+          <Prime>
+            <Dot/>
+            <Blank/>
+          </Prime>
+        </Times>
+        <Blank/>
+      </Prime>
+    </div>
+  </div>
+</div>
+
+To write 1 on its own, you can write a multiplication bar with nothing on either side. As with horizontal bars, the blank spaces where inputs would be are assumed to be ones, so <span style="display: inline-block; vertical-align: middle; width: 0.24em; height: 1.5em; position: relative; bottom: 0.05em; margin: 0 0.2em; background-color: var(--brown)"/> represents 1 × 1, which is 1. (Or you can consider this to be a multiplication with no inputs, producing the [multiplicative identity](https://en.wikipedia.org/wiki/Identity_element).)
+
+Here are all the numbers from 1 through 1024:
+
+<Zoom start={1}>
+  <Img src="rpns/1-1024.svg" alt=""/>
+</Zoom>
+
+
+It can look fun to color the parts differently:
+
+<div class="rpns" id="monster">
+<Times><Prime><Blank/><Times><Dot/><Prime><Prime><Dot/><Dot/></Prime><Blank/></Prime></Times></Prime><Prime><Dot/><Times><Prime><Blank/><Dot/></Prime><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime></Times></Prime><Prime><Prime><Dot/><Blank/></Prime><Prime><Dot/><Dot/></Prime></Prime><Prime><Prime><Blank/><Dot/></Prime><Times><Dot/><Prime><Dot/><Blank/></Prime></Times></Prime><Prime><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime><Dot/></Prime><Prime><Times><Dot/><Prime><Dot/><Blank/></Prime></Times><Prime><Dot/><Blank/></Prime></Prime><Prime><Prime><Prime><Blank/><Dot/></Prime><Blank/></Prime><Blank/></Prime><Prime><Prime><Blank/><Prime><Dot/><Blank/></Prime></Prime><Blank/></Prime><Prime><Prime><Dot/><Dot/></Prime><Blank/></Prime><Prime><Times><Dot/><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime></Times><Blank/></Prime><Prime><Prime><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime><Blank/></Prime><Blank/></Prime><Prime><Prime><Times><Dot/><Prime><Dot/><Blank/></Prime></Times><Blank/></Prime><Blank/></Prime><Prime><Times><Prime><Dot/><Blank/></Prime><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime></Times><Blank/></Prime><Prime><Prime><Prime><Prime><Blank/><Dot/></Prime><Blank/></Prime><Blank/></Prime><Blank/></Prime><Prime><Times><Prime><Blank/><Dot/></Prime><Prime><Prime><Dot/><Blank/></Prime><Blank/></Prime></Times><Blank/></Prime></Times>
+</div>
+
+
+## Nested Shapes
+
+As a review, the dots & lines representation above works like this:
+
+- **1:** a blank space
+- **2:** a dot
+- **A ◊ B:** a horizontal line with A above and B below
+- **A × B:** a vertical line with A on the left and B on the right
+
+The **nested shapes** representation works like this:
+
+- **1:** a blank space
+- **A ◊ B:** a shape enclosing A (the index) and touching B (the power)
+- **A × B:** A and B not touching
+
+Using this system, a number can be represented as a composition of shapes.
+
+For some examples of how these rules work, let’s use circles labeled A and B as stand-ins for compositions that represent numbers. Here’s <Group>A × B</Group>:
+
+<Img src='rpns/shapes/A*B.svg' uses='f' id="test" alt="" scale={3}/>
+
+There is no requirement to arrange them in any particular way — the following also represents <Group>A × B</Group> (or equivalently <Group>B × A</Group>):
+
+<Img src='rpns/shapes/A*B alternate.svg' uses='f' id="test" alt="" scale={3}/>
+
+Here’s one way to write <Group>A ◊ B</Group> (the A<span class="ord">th</span> prime to the power of B), by drawing a shape that encloses A and touches B, indicating that A is the index and B is the power:
+
+<Img src='rpns/shapes/A◊B.svg' uses='f' id="test" alt="" scale={3}/>
+
+The particular shape used doesn’t matter — this also is <Group>A ◊ B:</Group>
+
+<Img src='rpns/shapes/A◊B alternate.svg' uses='f' id="test" alt="" scale={3}/>
+
+Since 1 is represented by a blank space or the lack of a shape, <Group>A ◊ 1</Group> is written as a shape enclosing A and touching nothing:
+
+<Img src='rpns/shapes/A◊1.svg' uses='f' id="test" alt="" scale={3}/>
+
+And <Group>1 ◊ A</Group> is written as a shape enclosing nothing and touching A:
+
+<Img src='rpns/shapes/1◊A.svg' uses='f' id="test" alt="" scale={3}/>
+
+Now let’s see some actual numbers, without placeholder variables. The simplest is 2: <Group>1 ◊ 1</Group> is written as a shape enclosing nothing and touching nothing:
+
+<Img src='rpns/shapes/1◊1.svg' uses='f' id="test" alt="" scale={3}/>
+
+(Again, it doesn’t mean anything that I’m using a square here: what matters is the relationships between the shapes, not what the shapes are.)
+
+As shown above, enclosing anything in a shape represents <Group>[that thing] ◊ 1</Group>, so here’s <Group>2 ◊ 1 = 3:</Group>
+
+<Img src='rpns/shapes/3.svg' uses='f' id="test" alt="" scale={3}/>
+
+The outer circle is not touching anything, so the power is taken to be 1. To write <Group>2 ◊ 2</Group> (= 9), make that outer circle touch a shape (any shape) representing 2:
+
+<Img src='rpns/shapes/9.svg' uses='f' id="test" alt="" scale={3}/>
+
+But this composition could be ambiguous. Above I interpreted it as
+<Glue/>
+- a circle,
+- enclosing the index 2 (the square),
+- and touching the power 2 (the semicircle),
+<Glue/>
+which represents <Group>2 ◊ 2 = 9.</Group>
+
+However, one could also interpret it as
+<Glue/>
+- a semicircle,
+- enclosing the index 1 (nothing),
+- and touching the power 3 (the circle around the square),
+<Glue/>
+which represents <Group>1 ◊ 3 = 8.</Group>
+
+To avoid this kind of ambiguity, I added a rule specifying that *when two shapes touch each other, the larger one contains the index, and the smaller one is the power.* So for the composition above, the first interpretation (9) is correct, because the circle is larger than the semicircle. If you wanted to write 8, you would make the semicircle larger:
+
+<Img src='rpns/shapes/8.svg' uses='f' id="test" alt="" scale={3}/>
+
+If more than two shapes touch each other, the largest one is taken as the shape containing the index, and all the other shapes compose the power. For an example of this, I’ll start by writing 9 again (this time using only rectangles, for variety):
+
+<Img src='rpns/shapes/9 rect.svg' uses='f' id="test" alt="" scale={3}/>
+
+To write <Group>1 ◊ 9</Group> (the 1<span class="ord">st</span> prime to the power of 9, which is 2⁹, which is 512), we can draw a bigger rectangle touching this:
+
+<Img src='rpns/shapes/512 rect.svg' uses='f' id="test" alt="" scale={3}/>
+
+Since that new rectangle is the largest shape, the stuff inside it (nothing, meaning 1) is taken to be the index, and everything it’s touching (9) is taken to be the power.
+
+The same applies when the large rectangle is placed on the left:
+
+<Img src='rpns/shapes/512 linear.svg' uses='f' id="test" alt="" scale={3}/>
+
+Even though the rectangle on the left is smaller than the composition representing 9, it’s still the largest shape overall, so the rule still applies. And it works just as well to place that large rectangle on the right:
+
+<Img src='rpns/shapes/512 linear 2.svg' uses='f' id="test" alt="" scale={3}/>
+
+One more example. Here’s one way to write 6:
+
+<Img src='rpns/shapes/6.svg' uses='f' id="test" alt="" scale={3}/>
+
+This is similar to how I wrote 9 earlier, but now the gap between the two parts indicates multiplication: 3 (on the left) times 2 (on the right).
+
+To write <Group>1 ◊ 6</Group> (the 1<span class="ord">st</span> prime to the power of 6, 2⁶, 64), we can draw a bigger rectangle touching this:
+
+<Img src='rpns/shapes/64 rect.svg' uses='f' id="test" alt="" scale={3}/>
+
+In that composition the two parts of 6 are still close to each other, but they don’t have to be — below, the big rectangle is moved to the middle, with the two parts of 6 on opposite sides:
+
+<Img src='rpns/shapes/64 linear.svg' uses='f' id="test" alt="" scale={3}/>
+
+---
+
+The examples above demonstrate that there are many ways to write any number — even if we’re limiting ourselves to using only rectangles. This flexibility creates room to explore different visual aesthetics. For example, here’s a set of compositions representing the numbers 2 through 29, all sized to occupy the same dimensions:
+
+<Box factor={1}>
+<Img src='rpns/2-29 rect.svg' uses='ftb' id="test" alt=""/>
+</Box>
+
+While I have been drawing all the shapes in outline, it works just as well to use solid shapes, using whatever colors you choose:
+
+<Box factor={1}>
+<Img src='rpns/2-29 rect color.svg' uses='ft' id="test" alt=""/>
+</Box>
