@@ -10,7 +10,8 @@ export default defineConfig({
 
   redirects: {
     '/mas-portfolio': '/?unlisted-tag=mas-portfolio&tag=mas-portfolio',
-    '/itp-portfolio': '/?unlisted-tag=itp-portfolio&tag=itp-portfolio'
+    '/itp-portfolio': '/?unlisted-tag=itp-portfolio&tag=itp-portfolio',
+    '/work/clapping': '/work/clapping-music'
   },
 
   markdown: {

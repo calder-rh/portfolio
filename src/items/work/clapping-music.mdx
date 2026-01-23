@@ -3,6 +3,7 @@ name: _Clapping Music_ visualization
 tags: [art, music-visualization, itp-portfolio]
 home: work
 date: 2022-01-18
+image: clapping music print.png
 priority: 2
 ---
 import Box from 'src/layouts/Box.astro';
@@ -10,7 +11,7 @@ import Img from 'src/components/Img.astro';
 
 A graphic system that displays the patterns in this [systematic piece of music](https://www.youtube.com/watch?v=YPU5XrmORCQ) by Steve Reich.
 
-<Img src='clapping/clapping music print.png' classes={["shadow"]} uses='ftpb' alt='A geometric grid of black circles and semicircles'/>
+<Img src='clapping-music/clapping music print.png' classes={["shadow"]} uses='ftpb' alt='A geometric grid of black circles and semicircles'/>
 
 Each horizontal row represents one rhythmic pattern, read from left to right. The top half of a circle represents one performer clapping; the bottom half represents the other performer.
 
@@ -19,16 +20,14 @@ Both performers clap the same rhythm throughout. They start out in sync: in the 
 The performer who shifts in each row can be seen as diagonal stripes:
 
 <Box factor={0.5}>
-  <Img src='clapping/shift.svg' alt='' uses='f'/>
+  <Img src='clapping-music/shift.svg' alt='' uses='f'/>
 </Box>
 
 The performer who does not shift can be seen as vertical stripes:
 
 <Box factor={0.5}>
-  <Img src='clapping/stay.svg' alt='' uses='f'/>
+  <Img src='clapping-music/stay.svg' alt='' uses='f'/>
 </Box>
 
 Together these stripes create a pattern that reminds me of a surface of water with overlapping ripples in different directions.
-
-{/* <Img src='clapping/clapping.svg' uses='ftpb' alt='A geometric grid of black circles and semicircles'/> */}
 

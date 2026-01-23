@@ -4,12 +4,14 @@ export async function inferTags(tags, unlisted) {
   const allTags = tags.slice() || []
   for (let i = 0; i < allTags.length; i++) {
     const tag = allTags[i]
-    const tagData = await getEntry('tags', tag)
+    const tagData = await getEntry('items', tag)
     if (!tagData) continue
-    let parents = tagData.data.parents
+    let parents = tagData.data.tags
     if (!parents) continue
     for (let parent of parents) {
-      allTags.push(parent.id)
+      if (!allTags.includes(parent.id)) {
+        allTags.push(parent.id)
+      }
     }
   }
   if (!unlisted){

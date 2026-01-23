@@ -9,13 +9,8 @@ function toArr(x) {
   else return x
 }
 
-function undefEmpty(x) {
-  if (x === undefined) return []
-  else return x
-}
-
 function oneOrMore(x) {
-  return z.union([x(), z.array(x())]).transform(toArr)
+  return z.union([x, z.array(x)]).transform(toArr)
 }
 
 function toDate(input: number | string | Date): {date: Date, display: string} {
@@ -94,7 +89,11 @@ const dateIsh = z.union([
 ])
 
 const items = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: "./src/items" }),
+  loader: glob({
+    pattern: '**/[^_]*.{md,mdx}',
+    base: "./src/items",
+    generateId: ({entry}) => entry.replace(/^[^/]+\//, '').replace(/\.[^.]+$/, '')
+  }),
   schema: z.object({
     name: z.string(),
     title: z.ostring(),
@@ -113,7 +112,7 @@ const items = defineCollection({
     ]).optional(),
     
     image: z.union([
-      oneOrMore(z.string).transform((paths) => ({
+      oneOrMore(z.string()).transform((paths) => ({
         main: [{path: paths[0]}],
         preview: [{path: paths[0]}],
         list: paths
@@ -121,7 +120,7 @@ const items = defineCollection({
       z.object({
         main: imageOptions,
         preview: imageOptions.optional(),
-        list: oneOrMore(z.string).optional()
+        list: oneOrMore(z.string()).optional()
       }).transform((imgObj) => ({
         ...imgObj,
         preview: imgObj.preview ?? imgObj.main,
@@ -133,9 +132,9 @@ const items = defineCollection({
       }))
     ]).optional(),
     
-    home: oneOrMore(() => z.enum(['work', 'tag'])).default([]),
-    gallery: z.enum(['work', 'tag']).optional().transform(toArr),
-    page: z.enum(['manual', 'auto', 'none', 'contextual']).default('contextual'),
+    home: oneOrMore(z.enum(['work', 'tag'])).default([]),
+    gallery: oneOrMore(z.enum(['work', 'tag'])).default([]),
+    page: z.enum(['manual', 'auto', 'none', 'contextual']).optional(),
     autoPage: z.object({
       title: z.boolean().default(true),
       description: z.boolean().default(true),
@@ -152,13 +151,15 @@ const items = defineCollection({
 
     parameter: reference('parameters').optional(),
 
-    tags: oneOrMore(() => reference('items')).optional(),
+    tags: oneOrMore(reference('items')).default([]),
   }).transform((data) => ({
     ...data,
     title: data.title ?? data.name,
     short: data.short ?? data.name,
 
-    mainImage: (data.image === undefined) ? undefined : data.image.main[0].path
+    mainImage: (data.image === undefined) ? undefined : data.image.main[0].path,
+
+    page: (data.home.includes('work') || data.gallery.includes('work')) ? 'contextual' : 'none'
   }))
 })
 
@@ -173,37 +174,7 @@ const parameters = defineCollection({
 })
 
 
-const projects = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: "./src/content/projects" }),
-  schema: z.object({
-    title: z.string(),
-    description: z.ostring(),
-    tags: z.array(reference('tags')),
-    start_date: z.date().optional(),
-    date: z.union([z.date(), z.literal('present')]),
-    priority: z.number().default(Infinity),
-    draft: z.oboolean(),
-    show_toc: z.oboolean(),
-    unlisted: z.boolean().default(false),
-  })
-});
-
-
-const tags = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: "./src/content/tags" }),
-  schema: z.object({
-    title: z.string(),
-    'listed as': z.ostring(),
-    unlisted: z.boolean().optional().default(false),
-    'prioritize balance': z.boolean().default(false),
-    'hide others': z.boolean().default(false),
-    parents: z.array(reference('tags')).optional()
-  })
-});
-
 export const collections = {
-  projects,
-  tags,
   items,
   parameters
 };

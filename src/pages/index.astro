@@ -14,45 +14,35 @@ import WorkTag from "@src/components/WorkTag.astro"
 import { inferTags } from '@src/scripts/infer-tags.js'
 
 const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif,svg}')
-const allProjects = await getCollection('projects')
-const allTags = await getCollection('tags')
 
-const test = await getCollection('items')
-for (let thing of test) {
-	if (thing.data.name == 'CRH Shorthand') {
-		console.log(thing.data.date)
-	}
-}
+const allItems = await getCollection('items')
 
+// for (let item of allItems) console.log(item.id)
 
-const workItems = []
+const workItems = allItems.filter((item) => item.data.home.includes('work'))
+const tagItems = allItems.filter((item) => item.data.home.includes('tag'))
 
-for (let content of allProjects) {
+const workItemData = []
+
+for (let item of workItems) {
   const workItem = {
-    title: content.data.title,
-    description: content.data.description,
-    tags: await inferTags(content.data.tags.map(item => item.id), content.data.unlisted),
-    unlisted: content.data.unlisted,
-    date: content.data.date,
-    priority: content.data.priority,
-    draft: content.data.draft === true,
-    slug: content.id,
-    images: []
+    title: item.data.name,
+    description: item.data.description,
+    tags: await inferTags(item.data.tags.map(item => item.id), item.data.unlisted),
+    unlisted: item.data.unlisted,
+    date: item.data.date?.end.date,
+    priority: item.data.priority,
+    draft: item.data.draft === true,
+    slug:`work/${item.id}`,
+		images: item.data.image?.list.map((path) => {
+			const fullPath = `/src/assets/work/${item.id}/${path}`
+			return {
+				url: `work/${item.id}`,
+				img: imageImporters[fullPath](),
+				alt: ""
+		}}) || []
   }
-  const { remarkPluginFrontmatter } = await render(content)
-  for (let item of remarkPluginFrontmatter.toc) {
-    if (item.type === 'image') {
-      const previewPath = item.image.preview
-      if (previewPath) {
-        workItem.images.push({
-          url: `/work${content.slug}#${item.id}`,
-					img: imageImporters[previewPath](),
-          alt: item.alt
-        })
-      }
-    }
-  }
-  workItems.push(workItem)
+  workItemData.push(workItem)
 }
 
 const orderedTags = [
@@ -71,14 +61,16 @@ const orderedTags = [
 ]
 
 
-const sortedTags = Array.from(allTags).sort((a, b) => {
+const sortedTags = Array.from(tagItems).sort((a, b) => {
   if (a.data.unlisted != b.data.unlisted) return b.data.unlisted - a.data.unlisted
   return orderedTags.indexOf(a.id) - orderedTags.indexOf(b.id)
 })
 
-const renderedIntros =  await Promise.all(allTags.map(async (tag) => {
-  const { Content } = await render(tag);
-  return { slug: tag.id, content: Content }
+const renderedIntros =  await Promise.all(tagItems
+	.filter((tag) => !tag.data.home.includes('work'))
+	.map(async (tag) => {
+		const { Content } = await render(tag);
+		return { slug: tag.id, content: Content }
 }))
 ---
 
@@ -93,7 +85,7 @@ const renderedIntros =  await Promise.all(allTags.map(async (tag) => {
 
 	<div id="top-tag-separator"></div>
 	<div id="tags">
-    {sortedTags.map(tag => <WorkTag listName={tag.data['listed as'] ?? tag.data.title} titleName={tag.data.title} slug={tag.id} unlisted={tag.data.unlisted} hideOthers={tag.data['hide others']} prioritizeBalance={tag.data['prioritize balance']}></WorkTag>)}
+    {sortedTags.map(tag => <WorkTag listName={tag.data.name} titleName={tag.data.title} slug={tag.id} unlisted={tag.data.unlisted}></WorkTag>)}
   </div>
   <div id="tag-separator">
     <div id="tag-intro-container">
@@ -109,7 +101,7 @@ const renderedIntros =  await Promise.all(allTags.map(async (tag) => {
     </div>
   </div>
   <Columns id="work-cols" columnWidth={600} columnGap={20} prepareItems={false} fillColumns={false}>
-    {workItems.map((data) => <WorkItem data={data}/>)}
+    {workItemData.map((data) => <WorkItem data={data}/>)}
   </Columns>
 </BaseLayout>
 

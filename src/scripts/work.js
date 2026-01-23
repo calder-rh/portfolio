@@ -266,8 +266,9 @@ async function fillColumns() {
     let relevantTags = []
     let prioritizedTag = false
     for (let tag of tags) {
+      console.log(tag)
       const tagItem = tagDict[tag]
-      const prioritizeBalance = JSON.parse(tagItem.dataset.prioritizeBalance)
+      const prioritizeBalance = JSON.parse(tagItem.dataset.unlisted)
       if (prioritizeBalance) {
         if (!prioritizedTag) relevantTags.emp
         prioritizedTag = true
@@ -337,7 +338,7 @@ function setHideOthers(tag = null) {
   }
   const tagElement = tagDict[tag || 'all']
   const numCols = cols.querySelectorAll('.column').length
-  cols.classList.toggle('hide-others', numCols == 1 || JSON.parse(tagElement.dataset.hideOthers))
+  cols.classList.toggle('hide-others', numCols == 1 || JSON.parse(tagElement.dataset.unlisted))
 }
 
 

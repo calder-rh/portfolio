@@ -7,7 +7,7 @@ import { marked } from 'marked'
 const { data } = Astro.props
 const { title, description, tags, images, draft, unlisted, slug } = data
 const minHeight = 0.6 + title.length / 80
-const url = `/work/${slug}`
+const url = `/${slug}`
 
 const classList = ["work-item no-rise"]
 if (draft) classList.push("draft")
