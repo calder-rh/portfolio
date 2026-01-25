@@ -24,7 +24,7 @@ With the great variety of writing systems, fonts, and lettering styles in existe
 
 This question first prompted me to design [Contour Code](/work/contour-code). My original hope with Contour Code was that it could be used to assign meaning to any shape in one’s environment. However, I soon realized that it only works for crisp geometric shapes; most shapes from the real world are too rough or complicated for it to handle. I set out to create a more flexible system that can interpret a fractal just as easily as it interprets a circle. Resolution Code can do this, and it can also encode any given text into a shape, which will usually end up being a fractal.
 
-<Img src='udhr.png' uses='ftpb' alt=''/>
+<Img src='udhr.png' alt=''/>
 <Caption>The Universal Declaration of Human Rights, encoded in a recent version of Resolution Code</Caption>
 
 Resolution Code represents a shape using a sequence of images at higher and higher resolutions: first 2×2, then 4×4, then 8×8, and so on to infinity, doubling each time. The system represents each of these images as binary digits and appends the digits to an ever-growing string, which can be interpreted as text using a binary text encoding. However, rather than appending the bits for the whole image, it only records the parts that have gained detail since the last iteration: the pixels at the edge of the shape, which are divided into four smaller pixels that represent the edge with more detail. All the other pixels give no new information since the last iteration and don’t need to be written down. The resulting string of binary digits can be used to reconstruct the shape at an arbitrarily high level of detail.
@@ -332,7 +332,7 @@ This one is touching both black and white, so it can only be <Split/>:
 
 And this one is touching neither black nor white (the corners don’t count), so all three options are possible:
 
-<Img classes={["shape-building"]} src="diagrams/neighbor neither.svg" uses="fb" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/neighbor neither.svg" alt=""/>
 
 Now let’s generate a shape using these rules. For each pixel, we look at its neighbors to figure out which of the three options is allowed. Then we select one of those allowed options at random. Here’s what we get:
 

@@ -6,7 +6,6 @@ const {
   src,
   slug: imgSlug,
   alt,
-  uses='ftpb',
   width,
   scale,
   id,
@@ -37,7 +36,7 @@ if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: 
 ---
 
 <div class={classesUsed} id={id} data-scale={scale}>
-  {(uses === undefined || uses.includes('f')) && <Image src={images[imagePath]()} width={width} alt={alt} format={format} loading="lazy"></Image>}
+  <Image src={images[imagePath]()} width={width} alt={alt} format={format} loading="lazy"/>
 </div>
 
 <script>

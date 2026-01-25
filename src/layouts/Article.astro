@@ -28,7 +28,12 @@ const plainTitle = new Marked()
   captions.forEach(caption => {
     let prevSibling = caption.previousElementSibling;
     while (prevSibling && (prevSibling instanceof HTMLScriptElement)) {
-      prevSibling = prevSibling.previousElementSibling;
+      if (prevSibling instanceof HTMLScriptElement) {
+        prevSibling = prevSibling.previousElementSibling;
+      } else if ((prevSibling instanceof HTMLAnchorElement) || (prevSibling instanceof HTMLSpanElement)) {
+        prevSibling = prevSibling.children[-1];
+        continue
+      }
     }
     if (prevSibling) {
       prevSibling.classList.add('captioned');

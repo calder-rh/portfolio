@@ -63,13 +63,13 @@ Because the system allows me to write quickly and with less self-judgment, I fou
 While many of the examples above are rather stylized, the shapes in this system are pretty simple at their core. Here’s an example of a word as I’d normally write it:
 
 <Box factor={0.5}>
-  <Img src='instructions/introduce.svg' uses='f' alt=''/>
+  <Img src='instructions/introduce.svg' alt=''/>
 </Box>
 
 That spells *introduce*. Here’s how the parts correspond to letters:
 
 <Box factor={0.5}>
-<Img width={50} src='instructions/introduce letters.svg' uses='f' alt=''/>
+<Img width={50} src='instructions/introduce letters.svg' alt=''/>
 </Box>
 
 Notice that the consonants are a series of lines connected in various ways, while the vowels are separate symbols floating above or below. I’ll start by describing how consonants work, then move on to vowels.
@@ -79,19 +79,19 @@ Notice that the consonants are a series of lines connected in various ways, whil
 At its core, every consonant is built around a single line. These lines can be angled in one of three directions:
 
 <Box factor={0.4}>
-<Img src='instructions/line directions.svg' uses='f' alt=''/>
+<Img src='instructions/line directions.svg' alt=''/>
 </Box>
 
 The length of the line and the amount of straightness or curvature don’t matter. These are all the same (slant up):
 
 <Box factor={0.5}>
-<Img src='instructions/slant up variations.svg' uses='f' alt=''/>
+<Img src='instructions/slant up variations.svg' alt=''/>
 </Box>
 
 These lines can be connected or related to each other in various ways. Here are the consonants from *introduce,* with their <span style="font-weight: bold; color: black">directions</span> and <span style="font-weight: bold; color: var(--blue)">connection types</span> labeled:
 
 <Box factor={0.5}>
-<Img src='instructions/introduce directions & connections.svg' uses='f' alt=''/>
+<Img src='instructions/introduce directions & connections.svg' alt=''/>
 </Box>
 
 These two features — the direction and the connection type — together determine the letter. More specifically, every consonant letter is defined by a combination of:
@@ -101,7 +101,7 @@ These two features — the direction and the connection type — together determ
 Here’s how these features work together to define the consonants of *introduce*:
 
 <Box factor={0.6}>
-<Img src='instructions/introduce consonants.svg' uses='f' alt=''/>
+<Img src='instructions/introduce consonants.svg' alt=''/>
 </Box>
 
 \* What about N, which doesn’t have a line before it to connect to? I’ll get to that in a moment.
@@ -109,37 +109,37 @@ Here’s how these features work together to define the consonants of *introduce
 This word demonstrates 3 of the connection types — an angle, a loop, and a jump. There are 7 connection types in total:
 
 <Box factor={0.8}>
-<Img src='instructions/connection types slant flat.svg' uses='f' alt=''/>
+<Img src='instructions/connection types slant flat.svg' alt=''/>
 </Box>
 
 (3 directions) × (7 connection types) gives 21 characters for the 21 consonant letters in English. Here’s the full chart of how to write each consonant:
 
 <Box factor={0.6} offset={-10}>
-<Img src='instructions/consonant chart.svg' uses='f' alt=''/>
+<Img src='instructions/consonant chart.svg' alt=''/>
 </Box>
 
 With one exception (J), the direction of a consonant corresponds to the row of a <span class='sc'>QWERTY</span> keyboard the letter is on: the top row slants up, the middle row is flat, and the bottom row slants down.
 
 We’ve seen how these 7 connection types look between a slanted line and a flat line, but what about other contexts?
 
-<Img src='instructions/connection types incomplete.svg' uses='f' alt=''/>
+<Img src='instructions/connection types incomplete.svg' alt=''/>
 
 \* What about an angle connection between a flat line and another flat line? Or between any two lines going in the same direction?
 
 <Box factor={0.8}>
-<Img src='instructions/angle connection try.svg' uses='f' alt=''/>
+<Img src='instructions/angle connection try.svg' alt=''/>
 </Box>
 
 Drawing them like that won’t work, because there’s no way to tell that it’s supposed to be two lines — it just looks like one long line. So in this situation, to create an angle, draw the second line as a *vertical* line instead of the direction it “should” be going:
 
-<Img src='instructions/connection types.svg' uses='f' alt=''/>
+<Img src='instructions/connection types.svg' alt=''/>
 
 This rule applies to T, N, and S, the three letters with an angle connection. So if you have T after an upward-slanting line, N after a downward-slanting line, or S after a flat line, write it as a vertical line. If you’re reading a word, a vertical line connected to something before it means it’s T, N, or S, depending on the direction of the previous line.
 
 The line representing the first consonant in a word does not have any line before it to connect to. Instead, each type of connection has an alternate form when it’s at the start of a word:
 
 <Box factor={0.9}>
-<Img src='instructions/initial forms.svg' uses='f' alt=''/>
+<Img src='instructions/initial forms.svg' alt=''/>
 </Box>
 
 If it helps to remember, you can think of the vertical line in **jump up** and **jump down** as a representation of the jump itself. For **jump right** and **jump left**, you can remember that the beginning curves right or left correspondingly.
@@ -153,7 +153,7 @@ Note that vertical lines are used in two different ways:
 Some examples of these different uses:
 
 <Box factor={0.5}>
-<Img src='instructions/verticals.svg' uses='f' alt=''/>
+<Img src='instructions/verticals.svg' alt=''/>
 </Box>
 
 That completes all the rules for consonants. To write words, we also need:
@@ -162,14 +162,14 @@ That completes all the rules for consonants. To write words, we also need:
 
 Vowels are written as marks, somewhat like accents, above and below the consonant lines.
 
-<Img src='instructions/vowels.svg' uses='f' alt=''/>
+<Img src='instructions/vowels.svg' alt=''/>
 
 Note that Y is included both here and in the consonant chart. In contexts where Y is used as a consonant (*you*, *yes*), it is written as a consonant, while in contexts where it is used as a vowel (*my*, *say*), it is written as a vowel. (If it’s the first letter in a word, it’s usually a consonant; in any other place it’s usually a vowel.)
 
 Each vowel is drawn above or below whichever consonant most directly precedes it. Vowels at the beginning of a word are drawn above or below the space before the beginning of the first consonant.
 
 <Box factor={0.4}>
-<Img src='instructions/vowel placement.svg' uses='f' alt=''/>
+<Img src='instructions/vowel placement.svg' alt=''/>
 </Box>
 
 If a word starts with a consonant, I tend to write all the consonants first and then go back and add the vowels. If a word starts with a vowel, I usually write the initial vowel, then all the consonants, then any other vowels. (That’s just what I find easiest.) I did not find it too hard to get used to writing the letters out of order like this.
@@ -177,25 +177,25 @@ If a word starts with a consonant, I tend to write all the consonants first and 
 At this point we’ve seen enough to fully interpret “introduce” from earlier! Here it is again — notice how the vowels are placed:
 
 <Box factor={0.4}>
-<Img src='instructions/introduce.svg' uses='f' alt=''/>
+<Img src='instructions/introduce.svg' alt=''/>
 </Box>
 
 Consecutive vowels could be written by writing their symbols from left to right:
 
 <Box factor={0.5}>
-<Img src='instructions/consecutive vowels.svg' uses='f' alt=''/>
+<Img src='instructions/consecutive vowels.svg' alt=''/>
 </Box>
 
 But to speed things up, the system also has ligatures that combine pairs of vowels into one symbol, which I recommend using. A ligature can go above or below the consonant line, and it can also cross through the consonant line, depending on the pair of vowels.
 
 Generally the directions of the two endpoints of a ligature represent the two vowels: A and E are horizontal ends, I and O are vertical or sometimes diagonal ends, and U and Y are ends that curl around at least 180°.
 
-<Img src='instructions/ligature chart.svg' uses='f' alt=''/>
+<Img src='instructions/ligature chart.svg' alt=''/>
 
 All of these can be stretched or bent to fit into the context better, as long as the ends are pointing in the right directions:
 
 <Box factor={0.8}>
-<Img src='instructions/ligature variation.svg' uses='f' alt=''/>
+<Img src='instructions/ligature variation.svg' alt=''/>
 </Box>
 
 Note that in the last case, a ligature is the *only* clear way to write this word. If you wrote OY as separate symbols ordered left to right, there would only be space for one of them to be aligned with the vertical line of the N, and so you’d either write *anonys* or *annosy*.
@@ -203,26 +203,26 @@ Note that in the last case, a ligature is the *only* clear way to write this wor
 There can also be ligatures of three vowels, although I don’t think there are good solutions for every possible combination — I just come up with them when I need them.
 
 <Box factor={0.8}>
-<Img src='instructions/three vowel ligatures.svg' uses='f' alt=''/>
+<Img src='instructions/three vowel ligatures.svg' alt=''/>
 </Box>
 
 Most of these have hard angles in them, which are needed to distinguish them from similar two-vowel ligatures:
 
 <Box factor={0.5}>
-<Img src='instructions/three vowel disambiguation.svg' uses='f' alt=''/>
+<Img src='instructions/three vowel disambiguation.svg' alt=''/>
 </Box>
 
 In some edge cases, things are just too tight to be completely unambiguous, and some parts have to go in the “wrong” place. In these cases you just have to tell from context.
 
 <Box factor={0.5}>
-<Img src='instructions/edge cases.svg' uses='f' alt=''/>
+<Img src='instructions/edge cases.svg' alt=''/>
 </Box>
 
 ### Punctuation and numbers
 
 Most of the punctuation is formed by replacing dots with circles, so they stand out more and don’t get confused with the word “a” (which is just a dot). I tend to write punctuation aligned to the center of the text, like <span style="font-size: 1.3em; line-height: 1em; margin: 0 0.1em; position: relative; top: 0.02em">⚬</span> rather than <span style="font-size: 1.3em; line-height: 1em; margin-left: 0.1em; position: relative; top: 0.15em">⚬</span>.
 
-<Img src='instructions/punctuation.svg' uses='f' alt=''/>
+<Img src='instructions/punctuation.svg' alt=''/>
 
 Numerals are written normally. (This does mean that 6 looks like a quote and 9 looks like a comma, but it should be clear from context.)
 
@@ -235,38 +235,38 @@ Here are some types of changes that have happened for me — if you learn this s
 In general, everything becomes more expressive:
 
 <Box factor={0.7} offset={10}>
-<Img src='instructions/examples/however.png' uses='f' alt=''/>
-<Img src='instructions/examples/earlier.png' uses='f' alt=''/>
-<Img src='instructions/examples/question.png' uses='f' alt=''/>
+<Img src='instructions/examples/however.png' alt=''/>
+<Img src='instructions/examples/earlier.png' alt=''/>
+<Img src='instructions/examples/question.png' alt=''/>
 </Box>
 
 Ligatures in particular become larger and more loopy:
 
 <Box factor={0.7} offset={10}>
-<Img src='instructions/examples/way.png' uses='f' alt=''/>
-<Img src='instructions/examples/anyone.png' uses='f' alt=''/>
-<Img src='instructions/examples/experience.png' uses='f' alt=''/>
+<Img src='instructions/examples/way.png' alt=''/>
+<Img src='instructions/examples/anyone.png' alt=''/>
+<Img src='instructions/examples/experience.png' alt=''/>
 </Box>
 
 The directions of lines become looser; there may be a “flat” line that is actually slanted, but it still reads as flat because it is less slanted than the other lines around it.
 
 <Box factor={0.7} offset={10}>
-<Img src='instructions/examples/walk.png' uses='f' alt=''/>
-<Img src='instructions/examples/conversation.png' uses='f' alt=''/>
+<Img src='instructions/examples/walk.png' alt=''/>
+<Img src='instructions/examples/conversation.png' alt=''/>
 </Box>
 
 Angles become softer:
 
 <Box factor={0.7} offset={10}>
-<Img src='instructions/examples/things.png' uses='f' alt=''/>
+<Img src='instructions/examples/things.png' alt=''/>
 </Box>
 
 Separate parts start to connect:
 
 <Box factor={0.7} offset={10}>
-<Img src='instructions/examples/feelings.png' uses='f' alt=''/>
-<Img src='instructions/examples/to.png' uses='f' alt=''/>
-<Img src="instructions/examples/doesn't.png" uses='f' alt=''/>
+<Img src='instructions/examples/feelings.png' alt=''/>
+<Img src='instructions/examples/to.png' alt=''/>
+<Img src="instructions/examples/doesn't.png" alt=''/>
 </Box>
 
 (Reading literally, these would say *feeilngs*, *tt*, and *doysnt*.)
@@ -274,18 +274,18 @@ Separate parts start to connect:
 Nearby vowels cluster together, to the extent that a vowel may not be aligned with the right consonant anymore:
 
 <Box factor={0.7} offset={10}>
-<Img src='instructions/examples/imagining.png' uses='f' alt=''/>
+<Img src='instructions/examples/imagining.png' alt=''/>
 </Box>
 
 (Reading this literally, both of the i’s are above the g, so this says *imagiinng*. However, I would never read it that way: in a word that actually has two i’s in a row, like *skiing*, they would be written as a ligature, and so the fact that they are not in a ligature here means they must be part of separate syllables, regardless of where they’re written.)
 
 To emphasize a word, you can elongate it:
 
-<Img src='instructions/emphasize.png' uses='f' alt=''/>
+<Img src='instructions/emphasize.png' alt=''/>
 
 ## Practice
 
-<Img src='practice.png' uses='f' alt=''/>
+<Img src='practice.png' alt=''/>
 
 ## Design notes
 

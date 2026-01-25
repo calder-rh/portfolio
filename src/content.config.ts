@@ -145,6 +145,7 @@ const items = defineCollection({
       date: true,
     }),
 
+    slideshow: z.boolean().default(false),
     unlisted: z.boolean().default(false),
     draft: z.boolean().default(false),
     priority: z.number().default(Infinity),

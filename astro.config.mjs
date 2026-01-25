@@ -1,8 +1,5 @@
 import { defineConfig } from 'astro/config';
 
-// import mdx from "@astrojs/mdx";
-import { collector } from './src/scripts/collector.js';
-
 import mdx from '@astrojs/mdx';
 
 export default defineConfig({
@@ -12,10 +9,6 @@ export default defineConfig({
     '/mas-portfolio': '/?unlisted-tag=mas-portfolio&tag=mas-portfolio',
     '/itp-portfolio': '/?unlisted-tag=itp-portfolio&tag=itp-portfolio',
     '/work/clapping': '/work/clapping-music'
-  },
-
-  markdown: {
-    remarkPlugins: [collector]
   },
 
   integrations: [mdx({

@@ -26,7 +26,7 @@ import 'src/styles/work/rpns.css';
 Recursive Prime Numeral System (<span class="sc">RPNS</span>) comprises several methods of writing numbers based entirely on prime factorizations. It can be used to encode numbers in artistic forms, like these:
 
 <Box factor={1.4}>
-<Img src='2-29 rect color.svg' uses='ftp' id="test" alt=""/>
+<Img src='2-29 rect color.svg' id="test" alt=""/>
 </Box>
 
 Below is an explanation of how it works.
@@ -391,41 +391,41 @@ Using this system, a number can be represented as a composition of shapes.
 
 For some examples of how these rules work, let’s use circles labeled A and B as stand-ins for compositions that represent numbers. Here’s <Group>A × B</Group>:
 
-<Img src='shapes/A*B.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/A*B.svg' id="test" alt="" scale={3}/>
 
 There is no requirement to arrange them in any particular way — the following also represents <Group>A × B</Group> (or equivalently <Group>B × A</Group>):
 
-<Img src='shapes/A*B alternate.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/A*B alternate.svg' id="test" alt="" scale={3}/>
 
 Here’s one way to write <Group>A ◊ B</Group> (the A<span class="ord">th</span> prime to the power of B), by drawing a shape that encloses A and touches B, indicating that A is the index and B is the power:
 
-<Img src='shapes/A◊B.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/A◊B.svg' id="test" alt="" scale={3}/>
 
 The particular shape used doesn’t matter — this also is <Group>A ◊ B:</Group>
 
-<Img src='shapes/A◊B alternate.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/A◊B alternate.svg' id="test" alt="" scale={3}/>
 
 Since 1 is represented by a blank space or the lack of a shape, <Group>A ◊ 1</Group> is written as a shape enclosing A and touching nothing:
 
-<Img src='shapes/A◊1.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/A◊1.svg' id="test" alt="" scale={3}/>
 
 And <Group>1 ◊ A</Group> is written as a shape enclosing nothing and touching A:
 
-<Img src='shapes/1◊A.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/1◊A.svg' id="test" alt="" scale={3}/>
 
 Now let’s see some actual numbers, without placeholder variables. The simplest is 2: <Group>1 ◊ 1</Group> is written as a shape enclosing nothing and touching nothing:
 
-<Img src='shapes/1◊1.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/1◊1.svg' id="test" alt="" scale={3}/>
 
 (Again, it doesn’t mean anything that I’m using a square here: what matters is the relationships between the shapes, not what the shapes are.)
 
 As shown above, enclosing anything in a shape represents <Group>[that thing] ◊ 1</Group>, so here’s <Group>2 ◊ 1 = 3:</Group>
 
-<Img src='shapes/3.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/3.svg' id="test" alt="" scale={3}/>
 
 The outer circle is not touching anything, so the power is taken to be 1. To write <Group>2 ◊ 2</Group> (= 9), make that outer circle touch a shape (any shape) representing 2:
 
-<Img src='shapes/9.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/9.svg' id="test" alt="" scale={3}/>
 
 But this composition could be ambiguous. Above I interpreted it as
 <Glue/>
@@ -445,50 +445,50 @@ which represents <Group>1 ◊ 3 = 8.</Group>
 
 To avoid this kind of ambiguity, I added a rule specifying that *when two shapes touch each other, the larger one contains the index, and the smaller one is the power.* So for the composition above, the first interpretation (9) is correct, because the circle is larger than the semicircle. If you wanted to write 8, you would make the semicircle larger:
 
-<Img src='shapes/8.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/8.svg' id="test" alt="" scale={3}/>
 
 If more than two shapes touch each other, the largest one is taken as the shape containing the index, and all the other shapes compose the power. For an example of this, I’ll start by writing 9 again (this time using only rectangles, for variety):
 
-<Img src='shapes/9 rect.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/9 rect.svg' id="test" alt="" scale={3}/>
 
 To write <Group>1 ◊ 9</Group> (the 1<span class="ord">st</span> prime to the power of 9, which is 2⁹, which is 512), we can draw a bigger rectangle touching this:
 
-<Img src='shapes/512 rect.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/512 rect.svg' id="test" alt="" scale={3}/>
 
 Since that new rectangle is the largest shape, the stuff inside it (nothing, meaning 1) is taken to be the index, and everything it’s touching (9) is taken to be the power.
 
 The same applies when the large rectangle is placed on the left:
 
-<Img src='shapes/512 linear.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/512 linear.svg' id="test" alt="" scale={3}/>
 
 Even though the rectangle on the left is smaller than the composition representing 9, it’s still the largest shape overall, so the rule still applies. And it works just as well to place that large rectangle on the right:
 
-<Img src='shapes/512 linear 2.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/512 linear 2.svg' id="test" alt="" scale={3}/>
 
 One more example. Here’s one way to write 6:
 
-<Img src='shapes/6.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/6.svg' id="test" alt="" scale={3}/>
 
 This is similar to how I wrote 9 earlier, but now the gap between the two parts indicates multiplication: 3 (on the left) times 2 (on the right).
 
 To write <Group>1 ◊ 6</Group> (the 1<span class="ord">st</span> prime to the power of 6, 2⁶, 64), we can draw a bigger rectangle touching this:
 
-<Img src='shapes/64 rect.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/64 rect.svg' id="test" alt="" scale={3}/>
 
 In that composition the two parts of 6 are still close to each other, but they don’t have to be — below, the big rectangle is moved to the middle, with the two parts of 6 on opposite sides:
 
-<Img src='shapes/64 linear.svg' uses='f' id="test" alt="" scale={3}/>
+<Img src='shapes/64 linear.svg' id="test" alt="" scale={3}/>
 
 ---
 
 The examples above demonstrate that there are many ways to write any number — even if we’re limiting ourselves to using only rectangles. This flexibility creates room to explore different visual aesthetics. For example, here’s a set of compositions representing the numbers 2 through 29, all sized to occupy the same dimensions:
 
 <Box factor={1}>
-<Img src='2-29 rect.svg' uses='ftb' id="test" alt=""/>
+<Img src='2-29 rect.svg' id="test" alt=""/>
 </Box>
 
 While I have been drawing all the shapes in outline, it works just as well to use solid shapes, using whatever colors you choose:
 
 <Box factor={1}>
-<Img src='2-29 rect color.svg' uses='ft' id="test" alt=""/>
+<Img src='2-29 rect color.svg' id="test" alt=""/>
 </Box>
