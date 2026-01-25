@@ -24,7 +24,7 @@ With the great variety of writing systems, fonts, and lettering styles in existe
 
 This question first prompted me to design [Contour Code](/work/contour-code). My original hope with Contour Code was that it could be used to assign meaning to any shape in one’s environment. However, I soon realized that it only works for crisp geometric shapes; most shapes from the real world are too rough or complicated for it to handle. I set out to create a more flexible system that can interpret a fractal just as easily as it interprets a circle. Resolution Code can do this, and it can also encode any given text into a shape, which will usually end up being a fractal.
 
-<Img src='resolution-code/udhr.png' uses='ftpb' alt=''/>
+<Img src='udhr.png' uses='ftpb' alt=''/>
 <Caption>The Universal Declaration of Human Rights, encoded in a recent version of Resolution Code</Caption>
 
 Resolution Code represents a shape using a sequence of images at higher and higher resolutions: first 2×2, then 4×4, then 8×8, and so on to infinity, doubling each time. The system represents each of these images as binary digits and appends the digits to an ever-growing string, which can be interpreted as text using a binary text encoding. However, rather than appending the bits for the whole image, it only records the parts that have gained detail since the last iteration: the pixels at the edge of the shape, which are divided into four smaller pixels that represent the edge with more detail. All the other pixels give no new information since the last iteration and don’t need to be written down. The resulting string of binary digits can be used to reconstruct the shape at an arbitrarily high level of detail.
@@ -53,7 +53,7 @@ Or in mathematical terms, a [bijection](https://en.wikipedia.org/wiki/Bijection)
 
 The basic idea is to break the text down into characters, then use some system to interpret these characters as a description of a shape. But “a description of a shape” is rather vague. There are many ways to describe shapes. For example, consider this shape:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/shape.svg" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/shape.svg" alt=""/>
 
 
 
@@ -65,7 +65,7 @@ You could describe it using several methods:
 
 What kind of method do we want to use in this system? Recall that the goal is to be able to describe *any* shape, including complicated natural shapes like this:
 
-<Img src="resolution-code/diagrams/tree.png" alt=""/>
+<Img src="diagrams/tree.png" alt=""/>
 
 Some types of description are better for this than others. Constructing it from simple geometric shapes (1) wouldn’t really work, since it’s not composed of such shapes. Describing how to draw the outline (2) also wouldn’t work very well — the outline is so rough that it would take a huge number of fine-grained steps to even start to approximate it, and there’s no good way to decide on one approximation over another. Giving a mathematical definition (3) isn’t good because the shape doesn’t conform to any simple mathematical function.
 
@@ -77,15 +77,15 @@ One way to do this is to convert the text to Morse code, and then say that a dot
 
 which converts to this sequence of pixels:
 
-<Img src="resolution-code/diagrams/morse word line.svg" alt=""/>
+<Img src="diagrams/morse word line.svg" alt=""/>
 
 We can then arrange these pixels into the rows of a (very low resolution) image, like this:
 
-<Img src="resolution-code/diagrams/morse word 4×3.svg" alt=""/>
+<Img src="diagrams/morse word 4×3.svg" alt=""/>
 
 That worked fine, but there are some issues with this approach. First, why arrange them into a 4×3 image, and not a 3×4 image? We could just as well have made the following image out of the same sequence of pixels:
 
-<Img src="resolution-code/diagrams/morse word 3×4.svg" alt=""/>
+<Img src="diagrams/morse word 3×4.svg" alt=""/>
 
 In this system for converting from text to images (I wouldn’t really call this a “shape” yet) we have to make an arbitrary choice for what image dimensions to use. But part of the goal is to create a system that has exactly one way to encode any text into an image. If there are multiple ways to convert from text to image — as there are when the dimensions aren’t set — then it isn’t possible to unambiguously convert from image to text and back. If you convert an image to text, you give someone else the text, and they convert that text into an image, they might get the wrong image because they have no way of knowing what dimensions they were supposed to use.
 
@@ -214,14 +214,14 @@ To convert an encoding to an image, let’s say that <span class="bits">0</span>
 
 Now that we have this system, let’s encode some longer text. Here’s the [<span class="sc">UDHR</span>](https://www.ohchr.org/en/universal-declaration-of-human-rights):
 
-<Img src="resolution-code/tests/udhr.png" alt=""/>
+<Img src="tests/udhr.png" alt=""/>
 
 Hmm... that’s not really a shape; it just looks like noise.
 
 Let’s also try going the other way, and convert a shape into text. Here’s what happens when we “read” a circle:
 
 <Box factor={0.6}>
-<Img src="resolution-code/tests/circle.png" id="circle" alt=""/>
+<Img src="tests/circle.png" id="circle" alt=""/>
 <p id="circle-arrow">↓</p>
 <div id="circle-decoded">
 <p>0000000000000000001-----"0000000000000000000000000000000000007-------"00000000000000000000000000000000001----------000000000000000000000000000000000&#93;-----------00000000000000000000000000000000&------------ 000000000000000000000000000000&#93;-------------,000000000000000000000000000001--------------- 00000000000000000000000000007---------------"0000000000000000000000000000&----------------x000000000000000000000000000&----------------- 00000000000000000000000000&------------------ 00000000000000000000000007------------------- 0000000000000000000000001--------------------x000000000000000000000000&#93;--------------------,000000000000000000000000----------------------000000000000000000000003----------------------p00000000000000000000007----------------------"0000000000000000000000&#93;-----------------------p000000000000000000000&#93;------------------------0000000000000000000007------------------------x000000000000000000003-------------------------p00000000000000000000--------------------------p00000000000000000007-------------------------- 0000000000000000000---------------------------p0000000000000000003---------------------------p000000000000000000&---------------------------x000000000000000000----------------------------,000000000000000003-----------------------------000000000000000007----------------------------- 0000000000000000&#93;-----------------------------,0000000000000000&#93;------------------------------0000000000000000&#93;------------------------------p0000000000000007------------------------------"0000000000000007-------------------------------x000000000000001-------------------------------- 00000000000000&-------------------------------"000000000000007--------------------------------x00000000000000---------------------------------p00000000000007--------------------------------- 0000000000000/---------------------------------0000000000000&#93;----------------------------------0000000000000-----------------------------------0000000000003-----------------------------------000000000000&#93;-----------------------------------000000000000/-----------------------------------000000000001------------------------------------ 00000000001------------------------------------x00000000000------------------------------------,00000000000-------------------------------------00000000000-------------------------------------p0000000000/------------------------------------,0000000000/-------------------------------------0000000000/-------------------------------------p000000000&-------------------------------------"000000000&#93;--------------------------------------p000000001--------------------------------------"000000000/--------------------------------------p00000000&#93;---------------------------------------000000003---------------------------------------,00000000/---------------------------------------p00000003----------------------------------------00000000/---------------------------------------,00000007----------------------------------------x0000000&---------------------------------------- 0000001----------------------------------------- 0000007----------------------------------------- 000000&#93;-----------------------------------------0000000------------------------------------------0000003------------------------------------------0000007-----------------------------------------"000000&-----------------------------------------"000000-------------------------------------------000000-------------------------------------------000001------------------------------------------- 00000-------------------------------------------p00000-------------------------------------------,00000--------------------------------------------00000/-------------------------------------------00000--------------------------------------------p0000&-------------------------------------------x0000&-------------------------------------------"0000&#93;--------------------------------------------0000&#93;--------------------------------------------p0003--------------------------------------------,0001--------------------------------------------- 000&--------------------------------------------x000&#93;---------------------------------------------0003---------------------------------------------p000----------------------------------------------000&#93;---------------------------------------------p001---------------------------------------------"000/---------------------------------------------p007---------------------------------------------"001----------------------------------------------x00&#93;----------------------------------------------001----------------------------------------------x00&---------------------------------------------- 01----------------------------------------------"00&----------------------------------------------x01----------------------------------------------- 07----------------------------------------------"00-----------------------------------------------,03-----------------------------------------------p0&#93;-----------------------------------------------01-----------------------------------------------"07-----------------------------------------------x0&----------------------------------------------- 1------------------------------------------------ 3------------------------------------------------0&#93;-----------------------------------------------,0/-----------------------------------------------p3------------------------------------------------p7------------------------------------------------ &#93;------------------------------------------------0/-----------------------------------------------,3------------------------------------------------,7------------------------------------------------x&#93;------------------------------------------------p&------------------------------------------------ ------------------------------------------------- -------------------------------------------------p-------------------------------------------------p-------------------------------------------------p-------------------------------------------------p-------------------------------------------------q-------------------------------------------------y-------------------------------------------------y-------------------------------------------------y-------------------------------------------------y-------------------------------------------------y-------------------------------------------------y-------------------------------------------------.-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'-------------------------------------------------y-------------------------------------------------y-------------------------------------------------y-------------------------------------------------y-------------------------------------------------y-------------------------------------------------y-------------------------------------------------x-------------------------------------------------p-------------------------------------------------p-------------------------------------------------p-------------------------------------------------p-------------------------------------------------p/------------------------------------------------1------------------------------------------------"3------------------------------------------------,7------------------------------------------------x&#93;------------------------------------------------p&#93;------------------------------------------------0/-----------------------------------------------,1------------------------------------------------x3------------------------------------------------p3------------------------------------------------0&#93;-----------------------------------------------,0/-----------------------------------------------p1------------------------------------------------ 1-----------------------------------------------"07-----------------------------------------------x0&----------------------------------------------- 0/----------------------------------------------,03-----------------------------------------------p0&#93;-----------------------------------------------00/----------------------------------------------p03-----------------------------------------------00&----------------------------------------------x00-----------------------------------------------007----------------------------------------------x00&---------------------------------------------"003----------------------------------------------p00&---------------------------------------------"001---------------------------------------------- 00&#93;---------------------------------------------,000----------------------------------------------000&#93;---------------------------------------------p001---------------------------------------------"000&#93;---------------------------------------------0003---------------------------------------------p000&--------------------------------------------x0007--------------------------------------------"0000---------------------------------------------0000&-------------------------------------------- 0003--------------------------------------------p0000--------------------------------------------,0000&#93;-------------------------------------------,00007-------------------------------------------"00001-------------------------------------------"00000--------------------------------------------00000&------------------------------------------"00000&#93;------------------------------------------,00000&#93;------------------------------------------,000007------------------------------------------x000007------------------------------------------x000003------------------------------------------p000001------------------------------------------ 000001------------------------------------------ 000000------------------------------------------0000000-----------------------------------------,0000001-----------------------------------------x0000001----------------------------------------- 0000001----------------------------------------"00000007----------------------------------------x0000000&#93;----------------------------------------00000000/---------------------------------------p00000003----------------------------------------00000000&#93;---------------------------------------p00000000/--------------------------------------,000000003---------------------------------------000000000&-------------------------------------- 000000003--------------------------------------,000000000&-------------------------------------"0000000003--------------------------------------0000000000/-------------------------------------0000000000&#93;-------------------------------------00000000003-------------------------------------00000000000-------------------------------------00000000000&-----------------------------------"00000000000&-----------------------------------"00000000000&#93;-----------------------------------,000000000007-----------------------------------x000000000003-----------------------------------p000000000001----------------------------------- 000000000000-----------------------------------0000000000000----------------------------------,0000000000000/---------------------------------00000000000001---------------------------------x00000000000003---------------------------------00000000000000&#93;--------------------------------p00000000000000/-------------------------------,000000000000003--------------------------------000000000000000&------------------------------- 000000000000000-------------------------------p0000000000000007------------------------------x0000000000000000------------------------------,0000000000000000&#93;-----------------------------,00000000000000001-----------------------------x00000000000000000/----------------------------p00000000000000000&#93;----------------------------000000000000000000&#93;---------------------------,0000000000000000007--------------------------- 0000000000000000007--------------------------"00000000000000000007-------------------------- 0000000000000000000&#93;-------------------------,00000000000000000000&------------------------"000000000000000000000-------------------------0000000000000000000007------------------------ 000000000000000000000&----------------------- 0000000000000000000001----------------------- 0000000000000000000000&#93;----------------------000000000000000000000003---------------------,000000000000000000000000---------------------p000000000000000000000000&-------------------"0000000000000000000000000&#93;-------------------00000000000000000000000000&------------------ 00000000000000000000000000&----------------- 000000000000000000000000000-----------------p0000000000000000000000000001---------------- 00000000000000000000000000007--------------"000000000000000000000000000000--------------p0000000000000000000000000000007------------x00000000000000000000000000000001-----------x000000000000000000000000000000000/---------00000000000000000000000000000000000--------p000000000000000000000000000000000000/-----000000000000000000</p>
@@ -241,41 +241,41 @@ Resolution Code uses a different way of describing shapes that better respects t
 
 Let’s look at how the system describes this shape/image:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/sample shape.svg" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/sample shape.svg" alt=""/>
 
 We will start by representing this image at a 2×2 resolution. I’ll overlay a blank 2×2 grid on top of this, with the pixels waiting to be filled in:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 1 0.svg" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/iteration 1 0.svg" alt=""/>
 
 Now let’s use the shape as a guide to fill in the pixels. The top left pixel covers a region of the image that’s fully white, so we can color this pixel white:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 1 1.svg" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/iteration 1 1.svg" alt=""/>
 
 The top right pixel covers a region that’s partly black and partly white. We need more detail to represent what’s going on here, so we *split it into four smaller pixels* that we’ll return to later.
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 1 2.svg" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/iteration 1 2.svg" alt=""/>
 
 We proceed to the next row: the bottom left pixel is fully white, while the bottom right needs to be split:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 1 3.svg" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/iteration 1 3.svg" alt=""/>
 
 Now we’ve reached the end of the image. At this point we’ve already defined the left half of this image. But there is the other half that needs more detail. So we go back and start a second iteration, doing the same thing at a smaller scale. As before, we read from left to right, then top to bottom. The first one needs to be split:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 2 1.svg" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/iteration 2 1.svg" alt=""/>
 
 The second one is fully black:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 2 2.svg" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/iteration 2 2.svg" alt=""/>
 
 And so on:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 2 end.svg" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/iteration 2 end.svg" alt=""/>
 
 As we go, we keep track of what we did with each pixel. In the first iteration earlier, the first pixel was <White/>, the second was <Split/>, the third was <White/>, and the fourth was <Split/>. In second iteration that we just finished, the instructions were <Sequence instrs={"sbsbssww"}/>.
 
 A third iteration: as we go through the remaining blue undefined pixels in the above image, the shape indicates that the next instructions are <Sequence instrs={"sbsbsbsswssbwwss"} small={true}/>.
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/iteration 3.svg" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/iteration 3.svg" alt=""/>
 
 We can keep doing this indefinitely, describing the shape in ever-increasing detail and producing an ever-growing sequence:
 
@@ -289,7 +289,7 @@ So now we have a system for converting back and forth between shapes and sequenc
 
 Before we go ahead and define this encoding, let’s test whether such a system would actually produce good-looking shapes. We can assume that whatever encoding we make would have about an even mix of <Black s={true}/>, <White s={true}/>, and <Split s={true}/>, so we can just use a randomly generated sequence of instructions to get a sense of what shapes would result:
 
-<Img src="resolution-code/tests/1 no neighbor algorithm.png" alt=""/>
+<Img src="tests/1 no neighbor algorithm.png" alt=""/>
 
 This is better than the noise-like image we had earlier, as there are clearly defined clumps of black surrounded by an expanse of white — but it’s too blocky. We don’t want the output of the system to look like a bunch of squares stuck together; we want it to look like a more organic shape. So we need to tweak things a bit.
 
@@ -299,44 +299,44 @@ This is better than the noise-like image we had earlier, as there are clearly de
 We have built a system that “understands” one fact about shapes — that they include contiguous black regions surrounded by contiguous white regions — but the fact that the output is so blocky indicates that there is something else it needs to understand. To figure out what, let’s look at the first four iterations that resulted in the above image:
 
 <Box classes={["iterations"]} factor={1.4}>
-  <Img src="resolution-code/diagrams/blocks 1.svg" alt=""/>
-  <Img src="resolution-code/diagrams/blocks 2.svg" alt=""/>
-  <Img src="resolution-code/diagrams/blocks 3.svg" alt=""/>
-  <Img src="resolution-code/diagrams/blocks 4.svg" alt=""/>
+  <Img src="diagrams/blocks 1.svg" alt=""/>
+  <Img src="diagrams/blocks 2.svg" alt=""/>
+  <Img src="diagrams/blocks 3.svg" alt=""/>
+  <Img src="diagrams/blocks 4.svg" alt=""/>
 </Box>
 
 For comparison, here are the first four iterations of the earlier shape:
 
 <Box classes={["iterations"]} factor={1.4}>
-  <Img src="resolution-code/diagrams/shape 1.svg" alt=""/>
-  <Img src="resolution-code/diagrams/shape 2.svg" alt=""/>
-  <Img src="resolution-code/diagrams/shape 3.svg" alt=""/>
-  <Img src="resolution-code/diagrams/shape 4.svg" alt=""/>
+  <Img src="diagrams/shape 1.svg" alt=""/>
+  <Img src="diagrams/shape 2.svg" alt=""/>
+  <Img src="diagrams/shape 3.svg" alt=""/>
+  <Img src="diagrams/shape 4.svg" alt=""/>
 </Box>
 
 Notice a key difference here: in the latter sequence, the one that describes a normal-looking shape, *black and white never touch*. There is always a buffer of undefined, split pixels between the black region and the white region. In the the image we just generated, however, black and white pixels are touching all over the place, resulting in the many hard edges and right angles.
 
 So let’s see what happens if we impose a rule that black and white pixels are not allowed to touch each other. To test how this would look, we can still randomly select what to do with each pixel, but we now have to restrict what options are possible based on what a pixel is touching. For example, let’s say we’re selecting what to do with this pixel:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/neighbor white.svg" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/neighbor white.svg" alt=""/>
 
 Because this pixel is touching white, it can’t be filled in black — it can only be <White/> or <Split/>. So we randomly select between those two options.
 
 Similarly, this one is touching black, so it can only be <Black/> or <Split/>:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/neighbor black.svg" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/neighbor black.svg" alt=""/>
 
 This one is touching both black and white, so it can only be <Split/>:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/neighbor both.svg" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/neighbor both.svg" alt=""/>
 
 And this one is touching neither black nor white (the corners don’t count), so all three options are possible:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/neighbor neither.svg" uses="fb" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/neighbor neither.svg" uses="fb" alt=""/>
 
 Now let’s generate a shape using these rules. For each pixel, we look at its neighbors to figure out which of the three options is allowed. Then we select one of those allowed options at random. Here’s what we get:
 
-<Img src="resolution-code/tests/2 neighbor but not edge.png" alt=""/>
+<Img src="tests/2 neighbor but not edge.png" alt=""/>
 
 Now we’re getting somewhere! This looks much more like a shape you’d find in nature.
 
@@ -344,7 +344,7 @@ However, this looks like it’s only part of a larger shape that is cut off by t
 
 Here’s what this produces:
 
-<Img src="resolution-code/tests/3 unweighted.png" alt=""/>
+<Img src="tests/3 unweighted.png" alt=""/>
 
 While these shapes do lack the hard line from before, they’re way too small. Why is that?
 
@@ -354,13 +354,13 @@ Then, in the split pixels of the next iteration, the same thing takes place at a
 
 To fix this, let’s try weighting the random generator so that <Split/> and <Black/> are chosen much more often than <White/>:
 
-<Img src="resolution-code/tests/4 fully weighted.png" alt=""/>
+<Img src="tests/4 fully weighted.png" alt=""/>
 
 This does create bigger shapes — but it’s back to looking more blocky. There is still a buffer of undefined pixels along the edges between black and white, but a lot of those edges are straight.
 
 So it seems that a weighted generator is better for making bigger shapes, but an unweighted generator is better for making more natural shapes. As a compromise, let’s start by using a weighted generator for the first 20 instructions, but then switch to unweighted afterward. The weighted generator carves out a lot of space that black can go in, and then the unweighted generator takes over to make better-looking details. Here’s what this produces:
 
-<Img src="resolution-code/tests/5 weight first 20.png" alt=""/>
+<Img src="tests/5 weight first 20.png" alt=""/>
 
 This feels satisfactory to me. So now we go back to the original goal:
 
@@ -378,7 +378,7 @@ So perhaps we could just skip over any instruction that isn’t allowed. For exa
 
 The result:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/wsws.svg" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/wsws.svg" alt=""/>
 
 This method — encode characters using instruction sequences, and then just skip the instructions that aren’t allowed — works for generating shapes based on text. But it doesn’t *encode* shapes into text, because we can’t recover the text that was used to generate a shape. In the above example, if you were just looking at the shape and reading off the instructions from it, you’d get a sequence starting with <Sequence instrs="wsws"/>, and you’d have no way of knowing there was a skipped <Black/> instruction in there. In fact there could be any number of skipped instructions that you have no way of recovering, and so this image could represent any number of possible texts. There’s no way of knowing what it was supposed to represent.
 
@@ -436,15 +436,15 @@ To address this issue, we add another rule: if there is only one undefined pixel
 
 Let’s say we wanted to take that tree from earlier and convert it to text:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/tree.png" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/tree.png" alt=""/>
 
 This shape is contained in a rectangular frame, while Resolution Code is only able to interpret shapes in a square frame. So to start interpreting it, we can make the frame square:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/tree square 1.png" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/tree square 1.png" alt=""/>
 
 But that’s not the only way to put this shape in a square frame. We could also frame it like this:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/tree square 2.png" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/tree square 2.png" alt=""/>
 
 Or in infinitely many other ways. Every choice of framing would result in a wholly different text. Is this what we want?
 
@@ -452,25 +452,25 @@ If we consider the system to be one that represents *compositions of shapes in a
 
 My original intention was the latter. So let’s impose a rule that, when preparing a shape to be interpreted by Resolution Code, it will framed as tightly as possible, and it will be aligned either to the top of the frame (if it’s wider than it is tall) or to the left of the frame (if it’s taller than it is wide):
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/tree square 3.png" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/tree square 3.png" alt=""/>
 
 (This still allows the shape to be *rotated* to create a new framing, but I will call this good enough.)
 
 Because there is now only one way to frame a given shape, we don’t have to put it in a frame at all to know how to interpret it. So the system is now, more truly, dealing with *shapes* and not images.
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/tree no frame.png" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/tree no frame.png" alt=""/>
 
 But now this introduces a new source of ambiguity. Say you encode some text and it produces this image:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/framing 0.png" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/framing 0.png" alt=""/>
 
 Ideally we wouldn’t need the frame for this shape to keep its meaning. So we remove the frame:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/framing 1.png" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/framing 1.png" alt=""/>
 
 But now, if someone were to interpret this shape, they would follow the framing rules and frame it like this:
 
-<Img classes={["shape-building"]} src="resolution-code/diagrams/framing 2.png" alt=""/>
+<Img classes={["shape-building"]} src="diagrams/framing 2.png" alt=""/>
 
 And that would produce a totally different text. The problem derives from the fact that we decided the system should only represent shapes framed in a certain way, but at the moment it can still *produce* shapes framed in other ways.
 

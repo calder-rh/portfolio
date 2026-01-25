@@ -266,7 +266,7 @@ async function fillColumns() {
     let relevantTags = []
     let prioritizedTag = false
     for (let tag of tags) {
-      console.log(tag)
+      if (!(tag in tagDict)) continue
       const tagItem = tagDict[tag]
       const prioritizeBalance = JSON.parse(tagItem.dataset.unlisted)
       if (prioritizeBalance) {

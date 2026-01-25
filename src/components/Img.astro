@@ -4,7 +4,7 @@ import { Image } from "astro:assets";
 
 const {
   src,
-  fullSrc,
+  slug: imgSlug,
   alt,
   uses='ftpb',
   width,
@@ -14,6 +14,11 @@ const {
   format='png'
 } = Astro.props;
 
+const { slug: pageSlug } = Astro.params
+const slug = imgSlug ?? pageSlug
+
+console.log(slug)
+
 const classList = ["img"]
 if (scale) classList.push("scaled unsized")
 if (classes) classList.push(...classes)
@@ -21,13 +26,13 @@ const classesUsed = classList.join(" ")
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif,svg}')
 
+//TODO: this doesn’t work with work embeds… need to maybe hae some way to set the slug in props?
 const imagePath = (() => {
-  if (fullSrc) {
-    return '/src/assets/' + fullSrc;
-  } else {
-    return '/src/assets/work/' + src;
-  }
-})()
+  if (src.match(/^~\//)) return `/src/assets/${src.slice(1)}`
+  else if (src.match(/^\//)) return `/src/assets/work${src}`
+  else return `/src/assets/work/${slug}/${src}`}
+)()
+
 if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif,svg}"`);
 ---
 

@@ -134,7 +134,7 @@ const items = defineCollection({
     
     home: oneOrMore(z.enum(['work', 'tag'])).default([]),
     gallery: oneOrMore(z.enum(['work', 'tag'])).default([]),
-    page: z.enum(['manual', 'auto', 'none', 'contextual']).optional(),
+    page: z.enum(['manual', 'auto', 'none']).optional(),
     autoPage: z.object({
       title: z.boolean().default(true),
       description: z.boolean().default(true),
@@ -158,8 +158,6 @@ const items = defineCollection({
     short: data.short ?? data.name,
 
     mainImage: (data.image === undefined) ? undefined : data.image.main[0].path,
-
-    page: (data.home.includes('work') || data.gallery.includes('work')) ? 'contextual' : 'none'
   }))
 })
 

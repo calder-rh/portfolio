@@ -10,6 +10,7 @@ priority: 1
 import Box from 'src/layouts/Box.astro';
 import Caption from 'src/layouts/Caption.astro';
 import Img from 'src/components/Img.astro';
+import Work from 'src/components/Work.astro';
 
 Contour Code is a system that encodes text in compositions of 2<span class='sc'>D</span> geometric shapes.
 
@@ -18,14 +19,14 @@ I had two goals in designing this system: first, to produce beautiful abstractio
 ## Gallery
 
 <Box factor={1.1} top={2} bottom={1.5}>
-  <Img src='contour-code/sleep.png' uses='ftpb' alt=''/>
+  <Img src='sleep.png' uses='ftpb' alt=''/>
   <Caption>“Sleep”</Caption>
 </Box>
 
-<Img src='contour-code/consciousness.png' classes={['shadow']} uses='f' alt=''/>
+<Work id='contour-code/consciousness'/>
 <Caption>“If you present me with unconsciousness, I will respond with consciousness.” (a quote from my mom)</Caption>
 
-<Img src='contour-code/prints.jpg' uses='f' alt=''/>
+<Img src='prints.jpg' uses='f' alt=''/>
 <Caption>The two compositions on the left both say “shape.”<br/>The top right says “yes”; the bottom right says “the end.”</Caption>
 
 ## Instructions
@@ -37,7 +38,7 @@ To read a composition, shapes are traced to produce a sequence of straight, conc
 The complete encoding referenced in the video is shown below. **A** is convex–concave; **B** is concave–straight–convex–convex; etc.
 
 <Box factor={1.5} top={1} bottom={1}>
-<Img src='contour-code/letter to encoding.svg' uses='f' alt=''/>
+<Img src='letter to encoding.svg' uses='f' alt=''/>
 </Box>
 
 I have also experimented with several other options for encodings, which use three sides for every character rather than the variable number of sides in the encoding above. One of those newer encodings is used to spell the “unconsciousness” piece above. (When I decide which I prefer I’ll add it to this page.)
@@ -45,7 +46,7 @@ I have also experimented with several other options for encodings, which use thr
 {/* When reading a shape, you can use this diagram to convert from encodings back to letters.
 
 <Box factor={1.5} top={1} bottom={1}>
-<Img src='contour-code/encoding to letter.svg' uses='f' alt=''/>
+<Img src='encoding to letter.svg' uses='f' alt=''/>
 </Box> */}
 
 [This document](</public/work/contour-code/Contour Code shape reading order.pdf>) describes how to order the shapes and sides when reading them.

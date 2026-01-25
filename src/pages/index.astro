@@ -17,7 +17,7 @@ const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif,svg}
 
 const allItems = await getCollection('items')
 
-// for (let item of allItems) console.log(item.id)
+// for (let item of allItems) console.log(item)
 
 const workItems = allItems.filter((item) => item.data.home.includes('work'))
 const tagItems = allItems.filter((item) => item.data.home.includes('tag'))
@@ -35,7 +35,9 @@ for (let item of workItems) {
     draft: item.data.draft === true,
     slug:`work/${item.id}`,
 		images: item.data.image?.list.map((path) => {
-			const fullPath = `/src/assets/work/${item.id}/${path}`
+			const fullPath = (path.match(/^\//) ?
+				`/src/assets/work${path}` :
+				`/src/assets/work/${item.id}/${path}`)
 			return {
 				url: `work/${item.id}`,
 				img: imageImporters[fullPath](),
