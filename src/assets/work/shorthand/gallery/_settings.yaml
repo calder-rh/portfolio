@@ -1,0 +1,6 @@
+"*":
+  shadow: true
+monogram:
+  shadow: false
+experimental:
+  shadow: false

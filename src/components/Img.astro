@@ -1,6 +1,12 @@
 ---
 import type { ImageMetadata } from 'astro';
 import { Image } from "astro:assets";
+import { imageSettings } from 'src/scripts/image-settings.js'
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif,svg}')
+
+// const test = await glob('src/assets/**/*.yaml')
+// console.log(test)
 
 const {
   src,
@@ -10,33 +16,33 @@ const {
   scale,
   id,
   classes=[],
-  format='png'
 } = Astro.props;
 
 const { slug: pageSlug } = Astro.params
 const slug = imgSlug ?? pageSlug
 
-console.log(slug)
-
-const classList = ["img"]
-if (scale) classList.push("scaled unsized")
-if (classes) classList.push(...classes)
-const classesUsed = classList.join(" ")
-
-const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif,svg}')
-
-//TODO: this doesn’t work with work embeds… need to maybe hae some way to set the slug in props?
 const imagePath = (() => {
   if (src.match(/^~\//)) return `/src/assets/${src.slice(1)}`
   else if (src.match(/^\//)) return `/src/assets/work${src}`
   else return `/src/assets/work/${slug}/${src}`}
 )()
 
+const classList = ["img"]
+if (scale) classList.push("scaled unsized")
+if (classes) classList.push(...classes)
+
+const settings = imageSettings[imagePath]
+if (settings?.shadow) classList.push('shadow')
+
+const classesUsed = classList.join(" ")
+
+
+
 if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif,svg}"`);
 ---
 
 <div class={classesUsed} id={id} data-scale={scale}>
-  <Image src={images[imagePath]()} width={width} alt={alt} format={format} loading="lazy"/>
+  <Image src={images[imagePath]()} width={width} alt={alt} loading="lazy"/>
 </div>
 
 <script>
