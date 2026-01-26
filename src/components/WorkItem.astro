@@ -1,5 +1,6 @@
 ---
-import { Image } from "astro:assets"
+// import { Image } from "astro:assets"
+import Img from "@src/components/Img.astro"
 import Cap from "./Cap.astro"
 import random from "@src/scripts/random"
 import { marked } from 'marked'
@@ -34,7 +35,7 @@ const classesUsed = classList.join(" ")
           <div class="work-images">
             <div class="image-rows"></div>
             <div class="image-waiting-room">
-              {images.map(({url, img, alt}) => <Image src={img} alt={alt} format="png" width={600} loading="eager"/>)}
+              {images.map(({img}) => <Img src={img} width={500} loading="eager"/>)}
             </div>
           </div>
         }

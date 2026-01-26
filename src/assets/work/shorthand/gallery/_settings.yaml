@@ -2,5 +2,9 @@
   shadow: true
 monogram:
   shadow: false
+  edge:
+    horz: 2.5
 experimental:
   shadow: false
+  edge:
+    horz: 2.5

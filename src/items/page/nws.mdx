@@ -13,16 +13,17 @@ import Box from 'src/layouts/Box.astro';
 import Img from 'src/components/Img.astro';
 import Connections from 'src/components/work/nws/Connections.astro';
 import Pair from 'src/components/work/nws/Pair.astro';
+import Work from 'src/components/Work.astro';
 import 'src/styles/work/nws.css';
 
 <Box factor={3} extend={true} top={2} bottom={2}>
-<Img src="intro.svg" alt="" />
+<Img src="intro.svg" />
 </Box>
 
 This is a system that represents text as a network of dots and lines. Each dot represents one letter (or a space):
 
 <Box factor={1.4}>
-<Img src="Sample.svg" alt="" />
+<Img src="Sample.svg" />
 </Box>
 
 As in regular English writing, these dots are arranged from left to right. Their vertical positions do not signify anything.
@@ -30,7 +31,7 @@ As in regular English writing, these dots are arranged from left to right. Their
 The connections between the dots determine what letters the dots represent. In particular, each dot is connected with lines to some combination of the five dots to its left, and the particular combination determines the letter. For example, if a dot is connected to the dot that is <Connections nums="2"/> to its left, but not any of the others, the dot represents the letter T:
 
 <Box factor={0.6}>
-<Img src="T.svg" alt="" />
+<Img src="T.svg" />
 </Box>
 
 (Notice that this dot also has a line going out to the right, but that is irrelevant for determining what this letter is — only the connections to the left matter.)
@@ -38,13 +39,13 @@ The connections between the dots determine what letters the dots represent. In p
 If a dot is connected to the dot <Connections nums="3"/> to its left and the dot <Connections nums="5"/> to its left, it’s an M:
 
 <Box factor={0.6}>
-<Img src="M.svg" alt="" />
+<Img src="M.svg" />
 </Box>
 
 If a dot is connected to the dots <Connections nums="1"/>, <Connections nums="2"/>, and <Connections nums="5"/> to its left, it’s a Y:
 
 <Box factor={0.6}>
-<Img src="Y.svg" alt="" />
+<Img src="Y.svg" />
 </Box>
 
 Each letter is encoded by some set of connections. We just saw that T is encoded by <Connections nums="2"/>, M by <Connections nums="35"/>, and Y by <Connections nums="125"/>. This table shows the connections for every letter:
@@ -90,7 +91,7 @@ To avoid thick tangles of lines, I chose the connections so that more common let
 When you first start writing, there won’t be any previous letters to connect to. So, to start out, draw five dots in a vertical stack. These dots don’t have any meaning; they’re just there for the first few dots to connect to. Usually, when you count back to determine what connections to make, you count from right to left; however, once you reach the initial stack, finish counting from top to bottom.
 
 <Box factor={0.8}>
-<Img src="Numbering.svg" alt="" />
+<Img src="Numbering.svg" />
 </Box>
 
 To write something with this system, start with the stack of five dots, and then, for each letter, add a dot to the right and connect it back based on the table. You can choose any vertical positions you want; move the dots up or down to make it easy to see the connections and create the nicest composition.
@@ -98,8 +99,10 @@ To write something with this system, start with the stack of five dots, and then
 Network Writing System does not have to follow a straight line. If you write in a ring, then the first letters can connect back to the last ones, and there is no need for an initial stack of dots:
 
 <Box factor={1.4}>
-<Img src="ring.svg" alt="" />
+<Img src="ring.svg" />
 </Box>
+
+<Work id="nws/night"/>
 
 ## Background and context
 
