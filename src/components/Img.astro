@@ -1,18 +1,16 @@
 ---
 import type { ImageMetadata } from 'astro';
 import { Image } from "astro:assets";
-import { imageSettings } from 'src/scripts/image-settings.js'
-import { imageSizeFromFile } from 'image-size/fromFile'
+import { getSettings } from 'src/scripts/image-settings.js'
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif,svg}')
-
 
 const {
   src,
   slug: imgSlug,
   alt: pageAlt,
   scale,
-  res: pageRes,
+  res=1440,
   id,
   classes=[],
 } = Astro.props;
@@ -27,95 +25,40 @@ const imagePath = (() => {
 )()
 const imagePathSlash = '/' + imagePath
 
+if (!images[imagePathSlash]) throw new Error(`"${imagePathSlash}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif,svg}"`);
+
 const classList = []
 if (scale) classList.push("scaled")
 if (classes) classList.push(...classes)
 
-const settings = imageSettings[imagePathSlash]
+const settings = getSettings(imagePathSlash)
 
-const alt = pageAlt ?? settings?.alt ?? ""
-
-if (settings?.shadow) classList.push('shadow')
-
-const { height, width } = await imageSizeFromFile(imagePath)
-const aspect = height / width
-
-const edges = (settings?.edge !== undefined) ? (
-  typeof settings.edge === 'number' ? {
-    top: settings.edge,
-    bottom: settings.edge,
-    left: settings.edge,
-    right: settings.edge,
-  } : {
-    top: settings.edge?.top ?? settings.edge?.vert ?? 0,
-    bottom: settings.edge?.bottom ?? settings.edge?.vert ?? 0,
-    left: settings.edge?.left ?? settings.edge?.horz ?? 0,
-    right: settings.edge?.right ?? settings.edge?.horz ?? 0,
-  }
-) : {
-  top: 0,
-  bottom: 0,
-  left: 0,
-  right: 0,
-}
-
-const scaleFactor = 1 / (1 - edges.left / 100 - edges.right / 100)
-const translateX = - edges.left * scaleFactor
-const translateY = - edges.top * scaleFactor
-const marginBottom = (scaleFactor - 1) * aspect * 100 - (edges.top + edges.bottom) * scaleFactor
-
-const sf = `${scaleFactor}`
-const tx = `${translateX}%`
-const ty = `${translateY}%`
-const mb = `${marginBottom}%`
-
-const w = (scale !== undefined) ? `${scale * width / 100}rem` : "100%"
-console.log({src, scale, w})
-
-const res = pageRes ?? 720
-
-if (!images[imagePathSlash]) throw new Error(`"${imagePathSlash}" does not exist in glob: "/src/assets/**/*.{jpeg,jpg,png,gif,svg}"`);
+const alt = pageAlt ?? settings.alt ?? ""
+if (settings.shadow) classList.push('shadow')
+const w = (scale !== undefined) ? `${scale * settings.dimensions.width / 100}rem` : "100%"
 ---
 
-<style define:vars={{sf, tx, ty, mb, w}}>
+<style define:vars={{...settings.cssVars, w}}>
   .img-inner {
-    background-color: var(--backgroundColor);
     transform-origin: top left;
-    transform: translate(var(--tx), var(--ty)) scale(var(--sf));
-    margin-bottom: var(--mb);
     width: var(--w);
+    aspect-ratio: var(--aa);
+    transform: translate(var(--tx), var(--ty)) scale(var(--sf));
+    min-height: 0;
+    overflow: visible;
   }
 
   .img {
     display: flex;
     justify-content: center;
+    outline: 1px solid red;
   }
-
 </style>
 
 <div class="img">
   <!-- needed so that the margin from he optical aligment is separate from the margin around every image -->
   <div class="img-inner">
     <!-- the actual element that is resized (can’t be the img itself because that’s in the scope of the Image component) -->
-    <Image src={images[imagePathSlash]()} alt={alt} loading="lazy" class:list={classList} id={id} width={res}/>
+    <Image src={images[imagePathSlash]()} alt={alt} loading="lazy" class:list={classList} id={id} width={res} format={settings.format}/>
   </div>
 </div>
-
-<!-- <script>
-  document.querySelectorAll(".img.scaled").forEach(img_container => {
-    const img = img_container.querySelector("img")
-    fetch(img.src)
-      .then(r => r.text())
-      .then(text => {
-        const m = text.match(/viewBox\s*=\s*"([^"]+)"/i);
-        if (!m) return;
-
-        const [minX, minY, w, h] = m[1].split(/\s+/).map(Number);
-        const scale = img_container.dataset.scale * 0.01;
-
-        img.style.width = (w * scale) + "rem";
-        img.style.height = "auto";
-      });
-      img_container.classList.toggle("unsized", false);
-    });
-</script> -->

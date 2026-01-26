@@ -24,6 +24,7 @@ const tagItems = allItems.filter((item) => item.data.home.includes('tag'))
 
 const workItemData = []
 
+
 for (let item of workItems) {
   const workItem = {
     title: item.data.name,
@@ -33,16 +34,9 @@ for (let item of workItems) {
     date: item.data.date?.end.date,
     priority: item.data.priority,
     draft: item.data.draft === true,
-    slug:`work/${item.id}`,
-		images: item.data.image?.list.map((path) => {
-			const fullPath = (path.match(/^\//) ?
-				`/src/assets/work${path}` :
-				`/src/assets/work/${item.id}/${path}`)
-			return {
-				url: `work/${item.id}`,
-				img: imageImporters[fullPath](),
-				alt: ""
-		}}) || []
+		id: item.id,
+    slug: `work/${item.id}`,
+		images: item.data.image?.list || []
   }
   workItemData.push(workItem)
 }

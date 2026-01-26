@@ -6,7 +6,7 @@ import random from "@src/scripts/random"
 import { marked } from 'marked'
 
 const { data } = Astro.props
-const { title, description, tags, images, draft, unlisted, slug } = data
+const { title, description, tags, images, draft, unlisted, id, slug } = data
 const minHeight = 0.6 + title.length / 80
 const url = `/${slug}`
 
@@ -35,7 +35,7 @@ const classesUsed = classList.join(" ")
           <div class="work-images">
             <div class="image-rows"></div>
             <div class="image-waiting-room">
-              {images.map(({img}) => <Img src={img} width={500} loading="eager"/>)}
+              {images.map((path) => <Img slug={id} src={path} res={500} loading="eager"/>)}
             </div>
           </div>
         }
