@@ -82,6 +82,30 @@ const imageOptions = z.union([
   z.array(z.object({path: z.string()}).passthrough())
 ])
 
+const rows = z.union([
+  z.string().transform((item) => [[item]]),
+  z.array(z.union([
+    z.string().transform((item) => [item]),
+    z.array(z.string()),
+  ]))
+])
+
+function toFirstRest(paths) {
+  return {
+    first: [],
+    rest: paths
+  }
+}
+
+const slides = z.union([
+  z.string().transform((path) => toFirstRest([path])),
+  z.array(z.string()).transform(toFirstRest),
+  z.object({
+    first: oneOrMore(z.string()),
+    rest: oneOrMore(z.string()),
+  })
+]).transform(({first, rest}) => ({first, rest, all: [...first, ...rest]}))
+
 const dateIsh = z.union([
   z.number(),
   z.date(),
@@ -112,25 +136,19 @@ const items = defineCollection({
     ]).optional(),
     
     image: z.union([
-      oneOrMore(z.string()).transform((paths) => ({
-        main: [{path: paths[0]}],
-        preview: [{path: paths[0]}],
-        list: paths
+      z.string().transform((path) => ({
+        main: [{path}],
+        preview: [{path}],
       })),
       z.object({
         main: imageOptions,
         preview: imageOptions.optional(),
-        list: oneOrMore(z.string()).optional()
-      }).transform((imgObj) => ({
-        ...imgObj,
-        preview: imgObj.preview ?? imgObj.main,
-        list: imgObj.list ?? (
-          (imgObj.preview === undefined) ?
-          [imgObj.main[0].path] :
-          [imgObj.preview[0].path]
-        )
-      }))
+      })
     ]).optional(),
+
+    rows: rows.optional(),
+
+    slides: slides.optional(),
     
     home: oneOrMore(z.enum(['work', 'tag'])).default([]),
     gallery: oneOrMore(z.enum(['work', 'tag'])).default([]),
@@ -145,7 +163,6 @@ const items = defineCollection({
       date: true,
     }),
 
-    slideshow: z.boolean().default(false),
     unlisted: z.boolean().default(false),
     draft: z.boolean().default(false),
     priority: z.number().default(Infinity),
@@ -158,7 +175,7 @@ const items = defineCollection({
     title: data.title ?? data.name,
     short: data.short ?? data.name,
 
-    mainImage: (data.image === undefined) ? undefined : data.image.main[0].path,
+    mainImage: data?.image?.main[0].path ?? data?.rows?.[0][0] ?? data?.slides?.all[0] ?? undefined
   }))
 })
 

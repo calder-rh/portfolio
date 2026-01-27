@@ -65,12 +65,12 @@ const workLink = document.getElementById('menu-work')
 const intro = document.getElementById('intro')
 const introContainer = document.getElementById('intro-container')
 const topTagSeparator = document.getElementById('top-tag-separator')
-const cols = document.getElementById('work-cols')
+const columns = document.getElementById('columns')
+const waitingRoom = document.getElementById('waiting-room')
 const workTagContainer = document.querySelector('#tags')
 const workTags = document.querySelectorAll('.work-tag')
 const workItems = document.querySelectorAll('.work-item')
 const nonDraftWorkItems = document.querySelectorAll('.work-item:not(.draft)')
-const workItemArray = Array.from(workItems)
 const tagDict = {}
 for (let tag of workTags) {
   tagDict[tag.dataset.slug] = tag
@@ -86,22 +86,118 @@ for (let tagIntro of tagIntros) {
   tagIntroDict[tagIntro.dataset.slug] = tagIntro
 }
 
-
 function remToPx(rem) {    
   return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+           _                           _ 
+  ___ ___ | |_   _ _ __ ___  _ __  ___| |
+ / __/ _ \| | | | | '_ ` _ \| '_ \/ __| |
+| (_| (_) | | |_| | | | | | | | | \__ \_|
+ \___\___/|_|\__,_|_| |_| |_|_| |_|___(_)
+*/
+
+// Utilities
+
+const baseColumnWidth = 600
+const columnGap = 20
+const itemPadding = 1.5
+
+// Older version: calculates the width based on how many columns there are, rather than how many there should be. Keeping it commented in case I realize I need it later
+// function columnWidth() {
+//   const numColumns = columns.querySelectorAll('.column').length
+//   const columnGap = 20
+//   const columnsWidth = columns.offsetWidth 
+//   const columnWidth = (columnsWidth - (columnGap * (numColumns - 1))) / numColumns
+//   return columnWidth
+// }
+
+function numColumns() {
+  const columnsWidth = columns.offsetWidth
+  return (Math.ceil((columnsWidth - baseColumnWidth) / (baseColumnWidth + columnGap)) + 1) || 1
+}
+
 function columnWidth() {
-  const numColumns = cols.querySelectorAll('.column').length
-  const columnGap = 20
-  const columnsWidth = cols.querySelector('.columns').offsetWidth 
-  const columnWidth = (columnsWidth - (columnGap * (numColumns - 1))) / numColumns
-  return columnWidth
+  const numColumns = numColumns()
+  const columnsWidth = columns.offsetWidth
+  return (columnsWidth - (columnGap * (numColumns - 1))) / numColumns
 }
 
 function contentWidth() {
-  return columnWidth() - remToPx(3)
+  return columnWidth() - remToPx(itemPadding * 2)
 }
+
+// Variables / trackers
+
+let prevNumColumns = 0
+
+// Step 1: create the columns, size them, and move the items to the waiting room
+
+addEventListener('DOMContentLoaded', createColumns)
+
+function createColumns() {
+  window.requestAnimationFrame(() => {
+    columns.dataset.numColumns = numColumns()
+    
+    if (numColumns !== prevNumColumns) {
+      prevNumColumns = numColumns
+      columnWidth = columnWidth()
+    
+      moveToWaitingRoom()
+
+      for (let i = 0; i < numColumns; i++) {
+        const d = document.createElement("div")
+        d.classList.add("column")
+        columns.append(d)
+      }
+
+      waitingRoom.css('width', `${columnWidth}px`)
+
+      imageLoad()
+    }
+  })
+}
+
+function moveToWaitingRoom() {
+  for (let item of workItems) {
+    waitingRoom.append(item)
+  }
+  columns.textContent = ""
+}
+
+// Step 2: Lay out the images in the items
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const totalImages = document.querySelectorAll('.work-images').length
 
@@ -317,15 +413,12 @@ function resize() {
   resizeWorkItems()
 }
 
-function setupItems() {
-  imageLoad()
-}
 
 
 
 
 
-cols.addEventListener('columns-created', setupItems)
+
 cols.addEventListener('items-ready', fillColumns)
 window.addEventListener('resize', resize)
 

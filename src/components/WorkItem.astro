@@ -6,7 +6,7 @@ import random from "@src/scripts/random"
 import { marked } from 'marked'
 
 const { data } = Astro.props
-const { title, description, tags, images, draft, unlisted, id, slug } = data
+const { title, description, tags, rows, slides, draft, unlisted, id, slug } = data
 const minHeight = 0.6 + title.length / 80
 const url = `/${slug}`
 
@@ -31,12 +31,26 @@ const classesUsed = classList.join(" ")
         }</h3>
         {description && <p class="work-description work-text">{description}</p>}
         {draft && <p class="coming-soon">coming soon</p>}
-        {images.length > 0 &&
-          <div class="work-images">
-            <div class="image-rows"></div>
-            <div class="image-waiting-room">
-              {images.map((path) => <Img slug={id} src={path} res={500} loading="eager"/>)}
+        {rows &&
+          <div class="work-rows">
+            {rows.map((row) => <div class="image-row">
+              {row.map((path) => <div class="work-image" style="width: 500px">
+                <Img slug={id} src={path} res={500}/>
+              </div>)}
+            </div>)}
+          </div>
+        }
+        {slides &&
+          <div class="work-slides">
+            <div class="work-slides-waiting-room">
+              {slides.first.map((path) => <div class="work-image first-slide" style="width: 500px">
+                <Img slug={id} src={path} res={500}/>
+              </div>)}
+              {slides.rest.map((path) => <div class="work-image rest-slide" style="width: 500px">
+                <Img slug={id} src={path} res={500}/>
+              </div>)}
             </div>
+            <div class="work-slides-display"></div>
           </div>
         }
       </div>

@@ -47,38 +47,48 @@ for (let {globStr, settings} of rules) {
   for (let imagePath of imagePaths) {
     const imagePathWithSlash = '/' + imagePath
     if (!rawSettingses[imagePathWithSlash]) rawSettingses[imagePathWithSlash] = {}
-    for (let setting in settings) {
-      rawSettingses[imagePathWithSlash][setting] = settings[setting]
+    const rawSettings = rawSettingses[imagePathWithSlash]
+    if (!settings.default) settings = {default: settings}
+    for (let context in settings) {
+      if (!rawSettings[context]) rawSettings[context] = {}
+      for (let setting in settings[context]) {
+        rawSettings[context][setting] = context[setting]
+      }
     }
   }
 }
 
-const processedSettingses = {}
-for (let imagePath in rawSettingses) {
-  const rawSettings = rawSettingses[imagePath]
+const globalDefaults = {
+  alt: "",
+  shadow: false,
+  edges: 0,
+}
+
+export async function getSettings(imagePath, context="default") {
+  const cascade = [globalDefaults, rawSettingses[imagePath].default]
+  if (context !== "default") {cascade.push(rawSettingses[imagePath][context])}
+  const rawSettings = {}
+  for (let settingName in globalDefaults) {
+    for (let i = cascade.length - 1; i <= 0; i--) {
+      if (cascade[i][settingName]) rawSettings[settingName] = cascade[i][settingName]
+    }
+  }
+
   const processedSettings = {}
 
-  processedSettings.alt = rawSettings.alt ?? ""
+  processedSettings.alt = rawSettings.alt
+  processedSettings.shadow = rawSettings.shadow
 
-  processedSettings.shadow = rawSettings.shadow ?? false
-
-  const edges = (rawSettings?.edges !== undefined) ? (
-    typeof rawSettings.edges === 'number' ? {
-      top: rawSettings.edges,
-      bottom: rawSettings.edges,
-      left: rawSettings.edges,
-      right: rawSettings.edges,
-    } : {
-      top: rawSettings.edges?.top ?? rawSettings.edges?.vert ?? 0,
-      bottom: rawSettings.edges?.bottom ?? rawSettings.edges?.vert ?? 0,
-      left: rawSettings.edges?.left ?? rawSettings.edges?.horz ?? 0,
-      right: rawSettings.edges?.right ?? rawSettings.edges?.horz ?? 0,
-    }
-  ) : {
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+  const edges = typeof rawSettings.edges === 'number' ? {
+    top: rawSettings.edges,
+    bottom: rawSettings.edges,
+    left: rawSettings.edges,
+    right: rawSettings.edges,
+  } : {
+    top: rawSettings.edges?.top ?? rawSettings.edges?.vert ?? 0,
+    bottom: rawSettings.edges?.bottom ?? rawSettings.edges?.vert ?? 0,
+    left: rawSettings.edges?.left ?? rawSettings.edges?.horz ?? 0,
+    right: rawSettings.edges?.right ?? rawSettings.edges?.horz ?? 0,
   }
   for (let edge of ['top', 'bottom', 'left', 'right']) {
     edges[edge] /= 100;
@@ -109,28 +119,5 @@ for (let imagePath in rawSettingses) {
     ['.jpg', '.jpeg', '.webp'].includes(path.extname(imagePath)) ? 'webp' : 'png'
   )
 
-  processedSettingses[imagePath] = processedSettings
-}
-
-export function getSettings(imagePath) {
-  return processedSettingses[imagePath] ?? (async () => {
-    const { width, height } = await imageSizeFromFile(imagePath.slice(1))
-    return {
-      alt: "",
-      shadow: false,
-      dimensions: {
-        width,
-        height,
-        rawAspect: width / height,
-        adjustedAspect: width / height,
-      },
-      cssVars: {
-        sf: "1",
-        tx: "0",
-        ty: "0",
-        aa: `${width / height}`,
-      },
-      format: ['.jpg', '.jpeg', '.webp'].includes(path.extname(imagePath)) ? 'webp' : 'png',
-    }
-  })()
+  return processedSettings
 }

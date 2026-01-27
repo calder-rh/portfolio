@@ -26,6 +26,7 @@ const workItemData = []
 
 
 for (let item of workItems) {
+	console.log(item.data?.mainImage)
   const workItem = {
     title: item.data.name,
     description: item.data.description,
@@ -96,9 +97,11 @@ const renderedIntros =  await Promise.all(tagItems
       </div>
     </div>
   </div>
-  <Columns id="work-cols" columnWidth={600} columnGap={20} prepareItems={false} fillColumns={false}>
+	<!-- <Columns id="work-cols" columnWidth={600} columnGap={20} prepareItems={false} fillColumns={false}></Columns> -->
+  <div id="columns"></div>
+  <div id="waiting-room">
     {workItemData.map((data) => <WorkItem data={data}/>)}
-  </Columns>
+  </div>
 </BaseLayout>
 
 <script>
