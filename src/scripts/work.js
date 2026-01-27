@@ -308,23 +308,11 @@ function fillColumns() {
       heights[shortestColumnIndex] += hasTag ? fullHeight : minHeight
     }
   }
-
-  cols.dispatchEvent(new Event('columns-filled'))
 }
 
-function resizeIntroContainer() {
-  introContainer.style.setProperty('--intro-container-height', `${intro.clientHeight}px`)
-  introContainer.classList.remove('loading')
-}
 
-function resize() {
-  resizeIntroContainer()
-  // workItemsWidth()
-  for (let item of document.querySelectorAll('.work-images')) {
-    layoutImages(item)
-  }
-  resizeWorkItems()
-}
+
+
 
 
 
@@ -333,6 +321,22 @@ function resize() {
 
 
 window.addEventListener('resize', resize)
+
+function resize() {
+  resizeIntroContainer()
+  for (let item of document.querySelectorAll('.work-images')) {
+    layoutImages(item)
+  }
+  resizeWorkItems()
+}
+
+function resizeIntroContainer() {
+  introContainer.style.setProperty('--intro-container-height', `${intro.clientHeight}px`)
+  introContainer.classList.remove('loading')
+}
+
+
+
 
 
 
@@ -462,9 +466,6 @@ function setIntroContainer() {
   introContainer.classList.toggle('closed', !implicitAll)
   topTagSeparator.classList.toggle('closed', !implicitAll)
 }
-
-
-let isClicked = false
 
 addEventListener('DOMContentLoaded', () => {
   setupTags(true)

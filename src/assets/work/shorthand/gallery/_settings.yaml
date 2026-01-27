@@ -3,11 +3,16 @@
 monogram:
   shadow: false
   edges:
-    top: 3
-    bottom: 1
-    left: 2
-    right: 3
+    top: -3
+    bottom: -1
+    left: -2
+    right: -3
 experimental:
   shadow: false
   edges:
-    horz: 2.5
+    horz: -2.5
+I haven't seen this day before_preview:
+  work bottom:
+    edges:
+      bottom:
+        -5
