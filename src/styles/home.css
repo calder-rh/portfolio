@@ -63,6 +63,9 @@
 
   #work-cols {
     margin: 0 1.25rem;
+    display: flex;
+    flex-direction: row;
+    /*  */
     /* padding: 0 20px; */
   }
 

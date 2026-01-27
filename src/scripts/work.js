@@ -65,7 +65,7 @@ const workLink = document.getElementById('menu-work')
 const intro = document.getElementById('intro')
 const introContainer = document.getElementById('intro-container')
 const topTagSeparator = document.getElementById('top-tag-separator')
-const columns = document.getElementById('work-cols')
+const cols = document.getElementById('work-cols')
 const waitingRoom = document.getElementById('waiting-room')
 const workTagContainer = document.querySelector('#tags')
 const workTags = document.querySelectorAll('.work-tag')
@@ -133,12 +133,12 @@ const gapWithinRows = gapBetweenRows
 // }
 
 function numColumns() {
-  const columnsWidth = columns.offsetWidth
+  const columnsWidth = cols.offsetWidth
   return (Math.ceil((columnsWidth - baseColumnWidth) / (baseColumnWidth + columnGap)) + 1) || 1
 }
 
 function columnWidth() {
-  const columnsWidth = columns.offsetWidth
+  const columnsWidth = cols.offsetWidth
   return (columnsWidth - (columnGap * (numColumns() - 1))) / numColumns()
 }
 
@@ -156,17 +156,17 @@ addEventListener('DOMContentLoaded', createColumns)
 
 function createColumns() {
   window.requestAnimationFrame(() => {
-    columns.dataset.numColumns = numColumns()
+    cols.dataset.numColumns = numColumns()
     
     if (numColumns !== prevNumColumns) {
-      prevNumColumns = numColumns
+      prevNumColumns = numColumns()
     
       moveToWaitingRoom()
 
-      for (let i = 0; i < numColumns; i++) {
+      for (let i = 0; i < numColumns(); i++) {
         const d = document.createElement("div")
         d.classList.add("column")
-        columns.append(d)
+        cols.append(d)
       }
 
       waitingRoom.style.width = `${columnWidth()}px`
@@ -180,7 +180,7 @@ function moveToWaitingRoom() {
   for (let item of workItems) {
     waitingRoom.append(item)
   }
-  columns.textContent = ""
+  cols.textContent = ""
 }
 
 // Step 2: Layout the images in the items
@@ -238,14 +238,13 @@ function resizeWorkItems() {
 
 // Step 4: set up the columns
 
-async function fillColumns() {
+function fillColumns() {
   const tags = Array.from(workTags).map(element => element.dataset.slug)
   const columns = cols.querySelectorAll('.column')
-  const numColumns = columns.length
   setHideOthers()
 
   function initialColumnHeights() {
-    return new Array(numColumns).fill(0)
+    return new Array(numColumns()).fill(0)
   }
 
   const columnHeights = {
@@ -303,7 +302,7 @@ async function fillColumns() {
     const fullHeight = Number(workItem.dataset.fullHeight)
     const minHeight = remToPx(Number(workItem.dataset.minheight))
       
-    columns[shortestColumnIndex].appendChild(workItem)
+    columns[shortestColumnIndex].append(workItem)
     for (let [tag, heights] of Object.entries(columnHeights)) {
       const hasTag = tags.includes(tag)
       heights[shortestColumnIndex] += hasTag ? fullHeight : minHeight
@@ -320,7 +319,7 @@ function resizeIntroContainer() {
 
 function resize() {
   resizeIntroContainer()
-  workItemsWidth()
+  // workItemsWidth()
   for (let item of document.querySelectorAll('.work-images')) {
     layoutImages(item)
   }
