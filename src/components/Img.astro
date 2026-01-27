@@ -13,6 +13,7 @@ const {
   res=1440,
   id,
   classes=[],
+  context="default"
 } = Astro.props;
 
 const { slug: pageSlug } = Astro.params
@@ -31,9 +32,9 @@ const classList = []
 if (scale) classList.push("scaled")
 if (classes) classList.push(...classes)
 
-const settings = getSettings(imagePathSlash)
+const settings = await getSettings(imagePathSlash, context)
 
-const alt = pageAlt ?? settings.alt ?? ""
+const alt = pageAlt ?? settings.alt
 if (settings.shadow) classList.push('shadow')
 const w = (scale !== undefined) ? `${scale * settings.dimensions.width / 100}rem` : "100%"
 ---
@@ -51,11 +52,11 @@ const w = (scale !== undefined) ? `${scale * settings.dimensions.width / 100}rem
   .img {
     display: flex;
     justify-content: center;
-    outline: 1px solid red;
+    /* outline: 1px solid red; */
   }
 </style>
 
-<div class="img">
+<div class="img" data-aspect={settings.dimensions.adjustedAspect}>
   <!-- needed so that the margin from he optical aligment is separate from the margin around every image -->
   <div class="img-inner">
     <!-- the actual element that is resized (can’t be the img itself because that’s in the scope of the Image component) -->

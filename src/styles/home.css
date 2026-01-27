@@ -56,15 +56,10 @@
     }
   }
 
-  .waiting-room {
+  #waiting-room {
     display: block;
-    visibility: hidden;
+    /* visibility: hidden; */
   }
-
-  /* #header {
-    position: fixed !important;
-  } */
-
 
   #work-cols {
     margin: 0 1.25rem;
@@ -143,7 +138,7 @@
     margin-bottom: 0;
   }
 
-  .image-rows {
+  .work-rows {
     margin-top: 1rem;
     padding-bottom: 1rem;
     display: flex;
@@ -152,16 +147,22 @@
     width: 100%;
   }
 
-  .image-row {
+  .work-row {
     width: 100%;
     display: flex;
     justify-content: space-between;
   }
 
-  .image-row img {
+  .work-row .work-image {
+    display: block;
+    width: var(--work-image-width);
+    height: auto;
+  }
+
+  /* .work-row img {
     height: 100%;
     width: auto;
-  }
+  } */
 
   .image-waiting-room {
     width: 0;

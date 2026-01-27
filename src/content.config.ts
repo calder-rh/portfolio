@@ -175,7 +175,15 @@ const items = defineCollection({
     title: data.title ?? data.name,
     short: data.short ?? data.name,
 
-    mainImage: data?.image?.main[0].path ?? data?.rows?.[0][0] ?? data?.slides?.all[0] ?? undefined
+    mainImage: data?.image?.main[0].path ?? data?.rows?.[0][0] ?? data?.slides?.all[0],
+    rows: (() => {
+      if (data?.rows !== undefined) return data.rows
+      else {
+        const mainImage = data?.image?.main[0].path
+        if (mainImage) return [[mainImage]]
+        else return undefined
+      }
+    })()
   }))
 })
 

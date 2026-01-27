@@ -10,6 +10,23 @@ const { title, description, tags, rows, slides, draft, unlisted, id, slug } = da
 const minHeight = 0.6 + title.length / 80
 const url = `/${slug}`
 
+const contextRows = (() => {
+  if (rows === undefined) return undefined
+
+  const contextRows = rows.map(
+    (row) => (row.map(
+      (image) => ({path: image, contexts: []}))
+    )
+  )
+  for (let image of contextRows[0]) {image.contexts.push("work top")}
+  for (let image of contextRows[contextRows.length - 1]) {image.contexts.push("work bottom")}
+  for (let row of contextRows) {
+    if (row.length == 1) {row[0].contexts.push("work row")}
+  }
+
+  return contextRows
+})()
+
 const classList = ["work-item no-rise"]
 if (draft) classList.push("draft")
 if (unlisted) classList.push("unlisted")
@@ -31,11 +48,11 @@ const classesUsed = classList.join(" ")
         }</h3>
         {description && <p class="work-description work-text">{description}</p>}
         {draft && <p class="coming-soon">coming soon</p>}
-        {rows &&
+        {contextRows &&
           <div class="work-rows">
-            {rows.map((row) => <div class="image-row">
-              {row.map((path) => <div class="work-image" style="width: 500px">
-                <Img slug={id} src={path} res={500}/>
+            {contextRows.map((row) => <div class="work-row">
+              {row.map(({path, contexts}) => <div class="work-image">
+                <Img slug={id} src={path} res={500} context={contexts}/>
               </div>)}
             </div>)}
           </div>
@@ -43,10 +60,10 @@ const classesUsed = classList.join(" ")
         {slides &&
           <div class="work-slides">
             <div class="work-slides-waiting-room">
-              {slides.first.map((path) => <div class="work-image first-slide" style="width: 500px">
+              {slides.first.map((path) => <div class="work-image first-slide">
                 <Img slug={id} src={path} res={500}/>
               </div>)}
-              {slides.rest.map((path) => <div class="work-image rest-slide" style="width: 500px">
+              {slides.rest.map((path) => <div class="work-image rest-slide">
                 <Img slug={id} src={path} res={500}/>
               </div>)}
             </div>

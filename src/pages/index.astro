@@ -17,8 +17,6 @@ const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif,svg}
 
 const allItems = await getCollection('items')
 
-// for (let item of allItems) console.log(item)
-
 const workItems = allItems.filter((item) => item.data.home.includes('work'))
 const tagItems = allItems.filter((item) => item.data.home.includes('tag'))
 
@@ -26,7 +24,6 @@ const workItemData = []
 
 
 for (let item of workItems) {
-	console.log(item.data?.mainImage)
   const workItem = {
     title: item.data.name,
     description: item.data.description,
@@ -37,7 +34,7 @@ for (let item of workItems) {
     draft: item.data.draft === true,
 		id: item.id,
     slug: `work/${item.id}`,
-		images: item.data.image?.list || []
+		rows: item.data.rows
   }
   workItemData.push(workItem)
 }
@@ -98,7 +95,7 @@ const renderedIntros =  await Promise.all(tagItems
     </div>
   </div>
 	<!-- <Columns id="work-cols" columnWidth={600} columnGap={20} prepareItems={false} fillColumns={false}></Columns> -->
-  <div id="columns"></div>
+  <div id="work-cols"></div>
   <div id="waiting-room">
     {workItemData.map((data) => <WorkItem data={data}/>)}
   </div>

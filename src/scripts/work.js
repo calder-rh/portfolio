@@ -65,7 +65,7 @@ const workLink = document.getElementById('menu-work')
 const intro = document.getElementById('intro')
 const introContainer = document.getElementById('intro-container')
 const topTagSeparator = document.getElementById('top-tag-separator')
-const columns = document.getElementById('columns')
+const columns = document.getElementById('work-cols')
 const waitingRoom = document.getElementById('waiting-room')
 const workTagContainer = document.querySelector('#tags')
 const workTags = document.querySelectorAll('.work-tag')
@@ -113,11 +113,15 @@ function remToPx(rem) {
  \___\___/|_|\__,_|_| |_| |_|_| |_|___(_)
 */
 
-// Utilities
+// Sizes
 
 const baseColumnWidth = 600
 const columnGap = 20
 const itemPadding = 1.5
+const gapBetweenRows = remToPx(0.6)
+const gapWithinRows = gapBetweenRows
+
+// Utilities
 
 // Older version: calculates the width based on how many columns there are, rather than how many there should be. Keeping it commented in case I realize I need it later
 // function columnWidth() {
@@ -134,9 +138,8 @@ function numColumns() {
 }
 
 function columnWidth() {
-  const numColumns = numColumns()
   const columnsWidth = columns.offsetWidth
-  return (columnsWidth - (columnGap * (numColumns - 1))) / numColumns
+  return (columnsWidth - (columnGap * (numColumns() - 1))) / numColumns()
 }
 
 function contentWidth() {
@@ -157,7 +160,6 @@ function createColumns() {
     
     if (numColumns !== prevNumColumns) {
       prevNumColumns = numColumns
-      columnWidth = columnWidth()
     
       moveToWaitingRoom()
 
@@ -167,9 +169,9 @@ function createColumns() {
         columns.append(d)
       }
 
-      waitingRoom.css('width', `${columnWidth}px`)
+      waitingRoom.style.width = `${columnWidth()}px`
 
-      imageLoad()
+      layoutImages()
     }
   })
 }
@@ -181,126 +183,35 @@ function moveToWaitingRoom() {
   columns.textContent = ""
 }
 
-// Step 2: Lay out the images in the items
+// Step 2: Layout the images in the items
 
+function layoutImages() {
+  for (let workItem of workItems) {
+    const rowsElement = workItem.querySelector('.work-rows')
+    if (!rowsElement) continue
 
+    const rows = rowsElement.querySelectorAll('.work-row')
+    for (let row of rows) {
+      const images = Array.from(row.querySelectorAll('.work-image'))
+      const totalImageWidth = contentWidth() - gapWithinRows * (images.length - 1)
 
+      const aspectRatios = images.map((image) => Number(image.querySelector('.img').dataset.aspect))
+      const totalAspectRatio = aspectRatios.reduce((partialSum, a) => partialSum + a, 0)
 
+      const height = totalImageWidth / totalAspectRatio
 
-
-
-
-
-
-
-
-
-
-
-
-
-const totalImages = document.querySelectorAll('.work-images').length
-
-let loadedImageSections = 0
-let totalImageSections = document.querySelectorAll('.work-images').length
-
-function imageLoad() {
-  if (totalImages === 0) {
-    resizeWorkItems()
-  } else {
-    loadedImageSections = 0
-    for (let item of document.querySelectorAll('.work-images')) {  
-      const images = item.querySelectorAll('img')
-      const total = images.length
-      let loaded = 0
-      function loadOne() {
-        loaded++
-        if (loaded == total) layoutImages(item)
-      }
-      for (let image of images) {
-        if (image.complete) loadOne()
-        else image.addEventListener('load', () => loadOne())
+      for (let i = 0; i < images.length; i++) {
+        const image = images[i]
+        const width = aspectRatios[i] * height
+        image.style.setProperty("--work-image-width", `${width}px`)
       }
     }
   }
+
+  resizeWorkItems()
 }
 
-
-
-function layoutImages(item) {
-  const images = item.querySelectorAll('img')
-  const rows = item.querySelector('.image-rows')
-  const waitingRoom = item.querySelector('.image-waiting-room')
-  const gap = remToPx(0.6)
-  const defaultImageHeight = remToPx(10)
-  const rowWidth = contentWidth()
-
-  for (let image of images) {
-    waitingRoom.append(image)
-  }
-  rows.innerHTML = ''
-
-
-  let currentWidth
-  let gapCount
-  function setupRow() {
-    const row = document.createElement('div')
-    row.className = 'image-row'
-    rows.prepend(row)
-    currentWidth = 0
-    gapCount = 0
-    return row
-  }
-
-  function resizeRow() {
-    const gaplessImageWidth = currentWidth - gapCount * gap
-    const gaplessRowWidth = rowWidth - gapCount * gap
-    const scaleRatio = gaplessRowWidth / gaplessImageWidth
-    const finalHeight = defaultImageHeight * scaleRatio
-    currentRow.style.height = `${finalHeight}px`
-  }
-
-  let currentRow = setupRow()
-
-  let firstIteration = true
-  for (let index = images.length - 1; index >= 0; index--) {
-    const image = images[index]
-    const aspectRatio = image.naturalWidth / image.naturalHeight
-    const imageWidth = aspectRatio * defaultImageHeight
-    const nextWidth = currentWidth + imageWidth + (firstIteration ? 0 : gap)
-    if (firstIteration || nextWidth <= rowWidth) {
-      currentRow.prepend(image)
-      currentWidth = nextWidth
-      if (!firstIteration) gapCount += 1
-    }
-    if (nextWidth > rowWidth) {
-      resizeRow()
-      currentRow = setupRow()
-      if (!firstIteration) {
-        currentRow.prepend(image)
-        currentWidth = imageWidth
-      } else {
-        currentWidth = 0
-        gapCount = 0
-      }
-    } else {
-      currentWidth = nextWidth
-    }
-    firstIteration = false
-  }
-  resizeRow()
-
-  loadedImageSections++
-  if (loadedImageSections === totalImageSections) {
-    resizeWorkItems()
-  }
-}
-
-function workItemsWidth() {
-  document.querySelectorAll('.work-content-wrapper').forEach((item) => {
-    item.style.width = contentWidth()
-  })
-}
+// Step 3: resize the work items to fit
 
 function resizeWorkItems() {
   workItems.forEach((item) => {
@@ -321,8 +232,11 @@ function resizeWorkItems() {
     item.dataset.fullHeight = item.offsetHeight
     item.classList.add('closable')
   })
-  cols.dispatchEvent(new Event('items-ready'))
+  
+  fillColumns()
 }
+
+// Step 4: set up the columns
 
 async function fillColumns() {
   const tags = Array.from(workTags).map(element => element.dataset.slug)
@@ -419,7 +333,6 @@ function resize() {
 
 
 
-cols.addEventListener('items-ready', fillColumns)
 window.addEventListener('resize', resize)
 
 
@@ -430,8 +343,7 @@ function setHideOthers(tag = null) {
     tag = url.searchParams.get('tag')
   }
   const tagElement = tagDict[tag || 'all']
-  const numCols = cols.querySelectorAll('.column').length
-  cols.classList.toggle('hide-others', numCols == 1 || JSON.parse(tagElement.dataset.unlisted))
+  cols.classList.toggle('hide-others', numColumns() == 1 || JSON.parse(tagElement.dataset.unlisted))
 }
 
 
