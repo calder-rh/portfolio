@@ -34,7 +34,8 @@ for (let item of workItems) {
     draft: item.data.draft === true,
 		id: item.id,
     slug: `work/${item.id}`,
-		rows: item.data.rows
+		rows: item.data.rows,
+    slides: item.data.slides,
   }
   workItemData.push(workItem)
 }

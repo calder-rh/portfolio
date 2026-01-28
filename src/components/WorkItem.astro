@@ -27,13 +27,32 @@ const contextRows = (() => {
   return contextRows
 })()
 
+const orderedSlides = (() => {
+  if (slides === undefined) return undefined
+
+  const firstArray = []
+
+  if (slides.first.length > 0) {
+    const firstIndex = Math.floor(random(0, slides.first.length))
+    firstArray.push(slides.first[firstIndex])
+    slides.first.splice(firstIndex, 1)
+  }
+
+  const restArray = slides.first.concat(slides.rest)
+  const shuffledRest = restArray
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value)
+
+  return firstArray.concat(shuffledRest)
+})()
+
 const classList = ["work-item no-rise"]
 if (draft) classList.push("draft")
 if (unlisted) classList.push("unlisted")
-const classesUsed = classList.join(" ")
 ---
 
-<div class={classesUsed} data-data={JSON.stringify(data)} data-tags={JSON.stringify(tags)} data-minHeight={`${minHeight}`} style=`--min-width: ${random(0.05, 0.07)}; --min-height: ${minHeight}rem; --work-item-color: var(--offwhite)`>
+<div class:list={classList} data-data={JSON.stringify(data)} data-tags={JSON.stringify(tags)} data-minHeight={`${minHeight}`} style=`--min-width: ${random(0.05, 0.07)}; --min-height: ${minHeight}rem; --work-item-color: var(--offwhite)`>
   <div class="work-item-scaler">
     <Cap side="top" squareness={38} url={draft ? null : url}></Cap>
     <div class="work-content-wrapper">
@@ -48,28 +67,27 @@ const classesUsed = classList.join(" ")
         }</h3>
         {description && <p class="work-description work-text">{description}</p>}
         {draft && <p class="coming-soon">coming soon</p>}
-        {contextRows &&
-          <div class="work-rows">
-            {contextRows.map((row) => <div class="work-row">
-              {row.map(({path, contexts}) => <div class="work-image">
-                <Img slug={id} src={path} res={500} context={contexts}/>
-              </div>)}
-            </div>)}
-          </div>
-        }
-        {slides &&
-          <div class="work-slides">
-            <div class="work-slides-waiting-room">
-              {slides.first.map((path) => <div class="work-image first-slide">
-                <Img slug={id} src={path} res={500}/>
-              </div>)}
-              {slides.rest.map((path) => <div class="work-image rest-slide">
-                <Img slug={id} src={path} res={500}/>
-              </div>)}
+        <div class="work-images">
+          {contextRows &&
+            <div class="work-rows">
+              {contextRows.map((row) => 
+                <div class="work-row">
+                  {row.map(({path, contexts}) =>
+                    <div class="work-image">
+                      <Img slug={id} src={path} res={500} context={contexts}/>
+                    </div>)}
+                </div>)}
             </div>
-            <div class="work-slides-display"></div>
-          </div>
-        }
+          }
+          {orderedSlides &&
+            <div class="work-slides">
+              {orderedSlides.map((path, index) =>
+                <div class:list={["work-image"].concat(index === 0 ? [""] : ["closed"])}>
+                  <Img slug={id} src={path} res={500} context={["work top", "work bottom", "work row"]}/>
+                </div>)}
+            </div>
+          }
+        </div>
       </div>
     </div>
     <Cap side="bottom" squareness={35} url={draft ? null : url}></Cap>

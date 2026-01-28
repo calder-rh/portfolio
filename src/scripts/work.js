@@ -188,22 +188,31 @@ function moveToWaitingRoom() {
 function layoutImages() {
   for (let workItem of workItems) {
     const rowsElement = workItem.querySelector('.work-rows')
-    if (!rowsElement) continue
+    const slidesElement = workItem.querySelector('.work-slides')
 
-    const rows = rowsElement.querySelectorAll('.work-row')
-    for (let row of rows) {
-      const images = Array.from(row.querySelectorAll('.work-image'))
-      const totalImageWidth = contentWidth() - gapWithinRows * (images.length - 1)
-
-      const aspectRatios = images.map((image) => Number(image.querySelector('.img').dataset.aspect))
-      const totalAspectRatio = aspectRatios.reduce((partialSum, a) => partialSum + a, 0)
-
-      const height = totalImageWidth / totalAspectRatio
-
-      for (let i = 0; i < images.length; i++) {
-        const image = images[i]
-        const width = aspectRatios[i] * height
-        image.style.setProperty("--work-image-width", `${width}px`)
+    if (rowsElement) {
+      const rows = rowsElement.querySelectorAll('.work-row')
+      for (let row of rows) {
+        const images = Array.from(row.querySelectorAll('.work-image'))
+        const totalImageWidth = contentWidth() - gapWithinRows * (images.length - 1)
+  
+        const aspectRatios = images.map((image) => Number(image.querySelector('.img').dataset.aspect))
+        const totalAspectRatio = aspectRatios.reduce((partialSum, a) => partialSum + a, 0)
+  
+        const height = totalImageWidth / totalAspectRatio
+  
+        for (let i = 0; i < images.length; i++) {
+          const image = images[i]
+          const width = aspectRatios[i] * height
+          image.style.setProperty("--work-image-width", `${width}px`)
+        }
+      }
+    } else if (slidesElement) {
+      const images = slidesElement.querySelectorAll('.work-image')
+      for (let image of images) {
+        const aspectRatio = Number(image.querySelector('.img').dataset.aspect)
+        const height = contentWidth() / aspectRatio
+        image.style.setProperty("--work-image-height", `${height}px`)
       }
     }
   }
@@ -213,20 +222,32 @@ function layoutImages() {
 
 // Step 3: resize the work items to fit
 
+function nonImageWorkContentHeight(workItem) {
+  return workItem.querySelector(".work-title").clientHeight +
+    (workItem.querySelector(".work-description")?.clientHeight ?? 0)
+    + remToPx(2)
+}
+
+function changeWorkItemHeight(workItem, imageHeight) {
+  workItem.style.setProperty('--item-height', `${workItem.clientHeight}px`)
+  const nonImageHeight = nonImageWorkContentHeight(workItem)
+  const totalHeight = imageHeight + nonImageHeight
+  workItem.style.setProperty('--content-height', `${totalHeight}px`)
+  // todo figure out why 4 rem works here…
+  workItem.style.setProperty('--open-ish-content-height', `${(totalHeight - remToPx(3)) * 0.8}px`)
+}
+
 function resizeWorkItems() {
   workItems.forEach((item) => {
     item.classList.remove('closable')
 
     const contentHeight = (() => {
-      const contentHeight = item.querySelector('.work-content')?.clientHeight
+      const contentHeight = item.querySelector('.work-images')?.clientHeight
       if (JSON.parse(item.dataset.data).draft) return Math.max((item.querySelector('.work-title-contents').innerHTML.length) * 8, contentHeight)
       else return contentHeight
     })()
-    
-    item.style.setProperty('--item-height', `${item.clientHeight}px`)
-    item.style.setProperty('--content-height', `${contentHeight}px`)
-    const openIshContentHeight = item.querySelector('.work-content-wrapper').clientHeight * 0.8
-    item.style.setProperty('--open-ish-content-height', `${openIshContentHeight}px`)
+
+    changeWorkItemHeight(item, contentHeight)
   })
   workItems.forEach(item => {
     item.dataset.fullHeight = item.offsetHeight
@@ -324,6 +345,7 @@ window.addEventListener('resize', resize)
 
 function resize() {
   resizeIntroContainer()
+  createColumns()
   for (let item of document.querySelectorAll('.work-images')) {
     layoutImages(item)
   }
@@ -335,6 +357,57 @@ function resizeIntroContainer() {
   introContainer.classList.remove('loading')
 }
 
+
+
+
+
+
+function nextSlide(workItem) {
+  const slidesElement = workItem.querySelector(".work-slides")
+  const images = workItem.querySelectorAll('.work-image')
+  images[0].classList.add("closed")
+  images[1].classList.remove("closed")
+  setTimeout(() => {
+    slidesElement.append(images[0])
+  }, 500)
+  
+  const wrapper = workItem.querySelector('.work-content-wrapper')
+  wrapper.classList.add('slide-transition')
+  const aspectRatio = Number(images[1].querySelector('.img').dataset.aspect)
+  const newHeight = contentWidth() / aspectRatio
+  setTimeout(() => changeWorkItemHeight(workItem, newHeight), 1)
+  setTimeout(() => wrapper.classList.remove('slide-transition'), 500)
+}
+
+// from chatgpt
+function verticalVisibility(el) {
+  const { top, bottom, height } = el.getBoundingClientRect();
+
+  const visiblePx =
+    Math.min(bottom, window.innerHeight) -
+    Math.max(top, 0);
+
+  return Math.max(0, visiblePx) / height;
+}
+
+
+let globalSlideshowIndex = Math.floor(Math.random() * 10)
+
+function nextSlideSomewhere() {
+  if (document.hidden) return
+  const candidates = Array.from(workItems).filter((workItem) => (
+    !(workItem.classList.contains('closed')) &&
+    workItem.querySelector('.work-slides') &&
+    verticalVisibility(workItem) > 0.3
+  ))
+  if (candidates.length === 0) return
+  
+  const selection = candidates[globalSlideshowIndex % candidates.length]
+  nextSlide(selection)
+  globalSlideshowIndex++
+}
+
+setTimeout(() => setInterval(nextSlideSomewhere, 6000), 3000)
 
 
 
@@ -507,6 +580,7 @@ for (let element of document.querySelectorAll('.work-tag')) {
   element.addEventListener('mouseleave', () => mouseLeaveTag(element, tag))
 }
 
+import { set } from "astro:schema";
 import { doClose } from "./menu.js";
 
 lockup.addEventListener('click', (event) => {

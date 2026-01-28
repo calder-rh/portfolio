@@ -4,6 +4,7 @@
   :root {
     --short-transition: 0.1s;
     --long-transition: 0.3s;
+    --slide-transition: 0.5s;
     --top-transition: 0.5s;
     --background: #9eb7c3;
     --menu-white: var(--offwhite);
@@ -166,10 +167,23 @@
     height: auto;
   }
 
-  /* .work-row img {
-    height: 100%;
-    width: auto;
-  } */
+  .work-slides {
+    margin-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .work-slides .work-image {
+    transform-origin: top;
+    transform: scale(1, 1);
+    height: var(--work-image-height);
+    transition-timing-function: ease;
+    transition: var(--slide-transition);
+  }
+
+  .work-slides .work-image.closed {
+    transform: scale(1, 0);
+    height: 0;
+  }
 
   .image-waiting-room {
     width: 0;
@@ -181,10 +195,6 @@
   .work-item.closable.closed .work-content-wrapper {
     height: 0;
   }
-
-  /* .work-item.closed .work-content {
-    opacity: 0;
-  } */
 
   .work-item.closable.closed .work-content {
     scale: 1 0;
@@ -236,17 +246,24 @@
 
 
 
-  .work-item.closable, .work-item.closable *:not(.work-item-scaler) {
+  .work-item.closable, .work-item.closable *:not(.work-item-scaler):not(.work-image):not(.slide-transition) {
     transition-duration: var(--long-transition);
     transition-timing-function: ease-out;
   }
 
-  .work-item.closable.ish, .work-item.closable.ish *:not(.work-item-scaler) {
+  .work-item.closable.ish, .work-item.closable.ish *:not(.work-item-scaler):not(.work-image):not(.slide-transition) {
     transition-timing-function: ease-in;
   }
 
-  .work-item.closable.short, .work-item.closable.short *:not(.work-item-scaler) {
+  .work-item.closable.short, .work-item.closable.short *:not(.work-item-scaler):not(.work-image):not(.slide-transition) {
     transition-duration: var(--short-transition);
+  }
+
+
+
+  .work-content-wrapper.slide-transition {
+    transition-duration: var(--slide-transition);
+    transition-timing-function: ease;
   }
 
 
@@ -362,7 +379,7 @@
     height: 90%;
   }
 
-
+ 
   .work-tag {
     transition-duration: var(--long-transition);
     transition-timing-function: ease-out;

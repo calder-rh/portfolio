@@ -16,3 +16,7 @@ I haven't seen this day before_preview:
     edges:
       bottom:
         -5
+geometric:
+  work row:
+    edges:
+      horz: 20
