@@ -139,7 +139,7 @@
   .hovered .work-item-scaler {
     scale: 1.05;
     transition: 0.08s ease-in;
-    margin-bottom: calc(var(--item-height) * 0.05 - 2px);
+    margin-bottom: calc(var(--item-height) * 0.05);
   }
 
   .work-content *:last-child {
@@ -243,8 +243,6 @@
   .work-item.closable.hidden .cap-container {
     height: 0;
   }
-
-
 
   .work-item.closable, .work-item.closable *:not(.work-item-scaler):not(.work-image):not(.slide-transition) {
     transition-duration: var(--long-transition);

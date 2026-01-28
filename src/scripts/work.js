@@ -75,6 +75,10 @@ const tagDict = {}
 for (let tag of workTags) {
   tagDict[tag.dataset.slug] = tag
 }
+const workDict = {}
+for (let workItem of workItems) {
+  workDict[JSON.parse(workItem.dataset.data).slug] = workItem
+}
 
 const allTagIntroContainer = document.getElementById('tag-intro-container')
 const currentIntroContainer = document.getElementById('tag-intro-current')
@@ -228,31 +232,80 @@ function nonImageWorkContentHeight(workItem) {
     + remToPx(2)
 }
 
-function changeWorkItemHeight(workItem, imageHeight) {
-  workItem.style.setProperty('--item-height', `${workItem.clientHeight}px`)
-  const nonImageHeight = nonImageWorkContentHeight(workItem)
-  const totalHeight = imageHeight + nonImageHeight
-  workItem.style.setProperty('--content-height', `${totalHeight}px`)
-  // todo figure out why 4 rem works here…
-  workItem.style.setProperty('--open-ish-content-height', `${(totalHeight - remToPx(3)) * 0.8}px`)
+// const contentHeight = (() => {
+//   const contentHeight = item.querySelector('.work-content')?.clientHeight
+//   if (JSON.parse(item.dataset.data).draft) return Math.max((item.querySelector('.work-title-contents').innerHTML.length) * 8, contentHeight)
+//   else return contentHeight
+// })()
+
+// item.style.setProperty('--item-height', `${item.clientHeight}px`)
+// item.style.setProperty('--content-height', `${contentHeight}px`)
+// const openIshContentHeight = item.querySelector('.work-content-wrapper').clientHeight * 0.8
+// item.style.setProperty('--open-ish-content-height', `${openIshContentHeight}px`)
+
+// function iDontKnowTheNameYet(workItem) {
+//   const clone = workItem.cloneNode(true)
+//   clone.classList = ['work-item', 'open', 'clone']
+//   waitingRoom.style.width = `${columnWidth()}px`
+//   waitingRoom.append(clone)
+
+//   const contentHeight = (() => {
+//     const contentHeight = clone.querySelector('.work-content')?.clientHeight
+//     if (JSON.parse(clone.dataset.data).draft) return Math.max((clone.querySelector('.work-title-contents').innerHTML.length) * 8, contentHeight)
+//     else return contentHeight
+//   })()
+
+
+//   const itemHeight = clone.clientHeight
+//   const openIshContentHeight = clone.querySelector('.work-content-wrapper').clientHeight * 0.8
+//   // clone.remove()
+
+//   workItem.style.setProperty('--item-height', `${itemHeight}px`)
+//   workItem.style.setProperty('--content-height', `${contentHeight}px`)
+//   workItem.style.setProperty('--open-ish-content-height', `${openIshContentHeight}px`)
+
+// }
+
+function resizeWorkItem(workItem, newImageHeight=undefined) {
+  const currentContentHeight = (() => {
+    const currentContentHeight = workItem.querySelector('.work-content')?.clientHeight
+    if (JSON.parse(workItem.dataset.data).draft) return Math.max((workItem.querySelector('.work-title-contents').innerHTML.length) * 8, currentContentHeight)
+    else return currentContentHeight
+  })()
+
+  const currentImageHeight = workItem.querySelector('.work-images')?.clientHeight ?? 0
+
+  const diff = newImageHeight ? (
+    newImageHeight - currentImageHeight + remToPx(1)
+  ) : 0
+
+  const contentHeight = currentContentHeight + diff
+  const itemHeight = workItem.clientHeight + diff
+  const openIshContentHeight = (contentHeight - remToPx(3)) * 0.8
+
+  workItem.style.setProperty('--item-height', `${itemHeight}px`)
+  workItem.style.setProperty('--content-height', `${contentHeight}px`)
+  workItem.style.setProperty('--open-ish-content-height', `${openIshContentHeight}px`)
 }
 
+// function changeWorkItemHeight(workItem, imageHeight) {
+//   workItem.style.setProperty('--item-height', `${workItem.clientHeight}px`)
+//   const nonImageHeight = nonImageWorkContentHeight(workItem)
+//   const totalHeight = imageHeight + nonImageHeight
+//   workItem.style.setProperty('--content-height', `${totalHeight}px`)
+//   // todo figure out why 4 rem works here…
+//   workItem.style.setProperty('--open-ish-content-height', `${(totalHeight - remToPx(3)) * 0.8}px`)
+// }
+
 function resizeWorkItems() {
-  workItems.forEach((item) => {
+  for (let item of workItems) {
     item.classList.remove('closable')
-
-    const contentHeight = (() => {
-      const contentHeight = item.querySelector('.work-images')?.clientHeight
-      if (JSON.parse(item.dataset.data).draft) return Math.max((item.querySelector('.work-title-contents').innerHTML.length) * 8, contentHeight)
-      else return contentHeight
-    })()
-
-    changeWorkItemHeight(item, contentHeight)
-  })
-  workItems.forEach(item => {
+    resizeWorkItem(item)
+  }
+  for (let item of workItems) {
     item.dataset.fullHeight = item.offsetHeight
     item.classList.add('closable')
-  })
+  }
   
   fillColumns()
 }
@@ -366,17 +419,16 @@ function nextSlide(workItem) {
   const slidesElement = workItem.querySelector(".work-slides")
   const images = workItem.querySelectorAll('.work-image')
   images[0].classList.add("closed")
-  images[1].classList.remove("closed")
-  setTimeout(() => {
-    slidesElement.append(images[0])
-  }, 500)
+  setTimeout(() => {images[1].classList.remove("closed")}, 30)
+  setTimeout(() => {slidesElement.append(images[0])}, 500)
   
   const wrapper = workItem.querySelector('.work-content-wrapper')
   wrapper.classList.add('slide-transition')
   const aspectRatio = Number(images[1].querySelector('.img').dataset.aspect)
   const newHeight = contentWidth() / aspectRatio
-  setTimeout(() => changeWorkItemHeight(workItem, newHeight), 1)
+  setTimeout(() => resizeWorkItem(workItem, newHeight), 1)
   setTimeout(() => wrapper.classList.remove('slide-transition'), 500)
+  setTimeout(() => resizeWorkItem(workItem), 500)
 }
 
 // from chatgpt
@@ -391,7 +443,7 @@ function verticalVisibility(el) {
 }
 
 
-let globalSlideshowIndex = Math.floor(Math.random() * 10)
+let recentSlideChanges = []
 
 function nextSlideSomewhere() {
   if (document.hidden) return
@@ -401,13 +453,27 @@ function nextSlideSomewhere() {
     verticalVisibility(workItem) > 0.3
   ))
   if (candidates.length === 0) return
-  
-  const selection = candidates[globalSlideshowIndex % candidates.length]
+
+  const candidateSlugs = candidates.map(candidate => JSON.parse(candidate.dataset.data).slug)
+  const notChangedYet = candidateSlugs.filter((slug) => !(recentSlideChanges.includes(slug)))
+
+  const selectionSlug = (() => {
+    if (notChangedYet.length > 0) {
+      return notChangedYet[Math.floor(Math.random() * notChangedYet.length)]
+    } else {
+      const filteredRSC = recentSlideChanges.filter((slug) => (candidateSlugs.includes(slug)))
+      return filteredRSC[0]
+    }
+  })()
+  recentSlideChanges.splice(0, 1)
+  recentSlideChanges.push(selectionSlug)
+
+  const selection = workDict[selectionSlug]
+
   nextSlide(selection)
-  globalSlideshowIndex++
 }
 
-setTimeout(() => setInterval(nextSlideSomewhere, 6000), 3000)
+setTimeout(() => setInterval(nextSlideSomewhere, 6000), 0)
 
 
 
@@ -550,7 +616,10 @@ addEventListener('DOMContentLoaded', () => {
 
   for (let item of nonDraftWorkItems) {
     function expand() {item.classList.add('hovered')}
-    function contract() {item.classList.remove('hovered')}
+    function contract() {
+      item.classList.remove('hovered')
+      resizeWorkItem(item)
+    }
 
     for (let cap of item.querySelectorAll('.cap')) {
       cap.addEventListener('mouseenter', expand)

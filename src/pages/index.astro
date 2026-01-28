@@ -5,15 +5,12 @@ import BaseLayout from 'src/layouts/BaseLayout.astro';
 import TextOval from '@src/layouts/TextOval.astro';
 
 import WorkItem from "@src/components/WorkItem.astro"
-import Columns from "@src/layouts/Columns.astro"
 
 
 
 import { getCollection, render } from 'astro:content'
 import WorkTag from "@src/components/WorkTag.astro"
 import { inferTags } from '@src/scripts/infer-tags.js'
-
-const imageImporters = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif,svg}')
 
 const allItems = await getCollection('items')
 
@@ -96,10 +93,10 @@ const renderedIntros =  await Promise.all(tagItems
     </div>
   </div>
 	<!-- <Columns id="work-cols" columnWidth={600} columnGap={20} prepareItems={false} fillColumns={false}></Columns> -->
-  <div id="work-cols"></div>
   <div id="waiting-room">
     {workItemData.map((data) => <WorkItem data={data}/>)}
   </div>
+  <div id="work-cols"></div>
 </BaseLayout>
 
 <script>

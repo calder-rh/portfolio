@@ -10,6 +10,9 @@ const { title, description, tags, rows, slides, draft, unlisted, id, slug } = da
 const minHeight = 0.6 + title.length / 80
 const url = `/${slug}`
 
+// console.log(title)
+// console.log(rows === undefined)
+
 const contextRows = (() => {
   if (rows === undefined) return undefined
 

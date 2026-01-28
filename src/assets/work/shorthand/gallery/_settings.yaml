@@ -1,16 +1,30 @@
 "*":
   shadow: true
 monogram:
-  shadow: false
-  edges:
-    top: -3
-    bottom: -1
-    left: -2
-    right: -3
+  default:
+    shadow: false
+    edges:
+      top: -3
+      bottom: -1
+      left: -2
+      right: -3
+  work row:
+    edges:
+      horz: -1
+  work bottom:
+    edges:
+      bottom: -3
 experimental:
-  shadow: false
-  edges:
-    horz: -2.5
+  default:
+    shadow: false
+    edges:
+      horz: -2.5
+  work row:
+    edges:
+      horz: -1
+  work bottom:
+    edges:
+      bottom: -4
 I haven't seen this day before_preview:
   work bottom:
     edges:
@@ -20,3 +34,6 @@ geometric:
   work row:
     edges:
       horz: 20
+  work bottom:
+    edges:
+      bottom: -5
