@@ -410,6 +410,9 @@ function resizeIntroContainer() {
   introContainer.classList.remove('loading')
 }
 
+const introContainerSizer = new ResizeObserver(entries => resizeIntroContainer)
+introContainerSizer.observe(introContainer)
+
 
 
 
@@ -608,8 +611,6 @@ function setIntroContainer() {
 
 addEventListener('DOMContentLoaded', () => {
   setupTags(true)
-
-  setTimeout(resizeIntroContainer, 150)
 
   setIntroContainer()
   introContainer.classList.toggle('no-transition', false)
