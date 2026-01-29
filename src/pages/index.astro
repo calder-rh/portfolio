@@ -24,7 +24,7 @@ for (let item of workItems) {
     description: item.data.description,
     tags: await inferTags(item.data.tags.map(item => item.id), item.data.unlisted),
     unlisted: item.data.unlisted,
-    date: item.data.dat?.end.date,
+    date: item.data.date?.end.date,
     priority: item.data.priority,
     draft: item.data.draft === true,
 		id: item.id,
