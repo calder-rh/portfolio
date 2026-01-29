@@ -411,9 +411,12 @@ function resizeIntroContainer() {
   introContainer.classList.remove('loading')
 }
 
-const introContainerSizer = new ResizeObserver(entries => resizeIntroContainer)
-introContainerSizer.observe(introContainer)
-
+function setIntroContainer() {
+  const {implicitAll} = getURLTag()
+  resizeIntroContainer()
+  introContainer.classList.toggle('closed', !implicitAll)
+  topTagSeparator.classList.toggle('closed', !implicitAll)
+}
 
 
 
@@ -603,13 +606,6 @@ function mouseLeaveTag(element, tag) {
   }
 }
 
-
-function setIntroContainer() {
-  const {implicitAll} = getURLTag()
-  introContainer.classList.toggle('closed', !implicitAll)
-  topTagSeparator.classList.toggle('closed', !implicitAll)
-  resizeIntroContainer()
-}
 
 addEventListener('DOMContentLoaded', () => {
   setupTags(true)

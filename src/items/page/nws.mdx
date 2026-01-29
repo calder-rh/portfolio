@@ -17,6 +17,7 @@ import Img from 'src/components/Img.astro';
 import Connections from 'src/components/work/nws/Connections.astro';
 import Pair from 'src/components/work/nws/Pair.astro';
 import Work from 'src/components/Work.astro';
+import Caption from 'src/layouts/Caption.astro';
 import 'src/styles/work/nws.css';
 
 <Box factor={3} extend={true} top={2} bottom={2}>
@@ -31,7 +32,7 @@ This is a system that represents text as a network of dots and lines. Each dot r
 
 As in regular English writing, these dots are arranged from left to right. Their vertical positions do not signify anything.
 
-The connections between the dots determine what letters the dots represent. In particular, each dot is connected with lines to some combination of the five dots to its left, and the particular combination determines the letter. For example, if a dot is connected to the dot that is <Connections nums="2"/> to its left, but not any of the others, the dot represents the letter T:
+The connections between the dots determine what letters the dots represent. Each dot is connected with lines to some combination of the five dots to its left, and the particular combination determines the letter. For example, if a dot is connected to the dot that is <Connections nums="2"/> to its left, but not any of the others, the dot represents the letter T:
 
 <Box factor={0.6}>
 <Img src="T.svg" />
@@ -105,7 +106,10 @@ Network Writing System does not have to follow a straight line. If you write in 
 <Img src="ring.svg" />
 </Box>
 
+If you allow the dots to move farther in and out (or up and down), there are more compositional possibilities:
+
 <Work id="nws/night"/>
+<Caption>“The day with its cares and perplexities is ended and the night is now upon us”<br/>in [Network Writing System](/work/nws)<br/>(text from Einstein on the Beach, [Knee Play 5](https://www.youtube.com/watch?v=lTaX7FQF0hY))</Caption>
 
 ## Background and context
 

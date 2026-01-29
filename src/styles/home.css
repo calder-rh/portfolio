@@ -13,12 +13,8 @@
   #intro-container {
     width: auto;
     margin: 0 1.25rem;
-    height: var(--intro-container-height);
+    height: 24rem;
     transition: height var(--top-transition) ease;
-  }
-  
-  #intro-container.no-transition * {
-    transition: none;
   }
 
   #intro-container.closed {
@@ -31,14 +27,20 @@
     background-color: var(--offwhite);
     transform-origin: top;
     transition: scale var(--top-transition) ease;
+    scale: 1;
+    height: 24rem;
+  }
+
+  #intro-container.closed #intro {
+    scale: 0;
   }
 
   #intro p {
     font-size: 1.3rem;
   }
 
-  #intro-container.closed #intro {
-    scale: 0;
+  #intro-container.no-transition * {
+    transition: none;
   }
 
 
