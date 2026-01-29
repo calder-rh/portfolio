@@ -12,31 +12,35 @@
 
   #intro-container {
     width: auto;
+    height: auto;
     margin: 0 1.25rem;
-    height: 24rem;
     transition: height var(--top-transition) ease;
   }
 
-  #intro-container.closed {
-    height: 0;
-  }
-
   #intro {
-    max-width: 800px;
+    max-width: 48rem;
     margin: 0 auto;
     background-color: var(--offwhite);
-    transform-origin: top;
-    transition: scale var(--top-transition) ease;
-    scale: 1;
+    transition: var(--top-transition) ease;
     height: 24rem;
+    width: calc(100vw - 2.5rem);
   }
 
   #intro-container.closed #intro {
-    scale: 0;
+    height: 0;
+    width: 0;
   }
 
   #intro p {
+    opacity: 100;
     font-size: 1.3rem;
+    transition: var(--top-transition) ease;
+  }
+
+  #intro-container.closed #intro p {
+    scale: 0;
+    opacity: 0;
+    /* font-size: 0; */
   }
 
   #intro-container.no-transition * {
