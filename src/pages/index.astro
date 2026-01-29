@@ -6,11 +6,9 @@ import TextOval from '@src/layouts/TextOval.astro';
 
 import WorkItem from "@src/components/WorkItem.astro"
 
-
-
 import { getCollection, render } from 'astro:content'
 import WorkTag from "@src/components/WorkTag.astro"
-import { inferTags } from '@src/scripts/infer-tags.js'
+import { inferTags } from '@src/scripts/utilities.js'
 
 const allItems = await getCollection('items')
 
@@ -26,7 +24,7 @@ for (let item of workItems) {
     description: item.data.description,
     tags: await inferTags(item.data.tags.map(item => item.id), item.data.unlisted),
     unlisted: item.data.unlisted,
-    date: item.data.date?.end.date,
+    date: item.data.dat?.end.date,
     priority: item.data.priority,
     draft: item.data.draft === true,
 		id: item.id,

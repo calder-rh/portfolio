@@ -171,6 +171,15 @@
     margin-top: 0;
   }
 
+  .page-title .tags {
+    font-family: 'Konsole';
+    /* font-style: italic; */
+    font-size: 1.6rem;
+    margin-left: 0.3rem;
+    font-variation-settings: 'wght' 300, 'wdth' 90;
+    display: inline-block;
+  }
+
   .page-description {
     --k-wght: 500;
     --k-wdth: 110;
