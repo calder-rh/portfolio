@@ -406,6 +406,7 @@ function resize() {
 }
 
 function resizeIntroContainer() {
+  if (introContainer.classList.contains('closed')) return
   introContainer.style.setProperty('--intro-container-height', `${intro.clientHeight}px`)
   introContainer.classList.remove('loading')
 }
@@ -604,9 +605,10 @@ function mouseLeaveTag(element, tag) {
 
 
 function setIntroContainer() {
-  const {tag, implicitAll} = getURLTag()
+  const {implicitAll} = getURLTag()
   introContainer.classList.toggle('closed', !implicitAll)
   topTagSeparator.classList.toggle('closed', !implicitAll)
+  resizeIntroContainer()
 }
 
 addEventListener('DOMContentLoaded', () => {
@@ -614,6 +616,7 @@ addEventListener('DOMContentLoaded', () => {
 
   setIntroContainer()
   introContainer.classList.toggle('no-transition', false)
+  resizeIntroContainer()
 
   for (let item of nonDraftWorkItems) {
     function expand() {item.classList.add('hovered')}

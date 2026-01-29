@@ -14,13 +14,9 @@
     width: auto;
     margin: 0 1.25rem;
     height: var(--intro-container-height);
-    transition: height var(--top-transition);
+    transition: height var(--top-transition) ease;
   }
-
-  #intro-container.loading {
-    height: auto;
-  }
-
+  
   #intro-container.no-transition * {
     transition: none;
   }
@@ -34,7 +30,7 @@
     margin: 0 auto;
     background-color: var(--offwhite);
     transform-origin: top;
-    transition: scale var(--top-transition);
+    transition: scale var(--top-transition) ease;
   }
 
   #intro p {

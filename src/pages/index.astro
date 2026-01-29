@@ -65,7 +65,7 @@ const renderedIntros =  await Promise.all(tagItems
 ---
 
 <BaseLayout title="Calder Ruhl Hansen" name={false}>
-	<div id="intro-container" class="no-transition">
+	<div id="intro-container" class="closed no-transition">
 		<TextOval squareness={38} id="intro">
 			<p>
 				Hi, I’m Calder. I make systems of meaningful forms. Or sometimes just systems, or forms, or things that feel meaningful.
@@ -73,7 +73,7 @@ const renderedIntros =  await Promise.all(tagItems
 		</TextOval>
 	</div>
 
-	<div id="top-tag-separator"></div>
+	<div id="top-tag-separator" class="closed"></div>
 	<div id="tags">
     {sortedTags.map(tag => <WorkTag listName={tag.data.name} titleName={tag.data.title} slug={tag.id} unlisted={tag.data.unlisted}></WorkTag>)}
   </div>
