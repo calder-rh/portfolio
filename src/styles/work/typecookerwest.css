@@ -1,0 +1,22 @@
+#typecookers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#typecookers .img {
+  width: 22rem;
+}
+
+@media screen and (max-width: 47.5rem) {
+  #typecookers .img {
+    width: calc((100vw - 3.5rem) / 2);
+  }
+}
+
+@media screen and (max-width: 20rem) {
+  #typecookers .img {
+    width: calc((100vw - 2.5rem));
+  }
+}

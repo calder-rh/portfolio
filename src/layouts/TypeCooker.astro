@@ -1,0 +1,17 @@
+---
+const {image, recipe, instagram} = Astro.props.frontmatter
+import Img from '@src/components/Img.astro'
+---
+
+<Img src={image}/>
+<p>Recipe: {(typeof recipe === "string") && recipe}</p>
+{(typeof recipe !== "string") &&
+  <div class="glue"/>
+  <ul>
+    {Object.entries(recipe).map(([key, value]) => <li>{key}: <em>{value}</em></li>)}
+  </ul>
+}
+
+<slot/>
+
+<p>You can see other people’s interpretations of this recipe <a href={instagram}>here</a>.</p>

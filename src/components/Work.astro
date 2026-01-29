@@ -1,12 +1,12 @@
 ---
 import Img from '@src/components/Img.astro'
 import { getEntry } from 'astro:content'
-const { id } = Astro.props;
+const { id, res, context } = Astro.props;
 
 const item = await getEntry('items', id)
 if (!item) throw new Error(`There is no item with id ${id}.`)
 ---
 
 <a href={`/work/${item.id}`}>
-  <Img src={item.data.mainImage} slug={id}/>
+  <Img src={item.data.mainImage} slug={id} res={res} context={context}[/>
 </a>
