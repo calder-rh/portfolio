@@ -93,9 +93,9 @@
     max-width: var(--content-width);
   }
   
-  /* .content .img, .content .media {
+  .content .img, .content .media {
     margin: 2rem 0;
-  } */
+  }
 
   /* .box .img {
     margin-top: var(--space);

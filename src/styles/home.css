@@ -40,7 +40,6 @@
   #intro-container.closed #intro p {
     scale: 0;
     opacity: 0;
-    /* font-size: 0; */
   }
 
   #intro-container.no-transition * {

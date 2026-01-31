@@ -34,13 +34,13 @@ const plainTitle = new Marked()
   const captions = document.querySelectorAll('.caption');
   captions.forEach(caption => {
     let prevSibling = caption.previousElementSibling;
-    while (prevSibling && (prevSibling instanceof HTMLScriptElement)) {
+    while (prevSibling) {
       if (prevSibling instanceof HTMLScriptElement) {
         prevSibling = prevSibling.previousElementSibling;
       } else if ((prevSibling instanceof HTMLAnchorElement) || (prevSibling instanceof HTMLSpanElement)) {
-        prevSibling = prevSibling.children[-1];
+        prevSibling = prevSibling.children[prevSibling.children.length - 1];
         continue
-      }
+      } else break
     }
     if (prevSibling) {
       prevSibling.classList.add('captioned');
