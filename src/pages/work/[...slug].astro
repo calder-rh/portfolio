@@ -17,7 +17,7 @@ const { Content, remarkPluginFrontmatter } = await render(entry);
 const backlinks = []
 for (let tag of entry.data.tags) {
   const tagItem = await getEntry('items', tag.id)
-  if (hasPage(tagItem)) {
+  if (hasPage(tagItem) && tagItem?.data.backlink !== false) {
     backlinks.push({
       name: tagItem.data.name,
       url: '/work/' + tagItem.id

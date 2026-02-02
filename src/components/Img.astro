@@ -56,7 +56,7 @@ const w = (scale !== undefined) ? `${scale * settings.dimensions.width / 100}rem
   }
 </style>
 
-<div class="img" data-aspect={settings.dimensions.adjustedAspect}>
+<div class="img spaced-media" data-aspect={settings.dimensions.adjustedAspect}>
   <!-- needed so that the margin from he optical aligment is separate from the margin around every image -->
   <div class="img-inner">
     <!-- the actual element that is resized (can’t be the img itself because that’s in the scope of the Image component) -->

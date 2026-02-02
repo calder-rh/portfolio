@@ -7,6 +7,6 @@ const item = await getEntry('items', id)
 if (!item) throw new Error(`There is no item with id ${id}.`)
 ---
 
-<a href={`/work/${item.id}`}>
+<a class="spaced-media" href={`/work/${item.id}`}>
   <Img src={item.data.mainImage} slug={id} res={res} context={context}[/>
 </a>

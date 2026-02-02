@@ -53,8 +53,7 @@ Or in mathematical terms, a [bijection](https://en.wikipedia.org/wiki/Bijection)
 
 The basic idea is to break the text down into characters, then use some system to interpret these characters as a description of a shape. But “a description of a shape” is rather vague. There are many ways to describe shapes. For example, consider this shape:
 
-<Img classes={["shape-building"]} src="diagrams/shape.svg"/>
-
+<Img scale={16} src="diagrams/shape.svg"/>
 
 
 You could describe it using several methods:
@@ -241,41 +240,41 @@ Resolution Code uses a different way of describing shapes that better respects t
 
 Let’s look at how the system describes this shape/image:
 
-<Img classes={["shape-building"]} src="diagrams/sample shape.svg"/>
+<Img scale={8} src="diagrams/sample shape.svg"/>
 
 We will start by representing this image at a 2×2 resolution. I’ll overlay a blank 2×2 grid on top of this, with the pixels waiting to be filled in:
 
-<Img classes={["shape-building"]} src="diagrams/iteration 1 0.svg"/>
+<Img scale={8} src="diagrams/iteration 1 0.svg"/>
 
 Now let’s use the shape as a guide to fill in the pixels. The top left pixel covers a region of the image that’s fully white, so we can color this pixel white:
 
-<Img classes={["shape-building"]} src="diagrams/iteration 1 1.svg"/>
+<Img scale={8} src="diagrams/iteration 1 1.svg"/>
 
 The top right pixel covers a region that’s partly black and partly white. We need more detail to represent what’s going on here, so we *split it into four smaller pixels* that we’ll return to later.
 
-<Img classes={["shape-building"]} src="diagrams/iteration 1 2.svg"/>
+<Img scale={8} src="diagrams/iteration 1 2.svg"/>
 
 We proceed to the next row: the bottom left pixel is fully white, while the bottom right needs to be split:
 
-<Img classes={["shape-building"]} src="diagrams/iteration 1 3.svg"/>
+<Img scale={8} src="diagrams/iteration 1 3.svg"/>
 
 Now we’ve reached the end of the image. At this point we’ve already defined the left half of this image. But there is the other half that needs more detail. So we go back and start a second iteration, doing the same thing at a smaller scale. As before, we read from left to right, then top to bottom. The first one needs to be split:
 
-<Img classes={["shape-building"]} src="diagrams/iteration 2 1.svg"/>
+<Img scale={8} src="diagrams/iteration 2 1.svg"/>
 
 The second one is fully black:
 
-<Img classes={["shape-building"]} src="diagrams/iteration 2 2.svg"/>
+<Img scale={8} src="diagrams/iteration 2 2.svg"/>
 
 And so on:
 
-<Img classes={["shape-building"]} src="diagrams/iteration 2 end.svg"/>
+<Img scale={8} src="diagrams/iteration 2 end.svg"/>
 
 As we go, we keep track of what we did with each pixel. In the first iteration earlier, the first pixel was <White/>, the second was <Split/>, the third was <White/>, and the fourth was <Split/>. In second iteration that we just finished, the instructions were <Sequence instrs={"sbsbssww"}/>.
 
 A third iteration: as we go through the remaining blue undefined pixels in the above image, the shape indicates that the next instructions are <Sequence instrs={"sbsbsbsswssbwwss"} small={true}/>.
 
-<Img classes={["shape-building"]} src="diagrams/iteration 3.svg"/>
+<Img scale={8} src="diagrams/iteration 3.svg"/>
 
 We can keep doing this indefinitely, describing the shape in ever-increasing detail and producing an ever-growing sequence:
 
@@ -318,21 +317,21 @@ Notice a key difference here: in the latter sequence, the one that describes a n
 
 So let’s see what happens if we impose a rule that black and white pixels are not allowed to touch each other. To test how this would look, we can still randomly select what to do with each pixel, but we now have to restrict what options are possible based on what a pixel is touching. For example, let’s say we’re selecting what to do with this pixel:
 
-<Img classes={["shape-building"]} src="diagrams/neighbor white.svg"/>
+<Img scale={8} src="diagrams/neighbor white.svg"/>
 
 Because this pixel is touching white, it can’t be filled in black — it can only be <White/> or <Split/>. So we randomly select between those two options.
 
 Similarly, this one is touching black, so it can only be <Black/> or <Split/>:
 
-<Img classes={["shape-building"]} src="diagrams/neighbor black.svg"/>
+<Img scale={8} src="diagrams/neighbor black.svg"/>
 
 This one is touching both black and white, so it can only be <Split/>:
 
-<Img classes={["shape-building"]} src="diagrams/neighbor both.svg"/>
+<Img scale={8} src="diagrams/neighbor both.svg"/>
 
 And this one is touching neither black nor white (the corners don’t count), so all three options are possible:
 
-<Img classes={["shape-building"]} src="diagrams/neighbor neither.svg"/>
+<Img scale={8} src="diagrams/neighbor neither.svg"/>
 
 Now let’s generate a shape using these rules. For each pixel, we look at its neighbors to figure out which of the three options is allowed. Then we select one of those allowed options at random. Here’s what we get:
 
@@ -378,7 +377,7 @@ So perhaps we could just skip over any instruction that isn’t allowed. For exa
 
 The result:
 
-<Img classes={["shape-building"]} src="diagrams/wsws.svg"/>
+<Img scale={8} src="diagrams/wsws.svg"/>
 
 This method — encode characters using instruction sequences, and then just skip the instructions that aren’t allowed — works for generating shapes based on text. But it doesn’t *encode* shapes into text, because we can’t recover the text that was used to generate a shape. In the above example, if you were just looking at the shape and reading off the instructions from it, you’d get a sequence starting with <Sequence instrs="wsws"/>, and you’d have no way of knowing there was a skipped <Black/> instruction in there. In fact there could be any number of skipped instructions that you have no way of recovering, and so this image could represent any number of possible texts. There’s no way of knowing what it was supposed to represent.
 
@@ -436,15 +435,15 @@ To address this issue, we add another rule: if there is only one undefined pixel
 
 Let’s say we wanted to take that tree from earlier and convert it to text:
 
-<Img classes={["shape-building"]} src="diagrams/tree.png"/>
+<Img scale={8} src="diagrams/tree.png"/>
 
 This shape is contained in a rectangular frame, while Resolution Code is only able to interpret shapes in a square frame. So to start interpreting it, we can make the frame square:
 
-<Img classes={["shape-building"]} src="diagrams/tree square 1.png"/>
+<Img scale={8} src="diagrams/tree square 1.png"/>
 
 But that’s not the only way to put this shape in a square frame. We could also frame it like this:
 
-<Img classes={["shape-building"]} src="diagrams/tree square 2.png"/>
+<Img scale={8} src="diagrams/tree square 2.png"/>
 
 Or in infinitely many other ways. Every choice of framing would result in a wholly different text. Is this what we want?
 
@@ -452,25 +451,25 @@ If we consider the system to be one that represents *compositions of shapes in a
 
 My original intention was the latter. So let’s impose a rule that, when preparing a shape to be interpreted by Resolution Code, it will framed as tightly as possible, and it will be aligned either to the top of the frame (if it’s wider than it is tall) or to the left of the frame (if it’s taller than it is wide):
 
-<Img classes={["shape-building"]} src="diagrams/tree square 3.png"/>
+<Img scale={8} src="diagrams/tree square 3.png"/>
 
 (This still allows the shape to be *rotated* to create a new framing, but I will call this good enough.)
 
 Because there is now only one way to frame a given shape, we don’t have to put it in a frame at all to know how to interpret it. So the system is now, more truly, dealing with *shapes* and not images.
 
-<Img classes={["shape-building"]} src="diagrams/tree no frame.png"/>
+<Img scale={8} src="diagrams/tree no frame.png"/>
 
 But now this introduces a new source of ambiguity. Say you encode some text and it produces this image:
 
-<Img classes={["shape-building"]} src="diagrams/framing 0.png"/>
+<Img scale={8} src="diagrams/framing 0.png"/>
 
 Ideally we wouldn’t need the frame for this shape to keep its meaning. So we remove the frame:
 
-<Img classes={["shape-building"]} src="diagrams/framing 1.png"/>
+<Img scale={8} src="diagrams/framing 1.png"/>
 
 But now, if someone were to interpret this shape, they would follow the framing rules and frame it like this:
 
-<Img classes={["shape-building"]} src="diagrams/framing 2.png"/>
+<Img scale={8} src="diagrams/framing 2.png"/>
 
 And that would produce a totally different text. The problem derives from the fact that we decided the system should only represent shapes framed in a certain way, but at the moment it can still *produce* shapes framed in other ways.
 

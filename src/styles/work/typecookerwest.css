@@ -5,6 +5,10 @@
   gap: 1rem;
 }
 
+#typecookers a {
+  margin: 0;
+}
+
 #typecookers .img {
   width: 22rem;
 }
