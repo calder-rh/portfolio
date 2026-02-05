@@ -1,0 +1,7 @@
+#words, #letters, .morph {
+  opacity: 0;
+}
+
+.morph {
+  display: none;
+}

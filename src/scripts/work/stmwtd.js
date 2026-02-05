@@ -4,11 +4,26 @@ import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 
 gsap.registerPlugin(Flip, MorphSVGPlugin);
 
+const frames = ["piece", "words", "letters"]
+
 const svgs = {
-  piece: document.querySelector('#piece-frame').innerHTML,
-  words: document.querySelector('#words-frame').innerHTML,
-  letters: document.querySelector('#letters-frame').innerHTML
+  piece: document.getElementById('piece-frame').innerHTML,
+  words: document.getElementById('words-frame').innerHTML,
+  letters: document.getElementById('letters-frame').innerHTML
 };
+
+const frameEl = document.getElementById("frame")
+
+
+
+
+// const states = {}
+// for (let frameName of frames) {
+//   frameEl.innerHTML = svgs[frameName]
+//   states[frameName] = Flip.getState('#frame *:not(.morph)')
+// }
+
+const slider = document.getElementById("slider")
 
 const opacities = {
   piece: {words: 0, letters: 0},
@@ -16,96 +31,98 @@ const opacities = {
   letters: {words: 1, letters: 1},
 }
 
-let currentFrame
+frameEl.innerHTML = svgs.piece
+document.getElementById("words").style.opacity = 0
+document.getElementById("letters").style.opacity = 0
 
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("frame").innerHTML = svgs.piece
-  document.getElementById("words").style.opacity = 0
-  document.getElementById("letters").style.opacity = 0
-  currentFrame = "piece"
-})
+const tl = gsap.timeline({ paused: true })
 
-function swapSVG(name) {
-  MorphSVGPlugin.convertToPath(
-    "#frame polygon"
-  );
+for (let i = 1; i < frames.length; i++) {
+  const frameName = frames[i]
+  const prevFrameName = frames[i - 1]
 
-  const state = Flip.getState('#frame *:not(.morph)');
+  MorphSVGPlugin.convertToPath("#frame polygon");
 
-  const oldMorphs = {};
-  document.querySelectorAll('#frame .morph').forEach(p => {
-    oldMorphs[p.dataset.morphId] = p;
-  });
+  // const oldMorphs = {};
+  // document.querySelectorAll('#frame .morph').forEach(p => {
+  //   oldMorphs[p.dataset.morphId] = p;
+  // });
 
-  console.log(oldMorphs)
+  // MorphSVGPlugin.convertToPath("#frame polygon");
 
-  document.querySelector('#frame').innerHTML = svgs[name];
+  // const newMorphs = {};
+  // document.querySelectorAll('#frame .morph').forEach(p => {
+  //   newMorphs[p.dataset.morphId] = p;
+  // });
 
-  MorphSVGPlugin.convertToPath(
-    "#frame polygon"
-  );
+  // tl.add(() => {
+  //   frameEl.innerHTML = svgs[frameName];
+  // }, i);
 
-  const newMorphs = {};
-  document.querySelectorAll('#frame .morph').forEach(p => {
-    newMorphs[p.dataset.morphId] = p;
-  });
+  // const state = states[prevFrameName]
+  // frameEl.innerHTML = svgs[frameName];
+  // tl.add(
+  //   Flip.from(state, {
+  //     targets: '#frame *:not(.morph)',
+  //     duration: 1,
+  //     ease: 'linear',
+  //     absolute: true,
+  //   }),
+  //   i - 1
+  // )
 
-  const tl = gsap.timeline()
+  // tl.to({}, { duration: 1 })
 
+  
+  // tl.add(
+  //   Flip.to(endState, {
+  //     duration: 1,
+  //     ease: 'linear',
+  //     absolute: true,
+  //   })
+  // )
+  const state = Flip.getState('#frame *');
+  frameEl.innerHTML = svgs[frameName];
   tl.add(
     Flip.from(state, {
-      targets: "#frame *:not(.morph)",
+      targets: "#frame *",
       duration: 1,
-      ease: 'power1.inOut',
+      ease: 'linear',
       absolute: true,
     }),
-    0
   )
 
-  tl.fromTo(
-    "#words",
-    {opacity: opacities[currentFrame].words},
-    {opacity: opacities[name].words, duration: 1},
-    0
-  )
+  // tl.fromTo(
+  //   "#words",
+  //   {opacity: opacities[prevFrameName].words},
+  //   {opacity: opacities[frameName].words, duration: 1},
+  //   i - 1
+  // )
 
-  tl.fromTo(
-    "#letters",
-    {opacity: opacities[currentFrame].letters},
-    {opacity: opacities[name].letters, duration: 1},
-    0
-  )
+  // tl.fromTo(
+  //   "#letters",
+  //   {opacity: opacities[prevFrameName].letters},
+  //   {opacity: opacities[frameName].letters, duration: 1},
+  //   i - 1
+  // )
 
-  for (let key in oldMorphs) {
-    if (newMorphs[key]) {
-      console.log(oldMorphs[key])
-      tl.fromTo(
-        // oldMorphs[key],
-        `[data-morph-id="${key}"]`,
-        // "#shapes",
-        { morphSVG: oldMorphs[key].getAttribute("d") },
-        { morphSVG: newMorphs[key], duration: 1, ease: 'power1.inOut' },
-        0
-      );
-    }
-  }
-
-  currentFrame = name
+  // for (let key in oldMorphs) {
+  //   if (newMorphs[key]) {
+  //     tl.fromTo(
+  //       `[data-morph-id="${key}"]`,
+  //       { morphSVG: oldMorphs[key].getAttribute("d") },
+  //       { morphSVG: newMorphs[key], duration: 1, ease: 'linear' },
+  //       i - 1
+  //     );
+  //   }
+  // }
 }
 
-// function swapSVG(name) {
-//   document.getElementById('frame').innerHTML = svgs[name];
-// }
 
 
-// const piece = document.getElementById("piece")
-// const words = document.getElementById("words-diagram")
-// const letters = document.getElementById("letters-diagram")
+// gsap.set("#words", {opacity: 0})
+// gsap.set("#letters", {opacity: 0})
 
-document.addEventListener("keydown", (ev) => {
-  if (ev.key === "s") {swapSVG("piece")}
-  else if (ev.key === "d") {swapSVG("words")}
-  else if (ev.key === "f") {swapSVG("letters")}
-})
-
-// TODO next step: concatenate two of these into one timeline.
+slider.addEventListener("input", () => {
+  tl.progress(slider.value);
+});

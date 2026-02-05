@@ -6,9 +6,9 @@ date: 2025-11
 gallery: work
 # page: auto
 ---
-import Piece from "@src/assets/work/stmwtt/1 copy.svg"
-import Words from "@src/assets/work/stmwtt/2 copy.svg"
-import Letters from "@src/assets/work/stmwtt/3 copy.svg"
+import Piece from "@src/assets/work/stmwtt/piece.svg"
+import Words from "@src/assets/work/stmwtt/words.svg"
+import Letters from "@src/assets/work/stmwtt/letters.svg"
 import Script from "@src/components/work/stmwtd.astro"
 import "@src/styles/work/stmwtd.css"
 
@@ -24,8 +24,6 @@ import "@src/styles/work/stmwtd.css"
   <Letters />
 </template>
 
-<div id="frame"></div>
-
 <input
   type="range"
   id="slider"
@@ -34,6 +32,10 @@ import "@src/styles/work/stmwtd.css"
   step="0.001"
   value="0"
 />
+
+<div id="frame"></div>
+
+
 
 <Script />
 
