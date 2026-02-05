@@ -4,5 +4,36 @@ image: /shorthand/gallery/someone tell me what to do.png
 tags: shorthand
 date: 2025-11
 gallery: work
-page: auto
+# page: auto
 ---
+import Piece from "@src/assets/work/stmwtt/1 copy.svg"
+import Words from "@src/assets/work/stmwtt/2 copy.svg"
+import Letters from "@src/assets/work/stmwtt/3 copy.svg"
+import Script from "@src/components/work/stmwtd.astro"
+import "@src/styles/work/stmwtd.css"
+
+<template id="piece-frame">
+  <Piece />
+</template>
+  
+<template id="words-frame">
+  <Words />
+</template>
+
+<template id="letters-frame">
+  <Letters />
+</template>
+
+<div id="frame"></div>
+
+<input
+  type="range"
+  id="slider"
+  min="0"
+  max="1"
+  step="0.001"
+  value="0"
+/>
+
+<Script />
+

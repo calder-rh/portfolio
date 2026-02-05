@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="layer" data-flip-id="layer" xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500">
+  <g id="ellipse" data-flip-id="ellipse">
+    <circle data-flip-id="srkl" cx="368.22" cy="117.49" r="58.44"/>
+  </g>
+  <g id="rectangle" data-flip-id="rectangle">
+    <rect data-flip-id="rect" x="56.56" y="245.5" width="145.34" height="145.34"/>
+  </g>
+</svg>
