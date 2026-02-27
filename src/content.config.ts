@@ -163,6 +163,8 @@ const items = defineCollection({
       date: true,
     }),
 
+    topImage: z.boolean().default(false),
+
     unlisted: z.boolean().default(false),
     draft: z.boolean().default(false),
     priority: z.number().default(Infinity),

@@ -1,5 +1,6 @@
 ---
 import Article from '@src/layouts/Article.astro';
+import Title from '@src/components/Title.astro';
 import Img from '@src/components/Img.astro'
 import { getCollection, getEntry, render } from 'astro:content';
 import { hasPage } from '@src/scripts/utilities.js'
@@ -12,22 +13,19 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content, remarkPluginFrontmatter } = await render(entry);
-
-const backlinks = []
-for (let tag of entry.data.tags) {
-  const tagItem = await getEntry('items', tag.id)
-  if (hasPage(tagItem) && tagItem?.data.backlink !== false) {
-    backlinks.push({
-      name: tagItem.data.name,
-      url: '/work/' + tagItem.id
-    })
-  }
-}
+const { Content } = await render(entry);
 ---
 
-<Article title={entry.data.title} backlinks={backlinks} description={entry.data.description}}>
-  {entry.data.page === 'auto' ?
-  <Img src={entry.data.mainImage} alt="test"/> :
-  <Content />}
-</BaseLayout>
+<Article data={entry.data} description={entry.data.description} topTitle={!entry.data.topImage}>
+  {entry.data.page === 'auto' ? (
+    <Img src={entry.data.mainImage} />
+  ) : (
+    <>
+      {entry.data.topImage && (
+        <Img src={entry.data.mainImage} />
+        <Title data={entry.data}/>
+      )}
+      <Content />
+    </>
+  )}
+</Article>

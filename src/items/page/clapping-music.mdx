@@ -5,18 +5,14 @@ home: work
 date: 2022-01-18
 image: clapping music print.png
 priority: 2
+topImage: true
 ---
 import Box from 'src/layouts/Box.astro';
 import Img from 'src/components/Img.astro';
 import Work from 'src/components/Work.astro';
 import { MuxPlayer } from "@mux/mux-player-astro";
-import "@src/styles/work/clapping.css"
 
-A graphic system that displays the patterns in this [systematic piece of music](https://www.youtube.com/watch?v=YPU5XrmORCQ) by Steve Reich.
-
-<Img src='clapping music print.png' alt='A geometric grid of black circles and semicircles'/>
-
-Each horizontal row represents one rhythmic pattern, read from left to right. The top half of a circle represents one performer clapping; the bottom half represents the other performer.
+This piece is a graphic notation system that displays the patterns in this [systematic piece of music](https://en.wikipedia.org/wiki/Clapping_Music) by Steve Reich. Watch the video to see how it represents the music:
 
 <Box factor={1.068} id="video-box">
   <MuxPlayer
@@ -27,6 +23,8 @@ Each horizontal row represents one rhythmic pattern, read from left to right. Th
     accentColor="#60889a"
   />
 </Box>
+
+Each horizontal row represents one rhythmic pattern, read from left to right. The top half of a circle represents one performer clapping; the bottom half represents the other performer.
 
 Both performers clap the same rhythm throughout. They start out in sync: in the top row, the top halves and bottom halves of the circles are aligned. That pattern is repeated a number of times. Then one performer shifts a beat out of sync: on the second row, the bottoms of the circles are moved one beat to the left. That new pattern is repeated a number of times. Then on the third row, they shift another beat out of sync, and so on, until they end up back in sync at the end.
 

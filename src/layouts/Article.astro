@@ -1,31 +1,21 @@
 ---
 import '@src/styles/article.css'
 import BaseLayout from "./BaseLayout.astro";
-const {title, backlinks, description} = Astro.props;
-
-const lastBacklink = backlinks?.[backlinks.length - 1]
-
+import Title from "@src/components/Title.astro";
 import { marked, Marked } from 'marked';
 import markedPlaintify from 'marked-plaintify'
-const mdTitle = marked.parse(title).replaceAll(/<\/?p>/gi, '')
+const {data, topTitle=true} = Astro.props;
+
+const mdTitle = marked.parse(data.title).replaceAll(/<\/?p>/gi, '')
 const plainTitle = new Marked()
   .use(markedPlaintify())
-  .parse(title)
+  .parse(data.title)
 ---
 
 <BaseLayout title={plainTitle}>
   <div class="content" id="article">
-    <div class="page-intro">
-      <h1 class="page-title konsole">
-        <span set:html={mdTitle}/>
-        {backlinks?.length > 0 &&
-          <span class="tags">
-            {"("}{backlinks.slice(0, -1).map(({name, url}) => <span><a href={url}>{name}</a>, </span>)}<span><a href={lastBacklink.url}>{lastBacklink.name}</a></span>{")"}
-          </span>
-        }
-      </h1>
+    {topTitle && <Title data={data}/>}
       <!-- {description && <p class="page-description konsole">{description}</p>} -->
-    </div>
     <slot />
   </div>
 </BaseLayout>
