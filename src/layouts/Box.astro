@@ -1,5 +1,5 @@
 ---
-const {factor=1, extend=false, offset=0, top=0, bottom=0, space=2, classes=[]} = Astro.props;
+const {factor=1, extend=false, offset=0, top=0, bottom=0, space=2, classes=[], id=null} = Astro.props;
 const style = `--offset: ${-50 + offset}%; --top: ${top}rem; --bottom: ${bottom}rem; --space: ${space}rem; ` 
 + (extend ?
   `--width: calc(${factor} * (100vw - 2.5rem)); --max-width: ${factor * 47.5}rem;`
@@ -19,7 +19,7 @@ const classesUsed = classList.join(" ")
 {
   (() => {
     let mainBox =
-      <div class={classesUsed} style={style}>
+      <div class={classesUsed} style={style} id={id}>
         <slot/>
       </div>
     

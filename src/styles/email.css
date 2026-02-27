@@ -1,0 +1,112 @@
+/* @font-face {
+  font-display: block;
+  font-family: Roboto;
+  src: url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/25c678feafdc175a70922a116c9be3e7.woff) format("woff")
+}
+
+@font-face {
+  font-display: fallback;
+  font-family: Roboto;
+  font-weight: 600;
+  src: url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/6e9caeeafb1f3491be3e32744bc30440.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/71501f0d8d5aa95960f6475d5487d4c2.woff) format("woff")
+}
+
+@font-face {
+  font-display: fallback;
+  font-family: Roboto;
+  font-weight: 700;
+  src: url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/3ef7cf158f310cf752d5ad08cd0e7e60.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/ece3a1d82f18b60bcce0211725c476aa.woff) format("woff")
+} */
+
+/* #sib-container * {
+  font-family: Infini;
+}
+
+#sib-container input:-ms-input-placeholder {
+  text-align: left;
+  color: #c0ccda;
+}
+
+#sib-container input::placeholder {
+  text-align: left;
+  color: #c0ccda;
+}
+
+#sib-container textarea::placeholder {
+  text-align: left;
+  color: #c0ccda;
+}
+
+#sib-container button * {
+  font-family: Infini;
+  text-decoration: underline;
+  color: #2BB2FC;
+} */
+
+
+.content .sib-form, .content #sib-container {
+  padding: 0;
+  background-color: unset;
+}
+
+.content .sib-form-block {
+  padding: 0;
+}
+
+.content .sib-form * {
+  font-family: Konsole;
+  color: var(--brown);
+}
+
+.content input.input {
+  background-color: var(--offwhite);
+  padding: 0;
+  font-size: 1.2rem;
+  
+}
+
+.content #sib-form .entry__field {
+  height: 4rem;
+  background-color: var(--offwhite);
+  border-radius: 0;
+  border: none;
+  margin: 0;
+}
+
+#email-box {
+  flex: 1 0 15rem;
+  margin: 0;
+}
+
+.content button {
+  width: fit-content;
+  background-color: var(--offwhite);
+  font-variation-settings: 'wght' 450, 'wdth' 115;
+  text-transform: uppercase;
+  font-size: 1rem;
+  padding: 1.5rem 2rem;
+  width: 100%;
+}
+
+#button-oval {
+  transition: scale .08s ease-out;
+  scale: 1;
+}
+
+.content .input::placeholder {
+  color: var(--blue);
+}
+
+#button-oval:hover {
+  scale: 1.1;
+  transition: scale .08s ease-in;
+}
+
+#sib-form {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}

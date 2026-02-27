@@ -116,12 +116,12 @@
   color: #ebeff2;
 }
 
-.shape-building {
+/* .shape-building {
   width: 100%;
   max-width: 400px;
   margin-left: auto;
   margin-right: auto;
-}
+} */
 
 .instruction.short {
   text-transform: uppercase;
