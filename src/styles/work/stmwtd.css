@@ -1,6 +1,11 @@
 #slider {
   width: 100%;
-  margin-bottom: 2rem;
+  margin: 2rem 0 0 0;
+}
+
+#frame-container {
+  background-color: var(--offwhite);
+  padding: 2rem;
 }
 
 #frame-container svg {

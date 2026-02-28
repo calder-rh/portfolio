@@ -170,7 +170,9 @@ const items = defineCollection({
     priority: z.number().default(Infinity),
 
     parameter: reference('parameters').optional(),
-    backlink: z.oboolean(),
+
+    quote: z.boolean().default(false),
+    backlink: z.ostring(),
 
     tags: oneOrMore(reference('items')).default([]),
   }).transform((data) => ({

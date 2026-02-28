@@ -11,13 +11,21 @@ slides:
   - consciousness.png
   - prints.jpg
 priority: 0
+backlink: written in _
 ---
 import Box from 'src/layouts/Box.astro';
 import Caption from 'src/layouts/Caption.astro';
 import Img from 'src/components/Img.astro';
 import Work from 'src/components/Work.astro';
+import Glue from 'src/components/Glue.astro';
 
 Contour Code is a system that encodes text in compositions of 2<span class='sc'>D</span> geometric shapes.
+
+*Contents:*
+<Glue/>
+- [Gallery](#gallery)
+- [Instructions](#instructions)
+- [Design notes](#design-notes)
 
 I had two goals in designing this system: first, to produce beautiful abstractions along the lines of Alexander Calder and Ellsworth Kelly, and second, to make a code flexible enough that any possible set of geometric shapes can be “read” as text. To achieve these goals, I designed a procedure for converting between compositions of shapes and strings of characters. In this design process, I aimed to maximize the beauty of the shapes, the elegance of the algorithm, and the system’s ease of use. Contour Code is the result of a conversation between these three values.
 
@@ -56,3 +64,4 @@ I have also experimented with several other options for encodings, which use thr
 
 Contour Code was included in the juried exhibition [Quasi: Experimental Writing Systems](https://hmctartcenter.org/exhibitions/quasi-experimental-writing-systems/) at ArtCenter College of Design.
 
+## Design notes

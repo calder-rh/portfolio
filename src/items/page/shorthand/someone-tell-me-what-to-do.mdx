@@ -1,5 +1,6 @@
 ---
 name: Someone tell me what to do
+quote: true
 image: /shorthand/gallery/someone tell me what to do.png
 tags: shorthand
 date: 2025-11
@@ -24,6 +25,10 @@ import "@src/styles/work/stmwtd.css"
   <Letters />
 </template>
 
+Drag the slider below to see where the words and letters are:
+
+<div id="frame-container"></div>
+
 <input
   type="range"
   id="slider"
@@ -32,7 +37,5 @@ import "@src/styles/work/stmwtd.css"
   step="0.001"
   value="0"
 />
-
-<div id="frame-container"></div>
 
 <Script />

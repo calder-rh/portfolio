@@ -3,40 +3,40 @@ import '@src/styles/article.css'
 const { data } = Astro.props;
 import { getCollection, getEntry, render } from 'astro:content';
 import { hasPage } from '@src/scripts/utilities.js'
+import { marked } from 'marked';
 
-const title = data.title || data.name
-
-console.log('START —————————————')
+const title = data.name || data.title
 
 const backlinks = []
 if (data.tags) {
   const tagList = typeof data.tags === 'string' ? [data.tags] : data.tags
-  console.log(`title: ${title}`)
-  // console.log(data)
   for (let tag of tagList) {
     const id = typeof tag === 'string' ? tag : tag.id
     const tagItem = await getEntry('items', id)
-    console.log(tagItem)
-    if (hasPage(tagItem) && tagItem?.data.backlink !== false) {
-      backlinks.push({
-        name: tagItem.data.name,
-        url: '/work/' + tagItem.id
-      })
+    console.log(tagItem?.data.backlink)
+    if (hasPage(tagItem) && tagItem?.data.backlink) {
+      const blTitle = tagItem.data.name
+      const url = '/work/' + tagItem.id
+      const mdText = tagItem?.data.backlink.replace('_', `[${blTitle}](${url})`)
+      const renderedBl = marked.parse(mdText).replaceAll(/<\/?p>|\s+$/gi, '')
+      backlinks.push(renderedBl)
     }
   }
 }
 
+const classes = ["title-name"] 
+if (backlinks.length > 0) {classes.push("has-backlinks")}
+
 const lastBacklink = backlinks?.[backlinks.length - 1]
-import { marked } from 'marked';
-const mdTitle = marked.parse(title).replaceAll(/<\/?p>/gi, '')
+const mdTitle = (data.quote ? '“' : '') + marked.parse(title).replaceAll(/<\/?p>|\s+$/gi, '') + (data.quote ? '”' : '')
 ---
 
 <div class="page-intro">
   <h1 class="page-title konsole">
-    <span set:html={mdTitle}/>
+    <span class:list={classes} set:html={mdTitle}/>
     {backlinks?.length > 0 &&
-      <span class="tags">
-        {"("}{backlinks.slice(0, -1).map(({name, url}) => <span><a href={url}>{name}</a>, </span>)}<span><a href={lastBacklink.url}>{lastBacklink.name}</a></span>{")"}
+      <span class="backlinks">
+        {backlinks.slice(0, -1).map(bl => <span set:html={bl + ', '}/>)}{<span set:html={lastBacklink}/>}
       </span>
     }
   </h1>

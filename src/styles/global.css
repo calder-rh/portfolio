@@ -183,9 +183,8 @@
     margin-top: 0;
   }
 
-  .page-title .tags {
+  .page-title .backlinks {
     font-family: 'Konsole';
-    /* font-style: italic; */
     font-size: 1.6rem;
     margin-left: 0.3rem;
     font-variation-settings: 'wght' 380, 'wdth' 90;
@@ -208,15 +207,21 @@
     color: inherit;
     position: relative;
     bottom: 0px;
-    transition: bottom 0.06s ease-in;
+    top: 0px;
+    transition: bottom 0.06s ease-in, top 0.06s ease-in;
     z-index: 0;
   }
 
   a:hover {
     position: relative;
     bottom: 0.1rem;
-    padding-bottom: 0.1rem;
-    transition: bottom 0.06s ease-out;
+    top: -0.1rem;
+    transition: bottom 0.06s ease-out, top 0.06s ease-out;
+  }
+
+  a:has(.img):hover {
+    bottom: 0.3rem;
+    top: -0.3rem;
   }
 
   .no-rise a:hover {
@@ -487,14 +492,14 @@
 
 
 
-  .zoom-slider {
+  input[type=range] {
     -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
     width: 100%; /* Specific width is required for Firefox. */
     background: var(--blue); /* Otherwise white in Chrome */
     height: 0.3rem;
   }
 
-  .zoom-slider::-webkit-slider-thumb {
+  input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 2rem;
@@ -504,7 +509,7 @@
     cursor: pointer;
   }
 
-  .zoom-slider::-moz-range-thumb {
+  input[type=range]::-moz-range-thumb {
     width: 2rem;
     height: 2rem;
     border: 0;
@@ -512,11 +517,11 @@
     cursor: pointer;
   }
 
-  .zoom-slider::-moz-range-thumb:hover {
+  input[type=range]::-moz-range-thumb:hover {
     filter: brightness(70%) saturate(150%);
   }
 
-  .zoom-slider::-webkit-slider-thumb:hover {
+  input[type=range]::-webkit-slider-thumb:hover {
     filter: brightness(70%) saturate(150%);
   }
 
