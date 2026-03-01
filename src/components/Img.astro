@@ -20,7 +20,7 @@ const { slug: pageSlug } = Astro.params
 const slug = imgSlug ?? pageSlug
 
 const imagePath = (() => {
-  if (src.match(/^~\//)) return `src/assets/${src.slice(1)}`
+  if (src.match(/^~\//)) return `src/assets/${src.slice(2)}`
   else if (src.match(/^\//)) return `src/assets/work${src}`
   else return `src/assets/work/${slug}/${src}`}
 )()

@@ -19,17 +19,15 @@ import Img from 'src/components/Img.astro';
 import Work from 'src/components/Work.astro';
 import Glue from 'src/components/Glue.astro';
 
-Contour Code is a system that encodes text in compositions of 2<span class='sc'>D</span> geometric shapes.
+Contour Code is a system that encodes text in compositions of shapes.
 
 *Contents:*
 <Glue/>
 - [Gallery](#gallery)
-- [Instructions](#instructions)
+- [Explanation](#explanation)
 - [Design notes](#design-notes)
 
-I had two goals in designing this system: first, to produce beautiful abstractions along the lines of Alexander Calder and Ellsworth Kelly, and second, to make a code flexible enough that any possible set of geometric shapes can be “read” as text. To achieve these goals, I designed a procedure for converting between compositions of shapes and strings of characters. In this design process, I aimed to maximize the beauty of the shapes, the elegance of the algorithm, and the system’s ease of use. Contour Code is the result of a conversation between these three values.
-
-## Gallery
+{/* ## Gallery
 
 <Img src='sleep.png'/>
 <Caption>“Sleep”</Caption>
@@ -38,30 +36,193 @@ I had two goals in designing this system: first, to produce beautiful abstractio
 <Caption>“If you present me with unconsciousness, I will respond with consciousness.” (a quote from my mom)</Caption>
 
 <Img src='prints.jpg'/>
-<Caption>The two compositions on the left both say “shape.”<br/>The top right says “yes”; the bottom right says “the end.”</Caption>
+<Caption>The two compositions on the left both say “shape.”<br/>The top right says “yes”; the bottom right says “the end.”</Caption> */}
 
-## Instructions
 
-To read a composition, shapes are traced to produce a sequence of straight, concave, and convex sides, and that sequence is interpreted as letters using a system like Morse Code. This video explains the basics: 
+## Explanation
 
-<div class="spaced-media" style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/902052983?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Contour Code"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+### The main idea
 
-The complete encoding referenced in the video is shown below. **A** is convex–concave; **B** is concave–straight–convex–convex; etc.
+All the meaning is encoded in the **sides** of the shapes. The core idea is to list these sides in a particular order, and then within that list, different sequences of straight, convex, and concave sides correspond to different letters.
 
-<Box factor={1.5} top={1} bottom={1}>
-<Img src='letter to encoding.svg'/>
-</Box>
+### Reading one shape
 
-I have also experimented with several other options for encodings, which use three sides for every character rather than the variable number of sides in the encoding above. One of those newer encodings is used to spell the “unconsciousness” piece above. (When I decide which I prefer I’ll add it to this page.)
+A word can be represented by a single shape or by a composition of multiple shapes. We’ll start by reading a single shape. This represents the word “yes”:
 
-{/* When reading a shape, you can use this diagram to convert from encodings back to letters.
 
-<Box factor={1.5} top={1} bottom={1}>
-<Img src='encoding to letter.svg'/>
-</Box> */}
 
-[This document](</public/work/contour-code/Contour Code shape reading order.pdf>) describes how to order the shapes and sides when reading them.
+Starting at the bottommost point, trace clockwise around all the sides:
 
-Contour Code was included in the juried exhibition [Quasi: Experimental Writing Systems](https://hmctartcenter.org/exhibitions/quasi-experimental-writing-systems/) at ArtCenter College of Design.
+As we trace, we note whether each side is      straight,      convex, or       concave, and write these down in a list:
 
-## Design notes
+Then we read this list of sides three at a time. Each group of three represents a letter:
+
+In Contour Code, every letter in the alphabet is encoded by a different sequence of straight, convex, and concave sides:
+
+Now we’ll look at how to read a composition of multiple shapes. This also represents "yes":
+
+As before, we start from the bottommost point. Here that means we’ll trace the right shape first, then the left shape. I’ll label them I and II to indicate that sequence:
+
+Start by tracing I from the bottommost point:
+
+Then trace II, starting from the point where it touches I:
+
+This is the same sequence of sides as before, so it spells the same word:
+
+An important thing to notice here: in Contour Code, every letter is represented by exactly three sides, while a shape can have any number of sides. This means that shapes do not necessarily correspond to letters. Here, two shapes represent three letters: the first shape has the sides for all of Y and E and part of S, and the second contributes the remaining sides for S.
+
+Detailed rules
+
+Reading a composition is a three-phase process:
+
+Shapes: Determine the order to trace the shapes
+
+Sides: Trace each of the shapes in that order, and record their sides
+
+Letters: Convert that list of sides to letters using the encoding
+
+The first step is the most complicated, so I’ll spend a while unpacking it.
+
+Ordering the shapes
+
+For any composition, Contour Code defines exactly one correct way to order the shapes. The process for determining this order is somewhat similar to the process of recording the sides, in that both involve tracing around the edges of shapes — but here, we aren’t concerned with whether the sides are straight or curved; instead, we’re looking to see which shapes touch each other.
+
+The general idea is to start on the bottom, and trace clockwise around a shape, and whenever that shape touches another shape, pause and trace that neighboring shape (and then anything it touches, and so on) before continuing to trace the first shape. Keep going until you’ve visited all the shapes. The order in which you visited the shapes will be the order that you read their sides. (In other words, a depth-first search.)
+
+I’ll show a number of examples to demonstrate how this rule works in practice. None of these examples is supposed to say anything in particular: I selected them just to demonstrate different arrangements of shapes.
+
+Let’s start with this:
+
+The first step is always to draw the baseline: an (imaginary) line touching the bottom of the composition:
+
+We always start reading the composition from the leftmost point where it touches the baseline. I’ll call this the entry point for the composition:
+
+We’ll label that circle I, and start tracing it clockwise starting at the entry point:
+
+When we get to the point where Shape I touches the triangle, we pause tracing I for a moment — I’ll draw an ellipsis to mark our spot:
+
+. Enter the triangle, mark that entry point, and label the triangle  with its index II:
+
+Now this shape has its index and its entry point. If we were being completionist, we would then trace all the way around II starting from its entry point. But it isn’t touching anything else, so there’s no reason to do that. Instead we go back and continue tracing I from where we left off. This brings us to the last shape, the semicircle:
+
+Now each shape has an index and an entry point. That’s everything we need for phase 2: we go through the shapes in order of their index, and trace the sides of each of them starting from the entry points, and record whether the sides are straight, convex, or concave. (The circle counts as having a single convex side.)
+
+(diagram, and decode)
+
+Now I’ll make the triangle wider so that it touches both other shapes:
+
+As before, we start tracing the circle from its entry point on the bottom:
+
+And as before, when we get to the triangle, we’ll mark the entry point and label it II. Previously, we didn’t bother to trace around the triangle because it didn’t touch anything else. But now it does, so we start tracing from its entry point. Continue until the point where it touches the semicircle:
+
+Now we mark the entry point for the semicircle and label that shape III:
+
+Now that we’ve labeled all the shapes with indices and entry points, we’re done with Phase 1. Notice that, while the shapes are in the same order as before, the entry point of III is different. This means that when it’s time to record the sides, we’ll start with the concave side of III, rather than the straight side like before:
+
+As you can see, changing whether two shapes touch will often affect the resulting word — in some cases, drastically so. In this case, making that change only affected the starting side for a shape. But it can also affect the order that the shapes are read.
+
+Here’s how you’d order four shapes touching each other in a square:
+
+If the top two shapes are separated, the order changes:
+
+If the left two are separated, it is yet again different:
+
+If the right two are separated, the order does not change, but the entry point for the last shape does change:
+
+Notice here how, once we entered II, we had to label both II and III before returning to where we left off in I.
+
+Here’s a more complicated example:
+
+We start with the rectangle: enter at the leftmost place it touches the baseline and label it I:
+
+We trace clockwise from that point for just a moment, until it touches the arc. We pause tracing the rectangle and enter the arc. Label the arc II, and start tracing it from there:
+
+What do we do when the arc touches the rectangle again? In all the previous examples, whenever we’ve gotten to a touching point, we’ve entered into that other shape and started tracing it. But when it’s a shape we’ve already labeled and started tracing, like this rectangle, we skip it. We only ever enter a shape once. So we continue tracing the arc, and enter and label the __:
+
+There’s no reason to trace around the edges of this shape because everything it touches is something we’ve already visited, so we go back to the arc. But now we’ve also visited everything the arch touches, so we backtrack to where we left off in the rectangle. Continue to the next shape:
+
+Skip over the __ because we’ve already visited it, and finish with the last shape:
+
+
+ 
+ Interlude: small gaps
+
+Rather than having shapes perfectly touch, like I’ve shown so far, I usually prefer to leave small gaps between them:
+
+...
+
+When reading a composition like this, it’s important to identify which gaps are meant to indicate "touching" shapes and which are truly meaningful gaps. Here’s an example. Look at the various sizes of gaps in the composition:
+
+There is one set of gaps that are all about the same size as each other, and are noticeably smaller than the other gaps:
+
+These are the places where you should treat shapes as touching. From now on I won’t say "touching" and will instead use the word approaching to refer to this relationship. In any composition with gaps, I make sure to maintain a noticeable difference between the smallest gaps (which indicate approaching shapes) and all the other gaps (true gaps).
+
+In all the following diagrams, I’ll indicate where shapes approach each other by drawing ___:
+
+There are still a few more cases to consider when putting the shapes in order (e.g. what if a shape has a hole in it?) But before we consider that, let’s go on to phase 2 for a bit, because there’s an important nuance that needs to be clarified.
+
+From entry point to starting side
+
+Remember that the above process is just the first step, to put the shapes in the right order and identify their entry points. Once we’ve done that, we then go through the shapes in that order, and for each shape, trace around the shape and record the sequence of straight, convex, and concave sides.
+
+The entry point of a shape is used to determine which side to read first. There are a few different cases to consider.
+
+If the entry point falls in the middle of a side, that side is the one to record first:
+
+If the entry point is a corner between two sides, there is a different rule. The simplest rule that I could have chosen would be to just start with the first side clockwise of the entry point:
+
+However, in that example on the right, I would rather have it start with the straight side: if there is a side that approaches the previous shape along its whole length, that side feels intuitively like it should come first. I extended this intuition a bit to arrive at the following rule:
+
+When the entry point is in a corner, the starting side may be the side clockwise (CW) of that corner, or the side counterclockwise (CCW) of it, depending on context. To decide which, look at the CCW side:
+
+If the CCW side approaches the previous shape (the shape you’re entering from) in more than one point, then start with the CCW side:
+
+If the CCW side approaches the previous shape only at the entry point, then start with the CW side:
+
+A similar rule applies for the first shape you read (I) and how it touches the baseline. If its entry point is a corner, then look at whether the CCW side (the side to the right of the entry point) touches the baseline in any other point: if so, start with that side; if not, start with the CW side.
+
+Determining when one side ends and another begins
+
+When a curve smoothly transitions into a flat line or vice versa, that does not count as two separate sides:
+
+...
+
+I decided on this interpretation because, when reading hand-drawn shapes, it can be hard to distinguish what’s supposed to be a perfectly straight segment from what’s supposed to be a flatter part of a curve.
+
+However, when a convex curve smoothly transitions into a concave curve, or vice versa, that does count as two separate sides:
+
+...
+
+(If a shape’s entry point is at an inflection point between a convex and concave side, determine which side to start with using the rule above, as if it were a corner.)
+
+Holes, shapes within shapes, clusters
+
+When a shape has a hole in it, treat the hole as its own separate shape. In phase 1, when putting the shapes in order, deal with the hole(s) of a shape before moving on to any of its neighbors. The entry point of a hole is whichever point in the hole is closest to the entry point of the surrounding shape.
+
+(I’m still deciding on the right way to read when there are multiple holes — it can get complicated because holes may be far away from each other, forming a composition that many sizes of large gaps but no small gaps.)
+
+In a composition where the shapes are outlined or drawn in multiple colors, shapes can also have shapes inside them that are not holes. Use the same rules there.
+
+Punctuation and numbers
+
+figure that out later.
+
+More about the encoding
+
+The encoding (the sequences of straight/convex/concave corresponding to each letter) was designed to balance a number of different goals.
+
+Produce overall pleasing shapes
+
+If straight, convex, and concave sides were all equally common, the amount of concave sides would make shapes that are too spiky for my taste. Therefore I assigned sequences with more concave sides to rarer letters. On average, about 13% of sides will be concave, and among the remaining sides, straight and convex are equally common.
+
+Allow for a diversity of shapes
+
+In addition to the overall balance of straight, convex, and concave, I wanted to ensure that particular patterns of sides are common. For example, I wanted the ability to use rectangles (or other four-sided shapes) relatively often, which requires there to be a sequence of four straight sides in a row. I used a program to calculate how often this sequence would appear (along with other sequences of repeated sides), and tweaked the encoding until the desired sequences were common enough. In this case, the fact that I is encoded with three straight sides means that when I is paired with another letter, there are often four straights in a row. Also, the second-most common sequence of two letters in English, "HE," has four straights in a row.
+
+I also wanted to ensure that when there are concave sides, they usually have at least one convex side before or after, to allow for more S-shaped curves.
+
+And I also kept in mind the fact that, if ___
+
+Shapes should feel like the letters they represent
+
+I designed the code so that, in general, letters that are more bouba produce shapes that are more bouba (more convex sides), and letters that are more kiki produce shapes that are more kiki (more straight and concave sides).

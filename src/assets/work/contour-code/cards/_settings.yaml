@@ -1,0 +1,10 @@
+"*":
+  shadow: true
+"{hold,lineage,quiet,you are}":
+  top:
+    edges:
+      horz: 30
+"{hope,noise,what,let there be}":
+  top:
+    edges:
+      horz: 10

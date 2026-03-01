@@ -13,7 +13,6 @@ if (data.tags) {
   for (let tag of tagList) {
     const id = typeof tag === 'string' ? tag : tag.id
     const tagItem = await getEntry('items', id)
-    console.log(tagItem?.data.backlink)
     if (hasPage(tagItem) && tagItem?.data.backlink) {
       const blTitle = tagItem.data.name
       const url = '/work/' + tagItem.id
