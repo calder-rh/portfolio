@@ -5,11 +5,11 @@ import Title from '@src/components/Title.astro'
 const diagramList = diagram instanceof Array ? diagram : [diagram]
 ---
 
-<p>How to read the diagram below:</p>
+<p>Follow the diagram below to see how the shapes encode the text.</p>
 <ol>
-  <li>Follow the white lines and the Roman numerals to see how the shapes are put in order. The white lines trace clockwise around the shapes, moving or branching into new shapes whenever they “touch” (the yellow parts).</li>
-  <li>In each of the shapes, follow the numbered arrows to see how the sides are traced, and notice which are straight, convex, or concave.</li>
-  <li>Look at the bottom to see the sides from all the shapes written in sequence. Each group of three sides corresponds to a letter (for example, straight–straight–convex is E).</li>
+  <li>The white lines and Roman numerals show how the shapes are put in order. The lines trace clockwise around the shapes, moving or branching into new shapes whenever they “touch” (the yellow parts).</li>
+  <li>In each of the shapes, the numbered arrows show how the sides are traced, and the labels indicate whether they’re straight, convex, or concave.</li>
+  <li>On the bottom are the sides from all the shapes written in sequence. Each group of three sides corresponds to a letter (for example, E is straight–straight–convex).</li>
 </ol>
 
 <div id="diagrams">
