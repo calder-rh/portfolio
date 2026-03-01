@@ -4,7 +4,13 @@
   top:
     edges:
       horz: 30
+  grid:
+    edges:
+      horz: 20
+  work row:
+    edges:
+      horz: 20
 "{hope,noise,what,let there be}":
   top:
     edges:
-      horz: 10
+      horz: 15

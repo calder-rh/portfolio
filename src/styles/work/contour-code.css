@@ -1,0 +1,28 @@
+#gallery-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+#gallery-grid a {
+  margin: 0;
+}
+
+#gallery-grid .img {
+  width: 22rem;
+}
+
+@media screen and (max-width: 47.5rem) {
+  #gallery-grid .img {
+    width: calc((100vw - 4.5rem) / 2);
+  }
+}
+
+@media screen and (max-width: 20rem) {
+  #gallery-grid .img {
+    width: calc((100vw - 2.5rem));
+  }
+}

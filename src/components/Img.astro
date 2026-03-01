@@ -53,11 +53,13 @@ const w = (scale !== undefined) ? `${scale * settings.dimensions.width / 100}rem
     display: flex;
     justify-content: center;
     /* outline: 1px solid red; */
+    object-fit: contain;
+
   }
 </style>
 
 <div class="img spaced-media" data-aspect={settings.dimensions.adjustedAspect}>
-  <!-- needed so that the margin from he optical aligment is separate from the margin around every image -->
+  <!-- needed so that the margin from the optical aligment is separate from the margin around every image -->
   <div class="img-inner">
     <!-- the actual element that is resized (can’t be the img itself because that’s in the scope of the Image component) -->
     <Image src={images[imagePathSlash]()} alt={alt} loading="lazy" class:list={classList} id={id} width={res} format={settings.format}/>

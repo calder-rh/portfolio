@@ -5,7 +5,12 @@ import Title from '@src/components/Title.astro'
 const diagramList = diagram instanceof Array ? diagram : [diagram]
 ---
 
-
+<p>How to read the diagram:</p>
+<ol>
+  <li>Follow the white lines and the Roman numerals to see how the shapes are put in order. The white lines trace clockwise around the shapes, moving or branching into new shapes whenever they “touch” (the yellow parts).</li>
+  <li>In each of the shapes, follow the numbered arrows to see how the sides are traced, and notice which are straight, convex, or concave.</li>
+  <li>Look at the bottom to see the sides from all the shapes written in sequence. Each group of three sides corresponds to a letter (for example, straight–straight–convex is E).</li>
+</ol>
 
 <div id="diagrams">
   <Img src="/contour-code/side key.svg" scale={15}/>
@@ -14,11 +19,15 @@ const diagramList = diagram instanceof Array ? diagram : [diagram]
 
 <slot/>
 
-<style>
+<style is:global>
   #diagrams {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     margin-top: 5rem;
   }
+/*   
+  #diagrams *:not(:first-child) {
+    transform: translateX(-1.2rem);
+  } */
 </style>

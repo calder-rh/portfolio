@@ -102,7 +102,7 @@ const slides = z.union([
   z.array(z.string()).transform(toFirstRest),
   z.object({
     first: oneOrMore(z.string()),
-    rest: oneOrMore(z.string()),
+    rest: oneOrMore(z.string()).default([]),
   })
 ]).transform(({first, rest}) => ({first, rest, all: [...first, ...rest]}))
 
