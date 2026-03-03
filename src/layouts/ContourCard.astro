@@ -6,6 +6,8 @@ const diagramList = diagram instanceof Array ? diagram : [diagram]
 const text = Astro.props.frontmatter.name
 ---
 
+<slot/>
+
 <p>This piece encodes the {text.match(/\s/) ? "words" : "word"} “{text.toLowerCase()}” in the sides of the shapes: different sequences of straight, convex, and concave sides represent different letters.</p>
 <p>To read a composition in Contour Code, one must determine the right order to read the sides. See the diagram below to see how that happens for this piece. (Soon there will also be a complete explanation of the system on the main <a href="/work/contour-code">Contour Code</a> page.)</p>
 
@@ -19,8 +21,6 @@ const text = Astro.props.frontmatter.name
   <Img src="/contour-code/side key.svg" scale={15}/>
   {diagramList.map(word => <Img scale={15} src={'/contour-code/card diagrams/' + word}/>)}
 </div>
-
-<slot name="after"/>
 
 <style is:global>
   #diagrams {
