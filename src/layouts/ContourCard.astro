@@ -12,14 +12,14 @@ const text = Astro.props.frontmatter.name
 <p>To read a composition in Contour Code, one must determine the right order to read the sides. See the diagram below to see how that happens for this piece. (Soon there will also be a complete explanation of the system on the main <a href="/work/contour-code">Contour Code</a> page.)</p>
 
 <ol>
-  <li>The white lines and Roman numerals show how the shapes are put in order. The lines trace clockwise around the shapes, moving or branching into new shapes whenever they get close enough (the yellow parts).</li>
-  <li>In each of the shapes, the numbered arrows show how the sides are traced, and the shapes of the labels indicate whether the sides are straight, convex, or concave.</li>
-  <li>Below the diagram, the sides from all the shapes are recorded in sequence. Each group of three sides corresponds to a letter (for example, E is straight–straight–convex).</li>
+  <li>First the shapes are put in order. This is shown using the white lines and Roman numerals. Each white line traces clockwise around a shape, moving or branching into other shapes whenever it gets close enough (at the yellow stars), as long as the shape is one it hasn’t already entered. Any holes within shapes are dealt with before moving into other shapes.</li>
+  <li>Once the shapes are put in order, the sides of each shape are traced, starting from the point where the white line entered the shape. The numbered arrows show this sequence, and the shapes of these labels indicate whether the sides are straight, convex, or concave.</li>
+  <li>Below the diagram, all these sides are recorded in sequence. Each group of three sides corresponds to a letter (for example, E is straight–straight–convex).</li>
 </ol>
 
 <div id="diagrams">
-  <Img src="/contour-code/side key.svg" scale={15}/>
-  {diagramList.map(word => <Img scale={15} src={'/contour-code/card diagrams/' + word}/>)}
+  <Img src="/contour-code/side key.svg" scale={12}/>
+  {diagramList.map(word => <Img scale={12} src={'/contour-code/card diagrams/' + word}/>)}
 </div>
 
 <style is:global>
