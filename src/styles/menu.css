@@ -312,13 +312,13 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
     height: 5rem;
     margin-top: -0.3125rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     column-gap: 1rem;
   }
 
   #social-links li {
     height: 100%;
-    width: 100%;
+    width: 6rem;
     margin: 0;
   }
 
