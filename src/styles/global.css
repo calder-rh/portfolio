@@ -226,7 +226,7 @@
 
   .no-rise a:hover {
     bottom: 0;
-    padding-bottom: 0;
+    top: 0;
   }
 
   .oval-clip {
@@ -497,6 +497,7 @@
     width: 100%; /* Specific width is required for Firefox. */
     background: var(--blue); /* Otherwise white in Chrome */
     height: 0.3rem;
+    margin: var(--space);
   }
 
   input[type=range]::-webkit-slider-thumb {

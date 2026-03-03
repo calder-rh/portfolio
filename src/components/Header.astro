@@ -3,6 +3,7 @@ import TextOval from '@src/layouts/TextOval.astro';
 import Oval from '@src/layouts/Oval.astro';
 
 import logoImage from '../assets/logo.svg';
+import logoDiagram from '../assets/logo diagram.svg';
 import '../styles/menu.css';
 
 import random from "../scripts/random";
@@ -14,10 +15,13 @@ function color() {
 ---
 
 <div id="header-container">
-  <div id="header">
-    <a href="/">
+  <div id="header" class="no-rise">
+    <a href="/" id="lockup-link">
       <div id="lockup">
-        <img src={logoImage.src} id="logo"/>
+        <div id="logo">
+          <img src={logoImage.src} id="logo-regular"/>
+          <img src={logoDiagram.src} id="logo-diagram"/>
+        </div>
         <span id="name">Calder Ruhl&nbsp;Hansen</span>
       </div>
     </a>

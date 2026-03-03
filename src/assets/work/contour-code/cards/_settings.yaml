@@ -10,6 +10,9 @@
   work row:
     edges:
       horz: 20
+  default:
+    edges:
+      horz: 20
 "{hope,noise,what,let there be}":
   top:
     edges:

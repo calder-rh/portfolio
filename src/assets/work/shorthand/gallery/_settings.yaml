@@ -37,3 +37,5 @@ geometric:
   work bottom:
     edges:
       bottom: -5
+stmwtd:
+  edges: -0.8
