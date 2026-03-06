@@ -122,6 +122,8 @@ const items = defineCollection({
     name: z.string(),
     title: z.ostring(),
     short: z.ostring(),
+
+    medium: z.string().transform(m => m.replace('*', '×').replace('"', '”')).optional(),
     
     description: z.ostring(),
     date: z.union([

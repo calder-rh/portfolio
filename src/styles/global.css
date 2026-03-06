@@ -181,13 +181,23 @@
     line-height: 1.3;
     margin-bottom: 0;
     margin-top: 0;
+    margin-right: 0.3rem;
   }
 
   .page-title .backlinks {
     font-family: 'Konsole';
     font-size: 1.6rem;
-    margin-left: 0.3rem;
     font-variation-settings: 'wght' 380, 'wdth' 90;
+    margin-right: 0.35rem;
+    display: inline-block;
+  }
+
+  .page-title .medium {
+    font-family: 'Konsole';
+    font-size: 1.6rem;
+    margin-right: 0.35rem;
+    font-variation-settings: 'wght' 300, 'wdth' 90;
+    color: var(--blue);
     display: inline-block;
   }
 

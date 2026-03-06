@@ -3,7 +3,7 @@
 "{hold,lineage,quiet,you are}":
   top:
     edges:
-      horz: 30
+      horz: 35
   grid:
     edges:
       horz: 20

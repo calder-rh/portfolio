@@ -6,6 +6,7 @@ import { hasPage } from '@src/scripts/utilities.js'
 import { marked } from 'marked';
 
 const title = data.name || data.title
+const medium = data.medium
 
 const backlinks = []
 if (data.tags) {
@@ -38,5 +39,6 @@ const mdTitle = (data.quote ? '“' : '') + marked.parse(title).replaceAll(/<\/?
         {backlinks.slice(0, -1).map(bl => <span set:html={bl + ', '}/>)}{<span set:html={lastBacklink}/>}
       </span>
     }
+    {medium && <div class="medium">{medium}</div>}
   </h1>
 </div>

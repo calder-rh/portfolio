@@ -6,10 +6,13 @@ const diagramList = diagram instanceof Array ? diagram : [diagram]
 const text = Astro.props.frontmatter.name
 ---
 
-<slot/>
-
 <p>This piece encodes the {text.match(/\s/) ? "words" : "word"} “{text.toLowerCase()}” in the sides of the shapes: different sequences of straight, convex, and concave sides represent different letters.</p>
-<p>To read a composition in Contour Code, one must determine the right order to read the sides. See the diagram below to see how that happens for this piece. (Soon there will also be a complete explanation of the system on the main <a href="/work/contour-code">Contour Code</a> page.)</p>
+<p>To read a composition in Contour Code, one must determine the right order to read the sides. The diagram and explanation below show how that happens for this piece. (Soon there will also be a complete explanation of the system on the main <a href="/work/contour-code">Contour Code page</a>.)</p>
+
+<div id="diagrams" class="spaced-media"">
+  <Img src="/contour-code/side key.svg" scale={12}/>
+  {diagramList.map(word => <Img scale={12} src={'/contour-code/card diagrams/' + word}/>)}
+</div>
 
 <ol>
   <li>First the shapes are put in order. This is shown using the white lines and Roman numerals. Each white line traces clockwise around a shape, moving or branching into other shapes whenever it gets close enough (at the yellow stars), as long as the shape is one it hasn’t already entered. Any holes within shapes are dealt with before moving into other shapes.</li>
@@ -17,17 +20,14 @@ const text = Astro.props.frontmatter.name
   <li>Below the diagram, all these sides are recorded in sequence. Each group of three sides corresponds to a letter (for example, E is straight–straight–convex).</li>
 </ol>
 
-<div id="diagrams">
-  <Img src="/contour-code/side key.svg" scale={12}/>
-  {diagramList.map(word => <Img scale={12} src={'/contour-code/card diagrams/' + word}/>)}
-</div>
+<slot/>
 
 <style is:global>
   #diagrams {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin-top: 5rem;
+    margin-top: 3rem;
   }
 /*   
   #diagrams *:not(:first-child) {
