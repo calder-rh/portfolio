@@ -21,10 +21,14 @@ const opacities = [
 document.addEventListener("DOMContentLoaded", () => {
   for (let frame of ['piece-frame', 'words-frame', 'letters-frame']) {
     const paths = document.getElementById(frame).content.querySelectorAll('path')
-    let i = 1
+    const groupIndices = {}
     for (let path of paths) {
-      if (path.dataset.morphId === undefined) {
-        path.dataset.morphId = `morph-${i++}`
+      if (!path.hasAttribute('id')) {
+        let el = path
+        while (el !== null && !el.id) el = el.parentElement
+        const groupId = el.id
+        if (!groupIndices[groupId]) groupIndices[groupId] = 1
+        path.id = `${groupId}-path${groupIndices[groupId]++}`
       }
     }
   }
@@ -41,8 +45,12 @@ document.addEventListener("DOMContentLoaded", () => {
     MorphSVGPlugin.convertToPath("polygon")
 
     const morphs = {}
-    for (let p of document.querySelectorAll('#frame-container path[data-morph-id]')) {
-      morphs[p.dataset.morphId] = p
+    for (let p of document.querySelectorAll('#frame-container path')) {
+      if (! p.id) {
+        // console.log('oh no')
+        continue
+      }
+      morphs[p.id] = p
     }
     
     morphses.push(morphs)
@@ -57,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const morphs = morphses[i]
     for (let key in morphs) {
       tl.to(
-        `[data-morph-id="${key}"]`,
+        `#${key}`,
         { morphSVG: morphs[key].getAttribute("d"), duration: 1, ease: 'linear' },
         i - 1
       );
