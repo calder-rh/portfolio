@@ -136,6 +136,21 @@ const items = defineCollection({
         end: dateIsh.transform(toDate),
       })
     ]).optional(),
+
+    buy: z.union([
+      z.string(),
+      z.object({
+        text: z.string(),
+        url: z.string()
+      })
+    ]).transform((val) => {
+      if (typeof(val) == "string") {
+        return {
+          text: "Buy",
+          url: val
+        }
+      } else return val
+    }).optional(),
     
     image: z.union([
       z.string().transform((path) => ({

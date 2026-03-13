@@ -1,9 +1,10 @@
 ---
 import '@src/styles/article.css'
 const { data } = Astro.props;
-import { getCollection, getEntry, render } from 'astro:content';
+import { getEntry } from 'astro:content';
 import { hasPage } from '@src/scripts/utilities.js'
 import { marked } from 'marked';
+import TextOval from '@src/layouts/TextOval.astro'
 
 const title = data.name || data.title
 const medium = data.medium
@@ -41,4 +42,9 @@ const mdTitle = (data.quote ? '“' : '') + marked.parse(title).replaceAll(/<\/?
     }
     {medium && <div class="medium">{medium}</div>}
   </h1>
+  {data.buy &&
+    <div class="buy-container">
+      <TextOval squareness={37} classes={["buy-button"]} link={data.buy.url}>{data.buy.text}</TextOval>
+    </div>
+  }
 </div>

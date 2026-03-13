@@ -1,8 +1,7 @@
 ---
 import Article from '@src/layouts/Article.astro';
-import Title from '@src/components/Title.astro';
 import Img from '@src/components/Img.astro'
-import { getCollection, getEntry, render } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import { hasPage } from '@src/scripts/utilities.js'
 
 export async function getStaticPaths() {
@@ -16,14 +15,15 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<Article data={entry.data} description={entry.data.description} topTitle={!entry.data.topImage}>
+<Article data={entry.data} description={entry.data.description}>
   {entry.data.page === 'auto' ? (
     <Img src={entry.data.mainImage}/>
   ) : (
     <>
       {entry.data.topImage && (
-        <Img src={entry.data.mainImage} context="top"/>
-        <Title data={entry.data}/>
+        <div class="banner">
+          <Img src={entry.data.mainImage} context="top"/>
+        </div>
       )}
       <Content />
     </>

@@ -20,9 +20,11 @@ import Work from 'src/components/Work.astro';
 import Caption from 'src/layouts/Caption.astro';
 import 'src/styles/work/nws.css';
 
-<Box factor={3} extend={true} top={4} bottom={6}>
-<Img src="intro.svg" />
-</Box>
+<div class="banner">
+  <Box factor={3} extend={true} bottom={2}>
+    <Img src="intro.svg" />
+  </Box>
+</div>
 
 This is a system that represents text as a network of dots and lines. Each dot represents one letter (or a space):
 

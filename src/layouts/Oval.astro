@@ -4,7 +4,7 @@ import randomOvalPath from "../scripts/clip-paths";
 import random from '@src/scripts/random.js'
 
 const { squareness=30, id, classes=[], link, newTab, image, imageWidth, format="png", contain, altText, data, style="" } = Astro.props;
-const classList = ["oval"]
+const classList = ["oval", "no-rise"]
 if (link) classList.push("link");
 if (classes) classList.push(...classes);
 const classesUsed = classList.join(" ");

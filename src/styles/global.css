@@ -171,6 +171,10 @@
     padding-bottom: 0;
     padding-bottom: 0.5rem;
     border-bottom: 3px solid var(--blue);
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    gap: .5rem;
   }
 
   .page-title {
@@ -211,6 +215,31 @@
 
   .page-description:last-child {
     margin-bottom: 1rem;
+  }
+
+  .banner {
+    display: none;
+  }
+
+  .banner.moved {
+    display: block;
+  }
+
+  .buy-container {
+    --oval-color: var(--blue);
+    display: inline-block;
+    height: 3rem;
+  }
+
+  .buy-container .oval {
+    height: 100%;
+  }
+
+  .buy-button .oval-text {
+    color: var(--offwhite);
+    /* text-transform: uppercase; */
+    font-size: 1.2rem;
+    padding: 0 1rem;
   }
 
   a {
