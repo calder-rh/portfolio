@@ -8,27 +8,32 @@ date: 2025-11
 gallery: work
 topImage: true
 ---
-import Piece from "@src/assets/work/stmwtd/test 1.svg"
-import Words from "@src/assets/work/stmwtd/test 2.svg"
-import Letters from "@src/assets/work/stmwtd/test 3.svg"
+import Frame1 from "@src/assets/work/stmwtd/1.svg"
+import Frame2 from "@src/assets/work/stmwtd/2.svg"
+import Frame3 from "@src/assets/work/stmwtd/3.svg"
+import Frame4 from "@src/assets/work/stmwtd/4.svg"
 import Script from "@src/components/work/stmwtd.astro"
 import "@src/styles/work/stmwtd.css"
 
 Words suggested by my friend Alice Jo, in a conversation about being in our mid-20s and confused about our lives.
 
-<template id="piece-frame">
-  <Piece />
+<template id="frame-1">
+  <Frame1 />
 </template>
   
-<template id="words-frame">
-  <Words />
+<template id="frame-2">
+  <Frame2 />
 </template>
 
-<template id="letters-frame">
-  <Letters />
+<template id="frame-3">
+  <Frame3 />
 </template>
 
-Drag the slider below to see which shapes represent which letters:
+<template id="frame-4">
+  <Frame4 />
+</template>
+
+This is a very stylized version of [CRH Shorthand](/work/shorthand), where the shapes are bold and all the words touch each other. Drag the slider below to separate the words, turn them into a more normal style, and label the letters:
 
 <div id="frame-container"></div>
 
@@ -40,13 +45,6 @@ Drag the slider below to see which shapes represent which letters:
   step="0.001"
   value="0"
 />
-
-You may notice that some letters (S, L, E, A) look similar. There are two reasons for this:
-
-- This is a bold, stylized design: in this writing system, S and L are written as horizontal lines, but here I made these lines so short and thick that they become rectangles that are taller than they are wide. Meanwhile, E and A are written as dots (or optionally as horizontal lines), which I also drew as rectangles here.
-- This writing system relies on context to distinguish between most letters. While S and L are both horizontal lines, the left end of L must be below the end of the previous consonant, while the left end of S must be connected to the previous consonant (if there is one). Meanwhile E and A, as vowels, are written above or below the preceding consonants, and in a normal style do not touch them at all.
-
-[This page](/work/shorthand) explains the system in full.
 
 ---
 
