@@ -164,7 +164,6 @@
     color: var(--brown);
   } */
 
-
   .page-intro {
     margin-top: 4rem;
     margin-bottom: 2.5rem;
@@ -186,6 +185,14 @@
     margin-bottom: 0;
     margin-top: 0;
     margin-right: 0.3rem;
+  }
+
+  .page-title.quoted {
+    text-indent: -0.55em;
+  }
+
+  .page-title.quoted * {
+    text-indent: 0;
   }
 
   .page-title .backlinks {

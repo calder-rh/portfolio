@@ -33,7 +33,7 @@ const mdTitle = (data.quote ? '“' : '') + marked.parse(title).replaceAll(/<\/?
 ---
 
 <div class="page-intro">
-  <h1 class="page-title konsole">
+  <h1 class:list={["page-title", "konsole", ...(data.quote ? ["quoted"] : [])]}>
     <span class:list={classes} set:html={mdTitle}/>
     {backlinks?.length > 0 &&
       <span class="backlinks">
