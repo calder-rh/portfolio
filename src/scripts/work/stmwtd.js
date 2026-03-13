@@ -25,7 +25,6 @@ const durations = [
 function animIDs(el, ancestors=[]) {
   if (ancestors.length !== 0) {
     const idStr = ancestors.join('-')
-    console.log(idStr)
     el.dataset.animId = idStr
   }
   let unnamedIndex = 1
@@ -62,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const morphs = {}
     for (let p of document.querySelectorAll('#frame-container path[data-anim-id]')) {
-      morphs[p.dataset['anim-id']] = p
+      morphs[p.dataset['animId']] = p
     }
     
     morphses.push(morphs)
