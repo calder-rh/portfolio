@@ -13,6 +13,7 @@ const plainTitle = new Marked()
 ---
 
 <BaseLayout title={plainTitle}>
+  <slot name="top"/>
   <div class="content" id="article">
     {topTitle && <Title data={data}/>}
       <!-- {description && <p class="page-description konsole">{description}</p>} -->

@@ -1,5 +1,5 @@
 ---
-name: The day with its cares and perplexities is ended, and the night is now upon us
+name: The day with its cares and perplexities is ended and the night is now upon us
 image: /nws/the night.png
 medium: screen print, 8½*8½”
 tags: nws
@@ -8,7 +8,17 @@ gallery: work
 topImage: true
 quote: true
 ---
+import Img from 'src/components/Img.astro';
+import Box from 'src/layouts/Box.astro';
 
 Words from *Einstein on the Beach*, [Knee Play 5](https://www.youtube.com/watch?v=lTaX7FQF0hY).
+
+Each circle represents a letter (or a space). In the image below, start reading from the T in yellow, directly above the sun shape, and proceed clockwise; each ray contains one character. The connections between the dots determine which characters they are: for example, the H in “the” is connected to the dot directly before it, and to the dot four before it; that combination always means H. (The connections to dots after it do not matter: those are used for determining later letters.)
+
+You can read a full explanation of the system [here](/work/nws).
+
+<Box factor={2}>
+  <Img src="/nws/night reading diagram.svg"/>
+</Box>
 
 You can buy this print [here](https://www.shopbloompvd.com/products/the-day-with-its-cares-and-perplexities-is-ended-and-the-night-is-now-upon-us).
