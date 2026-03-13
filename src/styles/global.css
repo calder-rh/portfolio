@@ -187,8 +187,10 @@
     margin-right: 0.3rem;
   }
 
-  .page-title.quoted {
-    text-indent: -0.55em;
+  @media screen and (min-width: 48.75rem) {
+    .page-title.quoted {
+      text-indent: -0.55em;
+    }
   }
 
   .page-title.quoted * {
@@ -210,6 +212,10 @@
     font-variation-settings: 'wght' 300, 'wdth' 90;
     color: var(--blue);
     display: inline-block;
+  }
+
+  .page-title:has(+ .buy-container) {
+    margin-bottom: 0.3rem;
   }
 
   .page-description {

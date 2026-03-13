@@ -30,10 +30,11 @@ if (backlinks.length > 0) {classes.push("has-backlinks")}
 
 const lastBacklink = backlinks?.[backlinks.length - 1]
 const mdTitle = (data.quote ? '“' : '') + marked.parse(title).replaceAll(/<\/?p>|\s+$/gi, '') + (data.quote ? '”' : '')
+const startsWithQuote = mdTitle[0] == '“'
 ---
 
 <div class="page-intro">
-  <h1 class:list={["page-title", "konsole", ...(data.quote ? ["quoted"] : [])]}>
+  <h1 class:list={["page-title", "konsole", ...(startsWithQuote ? ["quoted"] : [])]}>
     <span class:list={classes} set:html={mdTitle}/>
     {backlinks?.length > 0 &&
       <span class="backlinks">
