@@ -6,7 +6,7 @@ let classes = 'work-tag closed' + (unlisted ? ' unlisted' : '')
 ---
 
 <div class={classes} data-list-name={listName} data-title-name={titleName} data-slug={slug} data-unlisted={JSON.stringify(unlisted)} style=`display: ${unlisted ? 'none' : 'block'}`>
-  <TextOval squareness={32}>
+  <TextOval squareness={34}>
     {listName}
   </TextOval>
 </div>

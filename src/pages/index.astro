@@ -32,26 +32,38 @@ for (let item of workItems) {
 		rows: item.data.rows,
     slides: item.data.slides,
   }
-  workItemData.push(workItem)
+  if (!workItem.draft) workItemData.push(workItem)
 }
 
+// const orderedTags = [
+//   'all',
+//   'art',
+//   'design',
+//   'code',
+//   'writing-systems',
+//   'visual-codes',
+//   'lettering',
+//   'type',
+//   '3d',
+//   'music-visualization',
+//   'generative-art',
+//   'photography',
+// ]
+
 const orderedTags = [
+  'mas-portfolio',
+  'itp-portfolio',
   'all',
-  'art',
-  'design',
-  'code',
   'writing-systems',
-  'encoding-systems',
+  'visual-codes',
   'lettering',
-  'type',
   '3d',
   'music-visualization',
-  'generative-art',
   'photography',
 ]
 
 
-const sortedTags = Array.from(tagItems).sort((a, b) => {
+const sortedTags = Array.from(tagItems).filter((ti) => orderedTags.includes(ti.id)).sort((a, b) => {
   if (a.data.unlisted != b.data.unlisted) return b.data.unlisted - a.data.unlisted
   return orderedTags.indexOf(a.id) - orderedTags.indexOf(b.id)
 })
