@@ -42,6 +42,7 @@ const plainTitle = new Marked()
     const banner = document.querySelector(".banner")
     const intro = document.querySelector(".page-intro")
     if (banner) {
+      console.log('move banner')
       document.getElementById("article")?.insertBefore(banner, intro)
       banner.classList.add("moved")
     }

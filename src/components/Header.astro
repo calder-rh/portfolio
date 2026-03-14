@@ -5,13 +5,6 @@ import Oval from '@src/layouts/Oval.astro';
 import logoImage from '../assets/logo.svg';
 import logoDiagram from '../assets/logo diagram.svg';
 import '../styles/menu.css';
-
-import random from "../scripts/random";
-import { adjustColor, cssString } from '@src/scripts/color-utils';
-
-function color() {
-	return cssString(adjustColor({r: 168, g: 178, b: 190}, random(0.7, 1.2), random(0.9, 1.05)))
-}
 ---
 
 <div id="header-container">
@@ -74,7 +67,7 @@ function color() {
         </ul>
       </div>
       <div id="close-menu" class="menu-label">
-        <Oval squareness={32} style={`--oval-color: ${color()}`}>
+        <Oval squareness={32}>
           <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
           viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
             <polygon class="st0" points="100,9.09 90.91,0 46.36,46.36 0,90.91 9.09,100 53.64,53.64 	"/>

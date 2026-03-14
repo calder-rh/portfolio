@@ -1,11 +1,20 @@
 "*":
   shadow: true
+I haven't seen this day before_preview:
+  work bottom:
+    edges:
+      bottom:
+        -5
+  alt: On a white background, five lines of writing in thin, black strokes, aligned to the center and surrounded by space. The writing is formed of short zigzags, loops, simple arcs, and combinations of these things, along with dots and straight lines in various directions. In some places, these components overlap and cluster together; in other places, strokes extend to create breathing room.
+stmwtd:
+  edges: -0.8
+  alt: Letterpress print, wider than it is tall. A roughly rectangular field is filled with an unstable composition of angular red shapes with imperfectly straight edges, touching each other at their corners and sides. Some of the red shapes are squares or triangles; others are rectangles or other elongated shapes, often bent in the middle at sharp angles. The white spaces between them are spiky, like lightning bolts or maple leaves.
 monogram:
   default:
     shadow: false
     edges:
       top: -3
-      bottom: -1
+      bottom: -1 
       left: -2
       right: -3
   work row:
@@ -14,6 +23,19 @@ monogram:
   work bottom:
     edges:
       bottom: -3
+  alt: Several swooshing strokes in black bend and curl over each other, smoothly varying from thick to thin and back again. In the middle, where these strokes overlap, some of them are interrupted by gaps and angular segments. On the outside, they arc away from the central clump and end in thick, abrupt wedges. Several smaller shapes are scattered throughout, including four dots arranged along a diagonal line, punctuating the composition with their own uneven rhythm.
+appropriate:
+  alt: On a deep blue background, an elegant repeating pattern somewhat like a Celtic knot, but made of made of short, broken pieces of rubber band. These rectangles, loops, and curves of uniform width are outlined by thin silver lines; in some places they overlap and weave togehter; in others they merely touch. The overall pattern is built around a lattice, created by several aligned straight strokes; as the pattern is rotationally symmetrical, these strokes appear both horizontally and vertically. Large circular regions of negative space overlap with each other, with symmetrical clusters of strokes inside.
+geometric:
+  work row:
+    edges:
+      horz: 20
+  work bottom:
+    edges:
+      bottom: -5
+  alt: A vertical composition of black strokes on a white background, formed using a broadnib calligraphy pen. Short, thick horizontal strokes are scattered throughout, not aligned in any particular way, as are some circles and loops. Some of these elements are free-floating, but many of them are joined together with long, thin vertical and almost-vertical diagonal lines. More such thin lines stand on their own to fill out the piece with a steady up-and-down texture.
+mess:
+  alt: "A energetic, vaguely Pollock-esque clump of black strokes, wider than it is tall. Right in the the middle they are so densely layered that it is almost fully black; toward the edge, they quickly get less dense. Individual strokes are visible around the edges: they are large and hastily-drawn, in some places curved and in others closer to straight; in some places angles are visible. In some places the ink fades out to almost nothing, and in other places drops of ink have dripped out of the pen to blot the paper. It’s a ball of knotted fibers pulling itself apart, but trying to say something to you."
 experimental:
   default:
     shadow: false
@@ -25,17 +47,4 @@ experimental:
   work bottom:
     edges:
       bottom: -4
-I haven't seen this day before_preview:
-  work bottom:
-    edges:
-      bottom:
-        -5
-geometric:
-  work row:
-    edges:
-      horz: 20
-  work bottom:
-    edges:
-      bottom: -5
-stmwtd:
-  edges: -0.8
+  alt: An asymmetrical graffiti-like composition in orange, outlined in black. Folded sheets of shape poke into each other and curve against each other, with circles and ovals peeking over the edges from behind. Most of the angles are sharp and no edge is perfectly straight.

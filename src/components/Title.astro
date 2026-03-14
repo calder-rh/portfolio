@@ -41,11 +41,13 @@ const startsWithQuote = mdTitle[0] == '“'
         {backlinks.slice(0, -1).map(bl => <span set:html={bl + ', '}/>)}{<span set:html={lastBacklink}/>}
       </span>
     }
-    {medium && <div class="medium">{medium}</div>}
   </h1>
-  {data.buy &&
-    <div class="buy-container">
-      <TextOval squareness={37} classes={["buy-button"]} link={data.buy.url}>{data.buy.text}</TextOval>
-    </div>
-  }
+  <div class="intro-line2">
+    {medium && <div class="medium">{medium}</div>}
+    {data.buy &&
+      <div class="buy-container">
+        <TextOval squareness={35} classes={["buy-button"]} link={data.buy.url}>{data.buy.text}</TextOval>
+      </div>
+    }
+  </div>
 </div>
