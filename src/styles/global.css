@@ -230,14 +230,12 @@
     margin-bottom: 1rem;
   }
 
-  .banner {
-    /* display: none; */
-    opacity: 0;
+  [data-slot] {
+    display: none;
   }
 
-  .banner.moved {
-    /* display: block; */
-    opacity: 1;
+  [data-slot].moved {
+    display: unset;
   }
 
   .buy-container {

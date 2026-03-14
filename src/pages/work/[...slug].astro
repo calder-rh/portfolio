@@ -21,7 +21,7 @@ const { Content } = await render(entry);
   ) : (
     <>
       {entry.data.topImage && (
-        <div class="banner">
+        <div data-slot="banner">
           <Img src={entry.data.mainImage} context="top"/>
         </div>
       )}
