@@ -215,7 +215,7 @@ nav:not(.thin) .oval.link:hover { transition: bottom 0.06s ease-out }
     display: block;
     position: absolute;
     --close-menu-height: 3.75rem;
-    --oval-color: var(--blue);
+    --oval-color: #a0a6b1;
     width: 3.75rem;
     height: var(--close-menu-height);
     top: calc(var(--header-height) / 2 - var(--close-menu-height) / 2);

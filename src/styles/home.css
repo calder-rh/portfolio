@@ -356,6 +356,7 @@
 
   .work-tag .oval-text {
     text-transform: uppercase;
+    font-size: 1rem;
     --k-wdth: 120;
     line-height: 1.3;
     color: #4d362e;
@@ -363,7 +364,8 @@
   }
 
   .work-tag[data-slug="writing-systems"] {
-    flex-shrink: 0.15;
+    /* flex-shrink: 0.15; */
+    min-width: 15rem;
   }
 
   .work-tag.unlisted {
