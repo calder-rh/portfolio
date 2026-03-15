@@ -224,6 +224,12 @@
     height: 0;
   }
 
+  @media (hover: none) {
+    #work-cols.hide-others .work-item.closable.closed .cap-container {
+      height: 0;
+    }
+  }
+
   .work-item.unlisted.closed:not(.ish) .cap-container {
     height: 0;
   }
