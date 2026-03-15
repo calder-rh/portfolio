@@ -221,28 +221,30 @@
     height: 0;
   }
 
-  .work-item.closable.closed.ish {
-    scale: calc(var(--min-width) * 3) 1;
-  }
+  @media (hover: hover) {
+    .work-item.closable.closed.ish {
+      scale: calc(var(--min-width) * 3) 1;
+    }
 
-  .work-item.closable.closed.ish .cap-container {
-    height: calc(var(--min-height) * 2);
-  }
+    .work-item.closable.closed.ish .cap-container {
+      height: calc(var(--min-height) * 2);
+    }
 
-  .work-item.closable.open.ish {
-    scale: 0.8 1;
-  }
+    .work-item.closable.open.ish {
+      scale: 0.8 1;
+    }
 
-  .work-item.closable.open.ish .work-content {
-    scale: 1 0.8;
-  }
+    .work-item.closable.open.ish .work-content {
+      scale: 1 0.8;
+    }
 
-  .work-item.closable.open.ish .work-content-wrapper {
-    height: var(--open-ish-content-height);
-  }
+    .work-item.closable.open.ish .work-content-wrapper {
+      height: var(--open-ish-content-height);
+    }
 
-  .work-item.closable.open.ish .cap-container {
-    height: 4.8rem;
+    .work-item.closable.open.ish .cap-container {
+      height: 4.8rem;
+    }
   }
 
   .work-item.closable.hidden .cap-container {
@@ -382,19 +384,20 @@
     height: 50%;
   }
 
-  .work-tag.closed.ish {
-    height: 60%;
-  }
-
   .work-tag.open {
     height: 100%;
   }
 
-  .work-tag.open.ish {
-    height: 90%;
+  @media (hover: hover) {
+    .work-tag.closed.ish {
+      height: 60%;
+    }
+
+    .work-tag.open.ish {
+      height: 90%;
+    }
   }
 
- 
   .work-tag {
     transition-duration: var(--long-transition);
     transition-timing-function: ease-out;
