@@ -118,8 +118,13 @@
     position: absolute;
   }
 
-  .work-item:not(.draft) .work-content-wrapper {
+  .work-item:not(.draft):not(.closed) .work-content-wrapper {
     cursor: pointer;
+  }
+
+  .work-item.closed * {
+    cursor: default;
+    pointer-events: none;
   }
 
   .work-content {
@@ -141,10 +146,12 @@
     margin-bottom: 0;
   }
 
-  .hovered .work-item-scaler {
-    scale: 1.05;
-    transition: 0.08s ease-in;
-    margin-bottom: calc(var(--item-height) * 0.05);
+  @media (hover: hover) {
+    .hovered:not(.closed) .work-item-scaler {
+      scale: 1.05;
+      transition: 0.08s ease-in;
+      margin-bottom: calc(var(--item-height) * 0.05);
+    }
   }
 
   .work-content *:last-child {
