@@ -13,7 +13,7 @@ const plainTitle = new Marked()
 ---
 
 <BaseLayout title={plainTitle}>
-  <div class="content" id="article">
+  <div class="content unmoved" id="article">
     <div data-slot-name="banner"/>
     <Title data={data}/>
     <slot />
@@ -40,12 +40,14 @@ const plainTitle = new Marked()
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {document.getElementById('article')?.classList.remove('unmoved')}, 500)
+
     const travelers = document.querySelectorAll("[data-slot]")
     for (let traveler of travelers) {
       const slotName = (traveler as HTMLElement).dataset.slot
       const slotElement = document.querySelector(`[data-slot-name="${slotName}"]`)
       slotElement?.appendChild(traveler)
-      traveler.classList.add("moved")
     }
+    document.getElementById('article')?.classList.remove('unmoved')
   })
 </script>

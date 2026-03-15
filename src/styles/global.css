@@ -229,13 +229,17 @@
   .page-description:last-child {
     margin-bottom: 1rem;
   }
-
+/* 
   [data-slot] {
     display: none;
   }
 
   [data-slot].moved {
     display: unset;
+  } */
+
+  #article.unmoved {
+    visibility: hidden;
   }
 
   .buy-container {
@@ -551,7 +555,7 @@
     width: 100%; /* Specific width is required for Firefox. */
     background: var(--blue); /* Otherwise white in Chrome */
     height: 0.3rem;
-    margin: var(--space);
+    margin: var(--space) 0;
   }
 
   input[type=range]::-webkit-slider-thumb {
