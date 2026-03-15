@@ -319,6 +319,7 @@
     overflow: scroll;
     scroll-behavior: smooth;
     background-color: #4d362e;
+    touch-action: manipulation;
   }
 
   @media screen and (max-height: 800px) {

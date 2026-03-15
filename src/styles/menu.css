@@ -67,12 +67,14 @@
   visibility: hidden;
 }
 
-#lockup-link:hover #logo-regular {
-  visibility: hidden;
-}
-
-#lockup-link:hover #logo-diagram {
-  visibility: visible;
+@media (hover: hover) {
+  #lockup-link:hover #logo-regular {
+    visibility: hidden;
+  }
+  
+  #lockup-link:hover #logo-diagram {
+    visibility: visible;
+  }
 }
 
 #name {
