@@ -3,7 +3,10 @@ const {image, recipe, instagram} = Astro.props.frontmatter
 import Img from '@src/components/Img.astro'
 ---
 
-<Img src={image}/>
+<div data-slot="banner">
+  <Img src={image}/>
+</div>
+
 <p>Recipe: {(typeof recipe === "string") && recipe}</p>
 {(typeof recipe !== "string") &&
   <div class="glue"/>
