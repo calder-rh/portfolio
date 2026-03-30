@@ -1,17 +1,7 @@
 ---
-import BaseLayout from "@src/layouts/BaseLayout.astro";
-
-import { getCollection, getEntry } from 'astro:content';
-const allWork = await getCollection('projects');
-
-
-
+import Article from "@src/layouts/Article.astro";
 ---
 
-<BaseLayout pageTitle="test">
-  <!-- {allWork.map(async function(entry) {
-    const { Content, headings } = await entry.render();
-    return <Content />;
-  })} -->
-  {allWork.map(entry => <p>{entry.body}</p>)}
-</BaseLayout>
+<Article data={{title: "test"}}>
+  
+</Article>
