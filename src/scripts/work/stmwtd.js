@@ -95,6 +95,9 @@ document.addEventListener("DOMContentLoaded", () => {
   gsap.set("#words", {opacity: 0})
   gsap.set("#connectors", {opacity: 0})
   gsap.set("#letters", {opacity: 0})
+
+
+
 })
 
 
@@ -102,3 +105,5 @@ document.addEventListener("DOMContentLoaded", () => {
 slider.addEventListener("input", () => {
   tl.progress(slider.value);
 });
+
+
